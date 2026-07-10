@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHOEBE'S CANOPY | Sustainable Rainforest Kitchen</title>
-    <!-- 引入艺术谷歌衬线字体，大幅度提升排版高级感 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        /* 🎨 延续复古高阶色盘 */
         :root {
             --color-dark: #232525;    
             --color-blue: #3D6C93;    
@@ -19,7 +17,6 @@
             --color-red: #DD4A30;     
             --color-light: #F7F6EE;   
             
-            /* 字体变量 */
             --font-serif: 'Playfair Display', 'Georgia', serif;
             --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
@@ -38,7 +35,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ==================== 🌳 场景化大首屏 (Hero Section) ==================== */
+        /* ==================== 🌳 全局可点击的雨林首屏 ==================== */
         .hero-section {
             position: relative;
             width: 100%;
@@ -48,12 +45,36 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            /* 选用高精度的现代生态雨林餐厅设计意向图 */
-            background: linear-gradient(to bottom, rgba(35, 37, 37, 0.4) 0%, rgba(35, 37, 37, 0.95) 100%), 
-                        url('https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=1600&q=80') no-repeat center center;
-            background-size: cover;
+            overflow: hidden;
             box-sizing: border-box;
             padding: 0 20px;
+            cursor: pointer; /* 变成手型，暗示全屏可点击 */
+        }
+
+        /* 独立的背景层，用于实现高级的悬停微缩放效果，不影响文字 */
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(35, 37, 37, 0.3) 0%, rgba(35, 37, 37, 0.95) 100%), 
+                        url('https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=1600&q=80') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* 悬停时背景悄悄放大，营造“走入雨林”的纵深感 */
+        .hero-section:hover .hero-bg {
+            transform: scale(1.05);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            pointer-events: none; /* 让点击事件穿透直接作用于底层section */
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hero-section:hover .hero-content {
+            transform: translateY(-5px);
         }
 
         .hero-tag {
@@ -73,7 +94,6 @@
             margin: 0 0 25px 0;
             letter-spacing: -1px;
             color: var(--color-light);
-            max-width: 900px;
         }
 
         .hero-title em {
@@ -86,31 +106,24 @@
             max-width: 600px;
             line-height: 1.7;
             color: #b5b5b5;
-            margin: 0 0 40px 0;
+            margin: 0 auto 40px auto;
             font-weight: 300;
             letter-spacing: 1px;
         }
 
-        .btn-explore {
-            font-family: var(--font-sans);
-            background: transparent;
-            border: 1px solid var(--color-yellow);
-            color: var(--color-yellow);
-            padding: 15px 35px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 4px;
+        /* 引导性小标签，代替原本的生硬按钮 */
+        .click-anywhere-hint {
+            font-size: 0.75rem;
             text-transform: uppercase;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            letter-spacing: 4px;
+            color: var(--color-yellow);
+            opacity: 0.6;
+            animation: pulse 2s infinite ease-in-out;
         }
 
-        .btn-explore:hover {
-            background: var(--color-yellow);
-            color: var(--color-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(233, 177, 64, 0.2);
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scale(0.98); }
+            50% { opacity: 0.9; transform: scale(1.02); }
         }
 
         /* ==================== 🍽️ 主网格主体布局 ==================== */
@@ -121,7 +134,7 @@
             display: grid;
             grid-template-columns: 1fr 360px; 
             gap: 50px;
-            perspective: 1200px; /* 强化全局 3D 景深空间 */
+            perspective: 1200px; 
         }
 
         @media (max-width: 1024px) {
@@ -143,7 +156,7 @@
         .tab-btn { background: none; border: none; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: #777; padding: 6px 0; transition: all 0.3s; letter-spacing: 3px; text-transform: uppercase; }
         .tab-btn.active, .tab-btn:hover { color: var(--color-yellow); border-bottom: 2px solid var(--color-yellow); }
 
-        /* ==================== Bento Grid & 3D Cards ==================== */
+        /* Bento Cards Grid */
         .menu-section { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -249,7 +262,7 @@
         }
         .btn-order:hover { background: var(--color-yellow); color: var(--color-dark); }
 
-        /* ==================== 右侧购物车面板 ==================== */
+        /* 右侧购物车面板 */
         .cart-panel { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 30px; align-self: start; position: sticky; top: 40px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
         .cart-panel h3 { font-family: var(--font-serif); color: var(--color-yellow); font-size: 1.4rem; font-weight: 400; margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; letter-spacing: 1px; }
         .cart-items { max-height: 280px; overflow-y: auto; margin-bottom: 15px; }
@@ -293,12 +306,15 @@
 </head>
 <body>
 
-<!-- 🌳 大画幅全屏入口区 -->
-<section class="hero-section">
-    <div class="hero-tag">Canopy To Table</div>
-    <h1 class="hero-title">Experience cuisine inspired by <em>nature’s bounty</em>.</h1>
-    <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen. An eco-friendly digital ordering platform set deep in the heart of the sustainable rainforest.</p>
-    <button class="btn-explore" onclick="document.getElementById('orderDesk').scrollIntoView({behavior: 'smooth'});">Explore The Menu</button>
+<!-- 🌳 全屏可点击首屏 -->
+<section class="hero-section" onclick="document.getElementById('orderDesk').scrollIntoView({behavior: 'smooth'});">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <div class="hero-tag">Canopy To Table</div>
+        <h1 class="hero-title">Experience cuisine inspired by <em>nature’s bounty</em>.</h1>
+        <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen. An eco-friendly digital ordering platform set deep in the heart of the sustainable rainforest.</p>
+        <div class="click-anywhere-hint">[ Click anywhere to explore the menu ]</div>
+    </div>
 </section>
 
 <!-- 🍽️ 点单台主体区 -->
@@ -337,7 +353,6 @@
         </div>
     </div>
 
-    <!-- 后台隐藏开关 -->
     <div class="admin-toggle" onclick="handleAdminClick()">ENTER DESIGNER DASHBOARD</div>
 
     <!-- 录入管理区 -->
@@ -386,37 +401,12 @@
 </div>
 
 <script>
-    // ✨ 默认菜单替换为契合雨林餐厅意向的高清图和英文
     let defaultRecipes = [
-    {
-        "id": 1783699243836,
-        "name": "拿铁",
-        "category": "中餐",
-        "img": "https://www.gafei.com/uploadfile/ueditor/image/202403/1709977684176cac.jpg",
-        "notes": ""
-    },
-    {
-        "id": 1783699940792,
-        "name": "法式草莓千层蛋糕",
-        "category": "烘焙",
-        "img": "https://image.pollinations.ai/p/%E6%B3%95%E5%BC%8F%E8%8D%89%E8%8E%93%E5%8D%83%E5%B1%82%E8%9B%8B%E7%B3%95,%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true",
-        "notes": ""
-    },
-    {
-        "id": 1783700601984,
-        "name": "老北京宫保鸡丁",
-        "category": "中餐",
-        "img": "https://image.pollinations.ai/p/%E8%80%81%E5%8C%97%E4%BA%AC%E5%AE%AB%E4%BF%9D%E9%B8%A1%E4%B8%81,%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true&seed=50642",
-        "notes": ""
-    },
-    {
-        "id": 1783701808992,
-        "name": "玛德琳蛋糕",
-        "category": "Bakery",
-        "img": "https://image.pollinations.ai/p/%E7%8E%9B%E5%BE%B7%E7%90%B3%E8%9B%8B%E7%B3%95,%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true&seed=44881",
-        "notes": ""
-    }
-];
+        { id: 1, name: "Amazon Canopy Berry Crepe", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream." },
+        { id: 2, name: "Wood-Fired Rainforest Steak", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs." },
+        { id: 3, name: "Wild Botanical Green Salad", category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle." },
+        { id: 4, name: "Iced Smoked Botanical Latte", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk." }
+    ];
 
     let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
     let cart = {};
@@ -446,7 +436,6 @@
         init3DEffect();
     }
 
-    /* ==================== 🧠 3D Tracking Logic ==================== */
     function init3DEffect() {
         const cards = document.querySelectorAll('.menu-item');
         cards.forEach(card => {
@@ -466,7 +455,6 @@
         });
     }
 
-    // 🛒 Cart Logic
     function addToCart(id) {
         const item = recipes.find(r => r.id === id);
         if (!item) return;
