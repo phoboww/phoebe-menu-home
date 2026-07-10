@@ -48,10 +48,9 @@
             overflow: hidden;
             box-sizing: border-box;
             padding: 0 20px;
-            cursor: pointer; /* 变成手型，暗示全屏可点击 */
+            cursor: pointer; 
         }
 
-        /* 独立的背景层，用于实现高级的悬停微缩放效果，不影响文字 */
         .hero-bg {
             position: absolute;
             inset: 0;
@@ -62,14 +61,13 @@
             transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* 悬停时背景悄悄放大，营造“走入雨林”的纵深感 */
         .hero-section:hover .hero-bg {
             transform: scale(1.05);
         }
 
         .hero-content {
             max-width: 900px;
-            pointer-events: none; /* 让点击事件穿透直接作用于底层section */
+            pointer-events: none; 
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
@@ -111,7 +109,6 @@
             letter-spacing: 1px;
         }
 
-        /* 引导性小标签，代替原本的生硬按钮 */
         .click-anywhere-hint {
             font-size: 0.75rem;
             text-transform: uppercase;
@@ -126,22 +123,15 @@
             50% { opacity: 0.9; transform: scale(1.02); }
         }
 
-        /* ==================== 🍽️ 主网格主体布局 ==================== */
+        /* ==================== 🍽️ 单一主板网格布局（图片排布极度平衡） ==================== */
         .main-wrapper {
-            max-width: 1300px; 
+            max-width: 1200px; 
             margin: 0 auto; 
             padding: 80px 20px;
-            display: grid;
-            grid-template-columns: 1fr 360px; 
-            gap: 50px;
             perspective: 1200px; 
         }
 
-        @media (max-width: 1024px) {
-            .main-wrapper { grid-template-columns: 1fr; padding: 40px 20px; }
-        }
-
-        .main-content { grid-column: span 1; }
+        .main-content { width: 100%; }
 
         header { 
             text-align: left; 
@@ -156,7 +146,7 @@
         .tab-btn { background: none; border: none; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: #777; padding: 6px 0; transition: all 0.3s; letter-spacing: 3px; text-transform: uppercase; }
         .tab-btn.active, .tab-btn:hover { color: var(--color-yellow); border-bottom: 2px solid var(--color-yellow); }
 
-        /* Bento Cards Grid */
+        /* Bento Grid 板块平均分布 */
         .menu-section { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -262,22 +252,115 @@
         }
         .btn-order:hover { background: var(--color-yellow); color: var(--color-dark); }
 
-        /* 右侧购物车面板 */
-        .cart-panel { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 30px; align-self: start; position: sticky; top: 40px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
-        .cart-panel h3 { font-family: var(--font-serif); color: var(--color-yellow); font-size: 1.4rem; font-weight: 400; margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; letter-spacing: 1px; }
-        .cart-items { max-height: 280px; overflow-y: auto; margin-bottom: 15px; }
+        /* ==================== 🛒 隐藏式侧滑抽屉购物车 ==================== */
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-panel { 
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 380px;
+            height: 100vh;
+            background: #1a1a1a; 
+            border-left: 1px solid rgba(255,255,255,0.05); 
+            padding: 40px 30px; 
+            box-sizing: border-box;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.5); 
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cart-overlay.active .cart-panel {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.08); 
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .cart-panel h3 { font-family: var(--font-serif); color: var(--color-yellow); font-size: 1.4rem; font-weight: 400; margin: 0; letter-spacing: 1px; }
+        
+        .close-cart {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-cart:hover { color: var(--color-light); }
+
+        .cart-items { flex-grow: 1; overflow-y: auto; margin-bottom: 15px; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #2a2a2a; }
         .cart-item-counter { display: flex; align-items: center; gap: 8px; }
         .btn-count { background: var(--color-blue); color: #FFF; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
         
-        .cart-summary { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px; margin-top: 15px; }
+        .cart-summary { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;}
         
-        .btn-submit-order { width: 100%; background: var(--color-red); color: var(--color-light); border: none; padding: 15px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; letter-spacing: 3px; text-transform: uppercase; margin-top: 10px; transition: opacity 0.2s; }
+        .btn-submit-order { width: 100%; background: var(--color-red); color: var(--color-light); border: none; padding: 15px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; letter-spacing: 3px; text-transform: uppercase; transition: opacity 0.2s; }
         .btn-submit-order:hover { opacity: 0.9; }
 
+        /* 右下角优雅的悬浮点单通知气泡 */
+        .floating-cart-trigger {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--color-yellow);
+            color: var(--color-dark);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(233, 177, 64, 0.3);
+            z-index: 900;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .floating-cart-trigger:hover {
+            transform: scale(1.08) translateY(-3px);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--color-red);
+            color: var(--color-light);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 7px;
+            border-radius: 10px;
+            border: 2px solid var(--color-dark);
+        }
+
         /* 后台管理区 */
-        #adminSection { grid-column: span 2; margin-top: 40px; padding: 40px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); display: none; border-radius: 12px; }
+        #adminSection { margin-top: 60px; padding: 40px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); display: none; border-radius: 12px; }
         #adminSection h3 { font-family: var(--font-serif); color: var(--color-yellow); font-weight: 400; margin-top: 0; letter-spacing: 1px; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;}
@@ -300,7 +383,7 @@
         .modify-btn { background: none; color: var(--color-yellow); border: 1px solid var(--color-yellow); padding: 4px 12px; cursor: pointer; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;}
         .delete-btn { background: none; color: #FF9E9E; border: 1px solid var(--color-red); padding: 4px 12px; cursor: pointer; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;}
         
-        .admin-toggle { grid-column: span 2; text-align: center; margin-top: 60px; font-size: 0.7rem; color: #555; cursor: pointer; transition: color 0.2s; letter-spacing: 3px;}
+        .admin-toggle { text-align: center; margin-top: 60px; font-size: 0.7rem; color: #555; cursor: pointer; transition: color 0.2s; letter-spacing: 3px;}
         .admin-toggle:hover { color: var(--color-yellow); }
     </style>
 </head>
@@ -317,10 +400,8 @@
     </div>
 </section>
 
-<!-- 🍽️ 点单台主体区 -->
+<!-- 🍽️ 点单台主体区（全宽、无右侧分栏阻挡，图片更加匀称） -->
 <div class="main-wrapper" id="orderDesk">
-    
-    <!-- 左侧主营业厅 -->
     <div class="main-content">
         <header>
             <h2>PHOEBE'S CANOPY DESK</h2>
@@ -338,21 +419,6 @@
         <div class="menu-section" id="menuContainer"></div>
     </div>
 
-    <!-- 右侧点单收银台 -->
-    <div class="cart-panel">
-        <h3>YOUR CART</h3>
-        <div class="cart-items" id="cartItemsContainer">
-            <p style="color:#666; font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty. Select culinary delights...</p>
-        </div>
-        <div class="cart-summary">
-            <div class="summary-row">
-                <span>Total Items:</span>
-                <span id="totalCount" style="font-weight: 600; color: var(--color-yellow);">0</span>
-            </div>
-            <button class="btn-submit-order" onclick="placeOrder()">🔔 PLACE ORDER NOW</button>
-        </div>
-    </div>
-
     <div class="admin-toggle" onclick="handleAdminClick()">ENTER DESIGNER DASHBOARD</div>
 
     <!-- 录入管理区 -->
@@ -367,7 +433,7 @@
         <h3 id="formModeTitle">🍳 CREATE / MODIFY DISH</h3>
         <input type="hidden" id="editingRecipeId" value="">
         
-        <div class="form-group"><label>Dish Name (AI will paint based on this):</label><input type="text" id="foodName" placeholder="e.g., Rainforest Berry Crepe Tower"></div>
+        <div class="form-group"><label>Dish Name:</label><input type="text" id="foodName" placeholder="e.g., Rainforest Berry Crepe Tower"></div>
         <div class="form-group">
             <label>Category:</label>
             <select id="foodCategory">
@@ -377,7 +443,7 @@
                 <option value="Botanical Cafe">Botanical Cafe</option>
             </select>
         </div>
-        <div class="form-group"><label>Chef's Culinary Notes:</label><textarea id="foodNotes" rows="3" placeholder="Describe the ingredients, amazon herbs, or wood-fired style..."></textarea></div>
+        <div class="form-group"><label>Chef's Culinary Notes:</label><textarea id="foodNotes" rows="3" placeholder="Describe the ingredients, amazon herbs..."></textarea></div>
         
         <div class="preview-container" id="aiPreviewBox" style="display:none;">
             <img class="preview-img" id="previewImgElement" src="" alt="AI Artwork">
@@ -400,6 +466,33 @@
     </div>
 </div>
 
+<!-- 🛒 悬浮购物车入口 -->
+<div class="floating-cart-trigger" onclick="toggleCartDrawer(true)">
+    📦 <span class="cart-badge" id="floatingBadge">0</span>
+</div>
+
+<!-- 🛒 侧滑抽屉面板（点击背景蒙版或Close按钮隐藏） -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)">
+    <div class="cart-panel" onclick="event.stopPropagation()">
+        <div style="display: flex; flex-direction: column; flex-grow: 1;">
+            <div class="cart-header">
+                <h3>YOUR CART</h3>
+                <button class="close-cart" onclick="toggleCartDrawer(false)">✕</button>
+            </div>
+            <div class="cart-items" id="cartItemsContainer">
+                <p style="color:#666; font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty. Select culinary delights...</p>
+            </div>
+        </div>
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span>Total Items:</span>
+                <span id="totalCount" style="font-weight: 600; color: var(--color-yellow);">0</span>
+            </div>
+            <button class="btn-submit-order" onclick="placeOrder()">🔔 PLACE ORDER NOW</button>
+        </div>
+    </div>
+</div>
+
 <script>
     let defaultRecipes = [
         { id: 1, name: "Amazon Canopy Berry Crepe", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream." },
@@ -413,6 +506,13 @@
     let pendingDeleteIds = [];
     let currentTempImageUrl = "";
     let changesCount = 0;
+
+    // 控制侧滑购物车的开启与关闭
+    function toggleCartDrawer(open) {
+        const overlay = document.getElementById('cartOverlay');
+        if (open) overlay.classList.add('active');
+        else overlay.classList.remove('active');
+    }
 
     function renderMenu(data) {
         const container = document.getElementById('menuContainer');
@@ -473,14 +573,18 @@
     function updateCartUI() {
         const container = document.getElementById('cartItemsContainer');
         const totalCountSpan = document.getElementById('totalCount');
+        const floatingBadge = document.getElementById('floatingBadge');
         container.innerHTML = '';
         let totalCount = 0;
         const keys = Object.keys(cart);
+        
         if (keys.length === 0) {
             container.innerHTML = `<p style="color:#666; font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty. Select culinary delights...</p>`;
             totalCountSpan.innerText = '0';
+            floatingBadge.innerText = '0';
             return;
         }
+        
         keys.forEach(id => {
             const item = cart[id];
             totalCount += item.count;
@@ -496,6 +600,7 @@
             `);
         });
         totalCountSpan.innerText = totalCount;
+        floatingBadge.innerText = totalCount;
     }
 
     function placeOrder() {
@@ -507,6 +612,7 @@
         alert(receipt);
         cart = {};
         updateCartUI();
+        toggleCartDrawer(false);
     }
 
     function generateAiImage() {
