@@ -442,38 +442,185 @@
             border: 2px solid var(--color-ebony);
         }
 
-        /* 后台设计面板美化 */
-        #adminSection { margin-top: 100px; padding: 50px; background: rgba(110, 114, 94, 0.04); border: 1px solid var(--color-clay); display: none; }
-        #adminSection h3 { font-family: var(--font-serif); color: var(--color-ebony); font-weight: 400; margin-top: 0; letter-spacing: 2px; }
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; margin-bottom: 10px; font-size: 0.75rem; color: var(--color-moss); text-transform: uppercase; letter-spacing: 2px;}
-        .form-group input, .form-group textarea, .form-group select { font-family: var(--font-sans); width: 100%; padding: 14px; background: transparent; border: 1px solid var(--color-clay); color: var(--color-ebony); box-sizing: border-box; transition: border 0.3s; }
-        .form-group input:focus, .form-group textarea:focus { border-color: var(--color-ebony); outline: none; }
+        /* ==================== 🔑 DESIGNER DASHBOARD 后台视觉重塑 ==================== */
+        #adminSection { 
+            margin-top: 140px; 
+            padding: 60px 50px; 
+            background: rgba(110, 114, 94, 0.02); /* 极其轻透的苔藓绿微调，呼应雨林 */
+            border: 1px solid var(--color-clay); 
+            display: none; 
+        }
         
-        .preview-container { display: flex; align-items: center; gap: 30px; margin: 25px 0; background: rgba(0,0,0,0.02); padding: 20px; border: 1px dashed var(--color-clay); flex-wrap: wrap;}
+        #adminSection h3 { 
+            font-family: var(--font-serif); 
+            color: var(--color-ebony); 
+            font-size: 1.8rem;
+            font-weight: 300; 
+            margin-top: 0; 
+            margin-bottom: 35px;
+            letter-spacing: 3px; 
+        }
+
+        .form-group { margin-bottom: 30px; }
+        
+        /* 统一标签字体：全面同步人文克制无衬线，拉大字距 */
+        .form-group label { 
+            display: block; 
+            margin-bottom: 12px; 
+            font-family: var(--font-sans);
+            font-size: 0.7rem; 
+            color: var(--color-moss); 
+            text-transform: uppercase; 
+            letter-spacing: 3px;
+            font-weight: 500;
+        }
+        
+        /* 重塑输入框与选择框：注入无衬线呼吸感，去除生硬感 */
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select { 
+            font-family: var(--font-sans); 
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            font-weight: 300;
+            width: 100%; 
+            padding: 16px; 
+            background: rgba(230, 225, 214, 0.2); /* 陶土色微弱半透明底，增加沉淀感 */
+            border: 1px solid var(--color-clay); 
+            color: var(--color-ebony); 
+            box-sizing: border-box; 
+            transition: all 0.4s ease; 
+            border-radius: 0px; /* 坚持纯直角高定风 */
+        }
+        
+        /* 输入框聚焦态：温和的阴影与边界过渡 */
+        .form-group input:focus, 
+        .form-group textarea:focus,
+        .form-group select:focus { 
+            border-color: var(--color-moss); 
+            background: transparent;
+            outline: none; 
+            box-shadow: 0 5px 15px rgba(110, 114, 94, 0.05);
+        }
+        
+        /* 更改 placeholder 字体质感 */
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            font-family: var(--font-sans);
+            font-weight: 300;
+            color: #b0aa9e;
+            font-size: 0.8rem;
+        }
+        
+        .preview-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 30px; 
+            margin: 25px 0; 
+            background: rgba(47, 42, 29, 0.01); 
+            padding: 25px; 
+            border: 1px dashed var(--color-clay); 
+            flex-wrap: wrap;
+        }
+        
         .preview-img-wrap { position: relative; width: 110px; height: 110px; }
         .preview-img { width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--color-clay); }
         
         #imgLinkInput { display: none; }
 
-        .btn-secondary { background: var(--color-moss); color: var(--color-sisal); border: none; padding: 13px 25px; cursor: pointer; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; transition: opacity 0.3s; }
+        /* 按钮与控制系统的字体适配 */
+        .btn-secondary { 
+            background: var(--color-moss); 
+            color: var(--color-sisal); 
+            border: none; 
+            padding: 14px 28px; 
+            cursor: pointer; 
+            font-family: var(--font-sans);
+            font-weight: 500; 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            transition: all 0.3s ease; 
+        }
         .btn-secondary:disabled { background: var(--color-clay); color: #999; cursor: not-allowed; }
-        .btn-secondary:hover { opacity: 0.9; }
+        .btn-secondary:hover { opacity: 0.9; letter-spacing: 4px; }
 
-        .submit-btn { background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 14px 40px; cursor: pointer; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; }
+        .submit-btn { 
+            background: var(--color-ebony); 
+            color: var(--color-sisal); 
+            border: none; 
+            padding: 16px 45px; 
+            cursor: pointer; 
+            font-family: var(--font-sans);
+            font-weight: 500; 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover { background: #332517; letter-spacing: 4px; }
         
-        .batch-save-btn { width: 100%; background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 18px; cursor: pointer; font-weight: 500; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; margin-top: 25px; }
-        .batch-save-btn:disabled { background: var(--color-clay); color: #aaa; cursor: not-allowed; }
+        .batch-save-btn { 
+            width: 100%; 
+            background: var(--color-ebony); 
+            color: var(--color-sisal); 
+            border: none; 
+            padding: 20px; 
+            cursor: pointer; 
+            font-family: var(--font-sans);
+            font-weight: 500; 
+            font-size: 0.75rem; 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+            margin-top: 35px; 
+            transition: all 0.3s ease;
+        }
+        .batch-save-btn:disabled { background: var(--color-clay); color: #aaa; cursor: not-allowed; letter-spacing: 4px; }
 
-        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: transparent; border-bottom: 1px solid var(--color-clay); font-size: 0.85rem;}
-        .admin-list-item.pending-delete { border-color: #a64b4b; background: #fdf2f2; opacity: 0.6; }
+        /* 后台列表字体优雅化 */
+        .admin-list-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 10px; 
+            background: transparent; 
+            border-bottom: 1px solid var(--color-clay); 
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            font-weight: 300;
+        }
+        .admin-list-item.pending-delete { border-color: #a64b4b; background: rgba(166, 75, 75, 0.02); opacity: 0.5; }
         
         .action-group { display: flex; gap: 12px; }
-        .modify-btn { background: none; color: var(--color-moss); border: 1px solid var(--color-moss); padding: 5px 14px; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;}
-        .delete-btn { background: none; color: #a64b4b; border: 1px solid #a64b4b; padding: 5px 14px; cursor: pointer; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;}
         
-        .admin-toggle { text-align: center; margin-top: 100px; font-size: 0.65rem; color: var(--color-moss); cursor: pointer; transition: color 0.3s; letter-spacing: 4px;}
-        .admin-toggle:hover { color: var(--color-ebony); }
+        .modify-btn, .delete-btn { 
+            background: none; 
+            font-family: var(--font-sans);
+            font-weight: 500;
+            padding: 6px 16px; 
+            cursor: pointer; 
+            font-size: 0.65rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+        .modify-btn { color: var(--color-moss); border: 1px solid var(--color-clay); }
+        .modify-btn:hover { color: var(--color-ebony); border-color: var(--color-ebony); }
+        .delete-btn { color: #a64b4b; border: 1px solid rgba(166, 75, 75, 0.3); }
+        .delete-btn:hover { background: #a64b4b; color: #fff; }
+        
+        .admin-toggle { 
+            text-align: center; 
+            margin-top: 140px; 
+            font-family: var(--font-sans);
+            font-size: 0.65rem; 
+            color: var(--color-moss); 
+            cursor: pointer; 
+            transition: all 0.4s ease; 
+            letter-spacing: 5px;
+        }
+        .admin-toggle:hover { color: var(--color-ebony); letter-spacing: 6px; }
 
         /* 手机端深度响应式微调 */
         @media (max-width: 768px) {
@@ -492,7 +639,7 @@
     <div class="hero-bg"></div>
     <div class="hero-content">
         <div class="hero-tag">Aesthetic Playful Flavors</div>
-        <h1 class="hero-title">Experience cuisine inspired by <em>Sophistication</em>.</h1>
+        <h1 class="hero-title">Immerse yourself in gastronomy reimagined through <em>sophistication</em>.</h1>
         <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen, an elite digital ordering platform redefining the art of bespoke gastronomy.</p>
         <div class="click-anywhere-hint">[ Click anywhere to explore the menu ]</div>
     </div>
