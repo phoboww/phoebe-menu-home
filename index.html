@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHOEBE'S CANOPY | Sustainable Rainforest Kitchen</title>
+    
+    <!-- 引入极致禅意与侘寂感的中英文艺术网络字体库 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Cormorant Garamond (清瘦诗意英文) + Noto Serif TC (古籍宣纸感宋体) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+TC:wght@200;300;400;500&display=swap" rel="stylesheet">
     
     <style>
         /* 🎨 全新东方禅意大地色盘 */
@@ -17,8 +20,9 @@
             --color-ebony: #3c2005;       /* 浓郁檀木黑（核心重音、下单、气泡） */
             --color-napa: #aca494;        /* 浅灰陶土色（卡片边框、非激活态） */
             
-            --font-serif: 'Playfair Display', 'Georgia', serif;
-            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            /* 💡 升级为 Wabi-Sabi 专用衬线字体系统 */
+            --font-serif: 'Cormorant Garamond', 'Noto Serif TC', 'Georgia', 'SimSun', serif;
+            --font-sans: 'Cormorant Garamond', 'Noto Serif TC', -apple-system, sans-serif;
         }
 
         html {
@@ -26,12 +30,12 @@
         }
 
         body { 
-            background-color: var(--color-sisal); /* 大面积留白 */
+            background-color: var(--color-sisal); 
             color: var(--color-lisbon); 
             font-family: var(--font-sans); 
             margin: 0; 
             padding: 0;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px; /* 增加全局字距，制造呼吸感 */
             -webkit-font-smoothing: antialiased;
         }
 
@@ -41,91 +45,103 @@
             width: 100%;
             height: 100vh;
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* 改为横向排列，便于容纳竖排文本 */
             justify-content: center;
             align-items: center;
-            text-align: center;
             overflow: hidden;
             box-sizing: border-box;
-            padding: 0 20px;
+            padding: 0 40px;
             cursor: pointer; 
         }
 
         .hero-bg {
             position: absolute;
             inset: 0;
-            /* 融合檀木黑 (#3c2005) 的深邃渐变层，带出林间晨雾感 */
-            background: linear-gradient(to bottom, rgba(60, 32, 5, 0.4) 0%, rgba(211, 203, 186, 1) 100%), 
-                        url('https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=1600&q=80') no-repeat center center;
+            background: linear-gradient(to bottom, rgba(60, 32, 5, 0.35) 0%, rgba(211, 203, 186, 1) 100%), 
+                        url('https://ix-marketing.imgix.net/interior.mp4') no-repeat center center;
             background-size: cover;
             z-index: -1;
-            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .hero-section:hover .hero-bg {
-            transform: scale(1.04);
+            transform: scale(1.03);
         }
 
+        /* ✨ Wabi-Sabi 核心改造：全屏独白改为极为震撼的东方“竖排版” */
         .hero-content {
-            max-width: 900px;
-            pointer-events: none; 
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: row-reverse; /* 中式传统的自右向左阅读顺序 */
+            align-items: flex-start;
+            writing-mode: vertical-rl;  /* 开启竖排模式 */
+            text-orientation: mixed;
+            max-height: 70vh;
+            gap: 30px;
         }
 
         .hero-tag {
-            font-size: 0.85rem;
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
             text-transform: uppercase;
-            letter-spacing: 6px;
+            letter-spacing: 4px;
             color: var(--color-ebony);
-            margin-bottom: 20px;
-            font-weight: 600;
+            font-weight: 400;
+            margin: 0;
         }
 
         .hero-title {
             font-family: var(--font-serif);
-            font-size: 4.5rem;
-            font-weight: 400;
-            line-height: 1.1;
-            margin: 0 0 25px 0;
-            letter-spacing: -1px;
+            font-size: 3.8rem; /* 竖排不宜过大，追求清瘦挺拔 */
+            font-weight: 300;
+            line-height: 1.4;
+            margin: 0;
+            letter-spacing: 4px; /* 宽字距，如毛笔落字 */
             color: var(--color-ebony);
         }
 
         .hero-title em {
             font-style: italic;
-            color: var(--color-lisbon);
+            color: var(--color-domino);
+            font-family: var(--font-serif);
         }
 
         .hero-subtitle {
-            font-size: 1.1rem;
-            max-width: 600px;
-            line-height: 1.7;
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            line-height: 2;
             color: var(--color-lisbon);
-            margin: 0 auto 40px auto;
-            font-weight: 400;
-            letter-spacing: 1px;
-            opacity: 0.8;
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.85;
+            max-height: 60vh;
         }
 
         .click-anywhere-hint {
-            font-size: 0.75rem;
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
             color: var(--color-domino);
-            font-weight: 600;
-            animation: pulse 2s infinite ease-in-out;
+            font-weight: 400;
+            animation: pulse 2.5s infinite ease-in-out;
+            writing-mode: horizontal-tb; /* 提示词保持横排 */
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: scale(0.98); }
-            50% { opacity: 1; transform: scale(1.02); }
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.9; }
         }
 
-        /* ==================== 🍽️ 单一主板网格布局（极致留白美学） ==================== */
+        /* ==================== 🍽️ 主网格主体布局 ==================== */
         .main-wrapper {
             max-width: 1200px; 
             margin: 0 auto; 
-            padding: 100px 20px; /* 增加上下内边距，提升呼吸感 */
+            padding: 140px 20px; /* 极大的留白高度 */
             perspective: 1200px; 
         }
 
@@ -134,31 +150,31 @@
         header { 
             text-align: left; 
             border-bottom: 1px solid var(--color-napa); 
-            padding-bottom: 30px; 
-            margin-bottom: 50px; 
+            padding-bottom: 35px; 
+            margin-bottom: 60px; 
         }
-        header h2 { font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 8px 0; letter-spacing: 2px; color: var(--color-ebony); font-weight: 400; }
-        header p { color: var(--color-domino); margin: 0; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 500; }
+        header h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 12px 0; letter-spacing: 4px; color: var(--color-ebony); font-weight: 300; }
+        header p { color: var(--color-domino); margin: 0; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; }
         
-        .nav-tabs { display: flex; justify-content: flex-start; flex-wrap: wrap; gap: 30px; margin-bottom: 50px; border-bottom: 1px solid var(--color-napa); padding-bottom: 15px; }
-        .tab-btn { background: none; border: none; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--color-domino); padding: 6px 0; transition: all 0.3s; letter-spacing: 3px; text-transform: uppercase; }
-        .tab-btn.active, .tab-btn:hover { color: var(--color-ebony); border-bottom: 2px solid var(--color-ebony); }
+        .nav-tabs { display: flex; justify-content: flex-start; flex-wrap: wrap; gap: 40px; margin-bottom: 60px; border-bottom: 1px solid var(--color-napa); padding-bottom: 15px; }
+        .tab-btn { font-family: var(--font-serif); background: none; border: none; font-size: 1rem; font-weight: 400; cursor: pointer; color: var(--color-domino); padding: 6px 0; transition: all 0.3s; letter-spacing: 3px; text-transform: uppercase; }
+        .tab-btn.active, .tab-btn:hover { color: var(--color-ebony); border-bottom: 1px solid var(--color-ebony); }
 
-        /* Bento Grid 东方板块平均分布 */
+        /* Bento Grid 板块分布 */
         .menu-section { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 35px; 
+            gap: 40px; 
         }
         
         .menu-item { 
             position: relative;
-            height: 360px; 
-            border-radius: 4px; /* 侘寂风更适合硬朗克制的微小圆角或直角 */
+            height: 380px; 
+            border-radius: 2px; /* 极致克制的微小圆角 */
             overflow: hidden;
             background-color: var(--color-napa);
             border: 1px solid var(--color-napa);
-            box-shadow: 0 10px 30px rgba(66, 57, 33, 0.08); /* 极轻柔的木质调投影 */
+            box-shadow: 0 10px 40px rgba(66, 57, 33, 0.05); 
             transform-style: preserve-3d;
             will-change: transform;
             transition: transform 0.1s ease, box-shadow 0.4s ease, border-color 0.4s ease;
@@ -166,7 +182,7 @@
         }
         
         .menu-item:hover {
-            box-shadow: 0 20px 40px rgba(66, 57, 33, 0.15);
+            box-shadow: 0 25px 50px rgba(66, 57, 33, 0.12);
             border-color: var(--color-lisbon);
         }
 
@@ -181,32 +197,31 @@
             transform: scale(1.05);
         }
 
-        /* 水墨感微透光渐变遮罩 */
         .item-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(66, 57, 33, 0.98) 20%, rgba(66, 57, 33, 0.6) 55%, rgba(66, 57, 33, 0.1) 100%);
+            background: linear-gradient(to top, rgba(66, 57, 33, 0.98) 20%, rgba(66, 57, 33, 0.5) 60%, rgba(66, 57, 33, 0.05) 100%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 25px;
+            padding: 30px;
             box-sizing: border-box;
         }
 
         .item-name { 
             font-family: var(--font-serif);
-            font-size: 1.4rem; 
-            color: var(--color-sisal); /* 在深色遮罩上使用宣纸白字 */
+            font-size: 1.5rem; 
+            color: var(--color-sisal); 
             margin-bottom: 0px;
-            font-weight: 400;
-            line-height: 1.3;
-            transition: transform 0.4s ease, color 0.4s ease;
+            font-weight: 300;
+            line-height: 1.4;
+            letter-spacing: 2px;
+            transition: transform 0.4s ease;
             transform: translateY(45px); 
         }
         
         .menu-item:hover .item-name {
             transform: translateY(0);
-            color: var(--color-sisal);
         }
 
         .item-details {
@@ -214,7 +229,7 @@
             visibility: hidden;
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
-            margin-top: 10px;
+            margin-top: 12px;
         }
 
         .menu-item:hover .item-details {
@@ -224,10 +239,11 @@
         }
 
         .item-notes { 
-            font-size: 0.8rem; 
-            color: var(--color-napa); /* 柔和暗字 */
+            font-family: var(--font-serif);
+            font-size: 0.9rem; 
+            color: var(--color-napa); 
             line-height: 1.6; 
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -236,16 +252,17 @@
         }
         
         .btn-order { 
+            font-family: var(--font-serif);
             width: 100%;
             background: var(--color-domino); 
             color: var(--color-sisal); 
             border: none; 
-            padding: 11px 0; 
-            border-radius: 2px; 
+            padding: 12px 0; 
+            border-radius: 0px; 
             cursor: pointer; 
-            font-weight: 600; 
-            font-size: 0.75rem; 
-            letter-spacing: 2px;
+            font-weight: 400; 
+            font-size: 0.85rem; 
+            letter-spacing: 3px;
             text-transform: uppercase;
             transition: all 0.2s; 
         }
@@ -255,7 +272,7 @@
         .cart-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(66, 57, 33, 0.4);
+            background: rgba(66, 57, 33, 0.3);
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
@@ -275,9 +292,9 @@
             height: 100vh;
             background: var(--color-sisal); 
             border-left: 1px solid var(--color-napa); 
-            padding: 40px 30px; 
+            padding: 50px 40px; 
             box-sizing: border-box;
-            box-shadow: -10px 0 40px rgba(66, 57, 33, 0.1); 
+            box-shadow: -10px 0 40px rgba(66, 57, 33, 0.05); 
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             display: flex;
@@ -298,7 +315,7 @@
             margin-bottom: 20px;
         }
 
-        .cart-panel h3 { font-family: var(--font-serif); color: var(--color-ebony); font-size: 1.4rem; font-weight: 400; margin: 0; letter-spacing: 1px; }
+        .cart-panel h3 { font-family: var(--font-serif); color: var(--color-ebony); font-size: 1.5rem; font-weight: 300; margin: 0; letter-spacing: 2px; }
         
         .close-cart {
             background: none;
@@ -307,25 +324,23 @@
             font-size: 1.2rem;
             cursor: pointer;
         }
-        .close-cart:hover { color: var(--color-ebony); }
 
         .cart-items { flex-grow: 1; overflow-y: auto; margin-bottom: 15px; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--color-napa); }
-        .cart-item-counter { display: flex; align-items: center; gap: 8px; }
+        .cart-item { font-family: var(--font-serif); display: flex; justify-content: space-between; align-items: center; font-size: 1rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--color-napa); }
+        .cart-item-counter { display: flex; align-items: center; gap: 10px; }
         .btn-count { background: var(--color-domino); color: var(--color-sisal); border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
         
         .cart-summary { border-top: 1px solid var(--color-napa); padding-top: 15px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;}
+        .summary-row { font-family: var(--font-serif); display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;}
         
-        /* 确认下单使用沉稳高规格的檀木黑 (#3c2005) */
-        .btn-submit-order { width: 100%; background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 15px; border-radius: 2px; font-weight: 600; font-size: 0.8rem; cursor: pointer; letter-spacing: 3px; text-transform: uppercase; margin-top: 10px; transition: opacity 0.2s; }
+        .btn-submit-order { font-family: var(--font-serif); width: 100%; background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 16px; border-radius: 0px; font-weight: 400; font-size: 0.9rem; cursor: pointer; letter-spacing: 4px; text-transform: uppercase; margin-top: 10px; transition: opacity 0.2s; }
         .btn-submit-order:hover { opacity: 0.9; }
 
         /* 右下角悬浮通知气泡 */
         .floating-cart-trigger {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 40px;
+            right: 40px;
             background: var(--color-ebony);
             color: var(--color-sisal);
             width: 60px;
@@ -336,71 +351,72 @@
             justify-content: center;
             font-size: 1.3rem;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(60, 32, 5, 0.2);
+            box-shadow: 0 10px 30px rgba(60, 32, 5, 0.15);
             z-index: 900;
             transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .floating-cart-trigger:hover {
-            transform: scale(1.08) translateY(-3px);
+            transform: scale(1.05) translateY(-3px);
         }
 
         .cart-badge {
+            font-family: var(--font-serif);
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -3px;
+            right: -3px;
             background: var(--color-domino);
             color: var(--color-sisal);
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 3px 7px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            padding: 2px 7px;
             border-radius: 10px;
             border: 2px solid var(--color-ebony);
         }
 
         /* 后台管理区 */
-        #adminSection { margin-top: 60px; padding: 40px; background: rgba(66, 57, 33, 0.03); border: 1px solid var(--color-napa); display: none; border-radius: 4px; }
-        #adminSection h3 { font-family: var(--font-serif); color: var(--color-ebony); font-weight: 400; margin-top: 0; letter-spacing: 1px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: var(--color-lisbon); text-transform: uppercase; letter-spacing: 1px;}
-        .form-group input, .form-group textarea, .form-group select { font-family: var(--font-sans); width: 100%; padding: 12px; background: var(--color-sisal); border: 1px solid var(--color-napa); color: var(--color-ebony); box-sizing: border-box; border-radius: 4px; }
+        #adminSection { margin-top: 80px; padding: 50px; background: rgba(66, 57, 33, 0.02); border: 1px solid var(--color-napa); display: none; border-radius: 0px; }
+        #adminSection h3 { font-family: var(--font-serif); color: var(--color-ebony); font-weight: 300; margin-top: 0; letter-spacing: 2px; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { font-family: var(--font-serif); display: block; margin-bottom: 8px; font-size: 0.9rem; color: var(--color-lisbon); text-transform: uppercase; letter-spacing: 2px;}
+        .form-group input, .form-group textarea, .form-group select { font-family: var(--font-serif); font-size: 1rem; width: 100%; padding: 12px; background: var(--color-sisal); border: 1px solid var(--color-napa); color: var(--color-ebony); box-sizing: border-box; border-radius: 0px; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--color-ebony); outline: none; }
         
-        .preview-container { display: flex; align-items: center; gap: 20px; margin: 15px 0; background: rgba(66, 57, 33, 0.05); padding: 15px; border-radius: 4px; border: 1px dashed var(--color-napa); flex-wrap: wrap;}
+        .preview-container { display: flex; align-items: center; gap: 20px; margin: 15px 0; background: rgba(66, 57, 33, 0.04); padding: 20px; border: 1px dashed var(--color-napa); flex-wrap: wrap;}
         .preview-img-wrap { position: relative; width: 120px; height: 120px; }
-        .preview-img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-napa); }
+        .preview-img { width: 100%; height: 100%; object-fit: cover; border-radius: 0px; border: 1px solid var(--color-napa); }
         
         #imgLinkInput { display: none; }
 
-        .btn-secondary { background: var(--color-domino); color: var(--color-sisal); border: none; padding: 11px 22px; cursor: pointer; border-radius: 4px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-right: 10px; }
+        .btn-secondary { font-family: var(--font-serif); background: var(--color-domino); color: var(--color-sisal); border: none; padding: 11px 24px; cursor: pointer; border-radius: 0px; font-weight: 400; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-right: 10px; }
         .btn-secondary:disabled { background: var(--color-napa); cursor: not-allowed; opacity: 0.8; }
 
-        .submit-btn { background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 12px 32px; cursor: pointer; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; }
+        .submit-btn { font-family: var(--font-serif); background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 12px 36px; cursor: pointer; font-weight: 400; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 0px; }
         
-        .batch-save-btn { width: 100%; background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 16px; cursor: pointer; font-weight: 600; font-size: 0.9rem; border-radius: 4px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; }
+        .batch-save-btn { font-family: var(--font-serif); width: 100%; background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 16px; cursor: pointer; font-weight: 400; font-size: 0.95rem; border-radius: 0px; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px; }
         .batch-save-btn:disabled { background: var(--color-napa); color: #888; cursor: not-allowed; }
 
-        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 14px; background: var(--color-sisal); border: 1px solid var(--color-napa); margin-bottom: 8px; border-radius: 4px; font-size: 0.85rem;}
+        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--color-sisal); border: 1px solid var(--color-napa); margin-bottom: 10px; border-radius: 0px; font-size: 0.95rem; font-family: var(--font-serif);}
         .admin-list-item.pending-delete { border-color: #a64b4b; background: #fce8e8; opacity: 0.6; }
         
         .action-group { display: flex; gap: 8px; }
-        .modify-btn { background: none; color: var(--color-domino); border: 1px solid var(--color-domino); padding: 4px 12px; cursor: pointer; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;}
-        .delete-btn { background: none; color: #a64b4b; border: 1px solid #a64b4b; padding: 4px 12px; cursor: pointer; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;}
+        .modify-btn { font-family: var(--font-serif); background: none; color: var(--color-domino); border: 1px solid var(--color-domino); padding: 4px 14px; cursor: pointer; border-radius: 0px; font-size: 0.8rem; text-transform: uppercase;}
+        .delete-btn { font-family: var(--font-serif); background: none; color: #a64b4b; border: 1px solid #a64b4b; padding: 4px 14px; cursor: pointer; border-radius: 0px; font-size: 0.8rem; text-transform: uppercase;}
         
-        .admin-toggle { text-align: center; margin-top: 80px; font-size: 0.7rem; color: var(--color-domino); cursor: pointer; transition: color 0.2s; letter-spacing: 3px;}
+        .admin-toggle { font-family: var(--font-serif); text-align: center; margin-top: 100px; font-size: 0.8rem; color: var(--color-domino); cursor: pointer; transition: color 0.2s; letter-spacing: 4px;}
         .admin-toggle:hover { color: var(--color-ebony); }
     </style>
 </head>
 <body>
 
-<!-- 🌳 全屏可点击首屏 -->
+<!-- 🌳 全屏可点击首屏（大面积意境留白与中式竖排版） -->
 <section class="hero-section" onclick="document.getElementById('orderDesk').scrollIntoView({behavior: 'smooth'});">
     <div class="hero-bg"></div>
     <div class="hero-content">
-        <div class="hero-tag">Canopy To Table</div>
-        <h1 class="hero-title">Experience cuisine inspired by <em>nature’s bounty</em>.</h1>
-        <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen. An eco-friendly digital ordering platform set deep in the heart of the sustainable rainforest.</p>
-        <div class="click-anywhere-hint">[ Click anywhere to explore the menu ]</div>
+        <div class="hero-tag">Aesthetic Playful Flavors</div>
+        <h1 class="hero-title">林间微风 · <em>物候润泽</em></h1>
+        <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen, an elite digital ordering platform redefining the art of bespoke gastronomy.</p>
+        <div class="click-anywhere-hint">[ Click anywhere to explore ]</div>
     </div>
 </section>
 
@@ -409,7 +425,7 @@
     <div class="main-content">
         <header>
             <h2>PHOEBE'S CANOPY DESK</h2>
-            <p>— Handcrafted Gastronomy Selection —</p>
+            <p>— 寻味自然 · 手制料理 —</p>
         </header>
 
         <div class="nav-tabs">
