@@ -10,13 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        /* 🎨 重新校准的高定奢华大地色盘 */
+        /* 🎨 重新校准的高定奢华·暗夜侘寂色盘 */
         :root {
-            --color-sisal: #f4f1eb;        /* 丰盈的顶级燕麦暖白（留白底色） */
-            --color-clay: #e6e1d6;         /* 灰质陶土色（轻度中性灰，用于边框和分界） */
-            --color-moss: #6e725e;         /* 迷雾苔藓绿（取代原有的暖咖，更有雨林奢华感） */
-            --color-lisbon: #2f2a1d;       /* 枯木古炭棕（极高对比度的优雅正文色） */
-            --color-ebony: #1a120b;        /* 沉寂檀木黑（核心重音、下单、高端黑） */
+            --color-sisal: #1e1a15;        /* 网页主背景：深夜古炭棕（神秘且有分量感） */
+            --color-clay: #2f2a22;         /* 灰质暗陶土（用于边框和细分界线） */
+            --color-moss: #9ca289;         /* 迷雾植物绿（暗色底下的柔和点缀色） */
+            --color-lisbon: #e6e1d6;       /* 丰盈暖白真丝色（极高阅读舒适度的正文色） */
+            --color-ebony: #f4f1eb;        /* 顶级燕麦白（用于核心标题、重音、强调色） */
             
             --font-serif: 'Cormorant Garamond', 'Playfair Display', serif;
             --font-sans: 'DM Sans', -apple-system, sans-serif;
@@ -28,8 +28,8 @@
 
         body { 
             background-color: var(--color-sisal);
-            /* 使用纯 CSS 渲染出极其微弱的陶土矿物肌理，让留白充满细节 */
-            background-image: radial-gradient(rgba(47, 42, 29, 0.03) 1px, transparent 0), radial-gradient(rgba(47, 42, 29, 0.02) 1px, transparent 0);
+            /* 暗色下的微弱矿物肌理，让暗色留白同样充满光泽 */
+            background-image: radial-gradient(rgba(244, 241, 235, 0.02) 1px, transparent 0), radial-gradient(rgba(244, 241, 235, 0.01) 1px, transparent 0);
             background-size: 24px 24px;
             background-position: 0 0, 12px 12px;
             
@@ -60,7 +60,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            /* 优化了渐变层：从深邃的檀木黑自然过渡到地面的燕麦白，营造晨雾穿透林间的效果 */
+            /* 优化了渐变层：完美隔绝复杂背景，衬托出亮色文字的质感 */
             background: linear-gradient(to bottom, rgba(26, 18, 11, 0.65) 0%, rgba(26, 18, 11, 0.3) 50%, var(--color-sisal) 100%), 
                         url('https://images.unsplash.com/photo-1447078806655-40579c2520d6?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center;
             background-size: cover;
@@ -82,7 +82,7 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 8px;
-            color: rgba(244, 241, 235, 0.8); /* 使用带有呼吸感的燕麦白 */
+            color: rgba(244, 241, 235, 0.8);
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
             margin-bottom: 25px;
             font-weight: 500;
@@ -90,30 +90,30 @@
 
         .hero-title {
             font-family: var(--font-serif);
-            font-size: 5rem; /* 放大衬线字，拉开戏剧张力 */
+            font-size: 5rem; 
             font-weight: 300;
             line-height: 1.05;
             margin: 0 0 30px 0;
             letter-spacing: -0.02em;
-            color: var(--color-sisal); /* ✨ 核心修改：改为顶级燕麦暖白，在大暗底色下对比强烈 */
-            text-shadow: 0 4px 24px rgba(26, 18, 11, 0.25); /* 极轻微的微弱暗影，防止背景复杂处穿帮 */
+            color: var(--color-ebony); 
+            text-shadow: 0 4px 24px rgba(26, 18, 11, 0.25);
         }
 
         .hero-title em {
             font-style: italic;
             font-weight: 400;
-            color: #d1ca9e; /* ✨ 核心修改：改用低饱和的“香槟淡金”，在暗色背景下画龙点睛 */
+            color: #d1ca9e; /* 半向日葵香槟金，画龙点睛 */
         }
 
         .hero-subtitle {
             font-size: 1.05rem;
             max-width: 540px;
             line-height: 1.8;
-            color: var(--color-sisal); /* ✨ 核心修改：改为暖白 */
+            color: var(--color-lisbon); 
             margin: 0 auto 50px auto;
             font-weight: 300;
             letter-spacing: 0.05em;
-            opacity: 0.8;
+            opacity: 0.85;
             text-shadow: 0 2px 15px rgba(26, 18, 11, 0.3);
         }
 
@@ -121,7 +121,7 @@
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 5px;
-            color: var(--color-clay); /* ✨ 核心修改：提示字改为柔和的灰质陶土色 */
+            color: var(--color-moss);
             font-weight: 600;
             animation: pulse 2.5s infinite ease-in-out;
             text-shadow: 0 2px 10px rgba(0,0,0,0.4);
@@ -136,12 +136,13 @@
         .main-wrapper {
             max-width: 1280px; 
             margin: 0 auto; 
-            padding: 140px 40px; /* 极端拉大上下间距，留出呼吸空间 */
+            padding: 140px 40px; 
             box-sizing: border-box;
+            background-color: var(--color-sisal);
         }
 
         header { 
-            text-align: center; /* 改为居中，更具仪式感 */
+            text-align: center; 
             border-bottom: 1px solid var(--color-clay); 
             padding-bottom: 45px; 
             margin-bottom: 60px; 
@@ -166,7 +167,7 @@
         /* 导航标签美化 */
         .nav-tabs { 
             display: flex; 
-            justify-content: center; /* 居中对齐 */
+            justify-content: center; 
             flex-wrap: wrap; 
             gap: 40px; 
             margin-bottom: 70px; 
@@ -214,24 +215,24 @@
         
         .menu-item { 
             position: relative;
-            height: 420px; /* 稍微拉长比例，更显挺拔高雅 */
-            border-radius: 0px; /* 极致的侘寂风采用纯直角，比圆角更具高定感 */
+            height: 420px; 
+            border-radius: 0px; 
             overflow: hidden;
             background-color: var(--color-clay);
-            box-shadow: 0 15px 45px rgba(47, 42, 29, 0.04); /* 极其轻柔的暗影 */
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2); 
             transition: transform 0.5s ease, box-shadow 0.5s ease;
             cursor: pointer;
         }
         
         .menu-item:hover {
-            box-shadow: 0 30px 60px rgba(47, 42, 29, 0.08);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
         }
 
         .item-bg-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(10%) contrast(95%); /* 微微降低饱和度，呈现高级冷调摄影质感 */
+            filter: grayscale(5%) contrast(95%); 
             transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
@@ -243,7 +244,7 @@
         .item-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(26, 12, 11, 0.92) 0%, rgba(26, 12, 11, 0.4) 50%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(to top, rgba(15, 12, 10, 0.95) 0%, rgba(15, 12, 10, 0.4) 55%, rgba(0,0,0,0) 100%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -254,12 +255,12 @@
         .item-name { 
             font-family: var(--font-serif);
             font-size: 1.5rem; 
-            color: var(--color-sisal); 
+            color: #f4f1eb; 
             margin-bottom: 0px;
             font-weight: 300;
             line-height: 1.4;
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(65px); /* 初始下沉更多，藏得更深 */
+            transform: translateY(65px); 
         }
         
         .menu-item:hover .item-name {
@@ -282,7 +283,7 @@
 
         .item-notes { 
             font-size: 0.8rem; 
-            color: #c9c3b5; /* 优雅的灰白字 */
+            color: #c9c3b5; 
             line-height: 1.7; 
             margin-bottom: 25px;
             display: -webkit-box;
@@ -293,11 +294,10 @@
             letter-spacing: 0.02em;
         }
         
-        /* 按钮升级：采用无边框镂空高级感 */
         .btn-order { 
             width: 100%;
             background: transparent; 
-            color: var(--color-sisal); 
+            color: #f4f1eb; 
             border: 1px solid rgba(244, 241, 235, 0.3); 
             padding: 13px 0; 
             font-weight: 500; 
@@ -307,17 +307,17 @@
             transition: all 0.3s ease; 
         }
         .btn-order:hover { 
-            background: var(--color-sisal); 
-            color: var(--color-ebony); 
-            border-color: var(--color-sisal);
+            background: #f4f1eb; 
+            color: #1a120b; 
+            border-color: #f4f1eb;
         }
 
         /* ==================== 🛒 SIDE CART 奢华侧滑面板 ==================== */
         .cart-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(26, 12, 11, 0.3);
-            backdrop-filter: blur(8px); /* 增加高级微模糊背景 */
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px); 
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
@@ -333,13 +333,13 @@
             position: fixed;
             top: 0;
             right: 0;
-            width: 420px; /* 稍微加宽，避免文字局促 */
+            width: 420px; 
             height: 100vh;
-            background: var(--color-sisal); 
+            background: #231f1a; /* 同步调暗：高级夜幕炭黑面板 */
             border-left: 1px solid var(--color-clay); 
             padding: 50px 40px; 
             box-sizing: border-box;
-            box-shadow: -20px 0 60px rgba(26, 12, 11, 0.05); 
+            box-shadow: -20px 0 60px rgba(0, 0, 0, 0.4); 
             transform: translateX(100%);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
@@ -398,10 +398,10 @@
         .btn-submit-order { 
             width: 100%; 
             background: var(--color-ebony); 
-            color: var(--color-sisal); 
+            color: #1a120b; 
             border: none; 
             padding: 18px; 
-            font-weight: 500; 
+            font-weight: 600; 
             font-size: 0.75rem; 
             cursor: pointer; 
             letter-spacing: 4px; 
@@ -409,7 +409,7 @@
             margin-top: 10px; 
             transition: background 0.3s; 
         }
-        .btn-submit-order:hover { background: #332517; }
+        .btn-submit-order:hover { background: #e6e1d6; }
 
         /* 悬浮购物车圆形气泡 */
         .floating-cart-trigger {
@@ -417,7 +417,7 @@
             bottom: 40px;
             right: 40px;
             background: var(--color-ebony);
-            color: var(--color-sisal);
+            color: #1a120b;
             width: 56px;
             height: 56px;
             border-radius: 50%;
@@ -426,7 +426,7 @@
             justify-content: center;
             font-size: 1.1rem;
             cursor: pointer;
-            box-shadow: 0 15px 35px rgba(26, 12, 11, 0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             z-index: 900;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -445,14 +445,14 @@
             font-weight: 600;
             padding: 3px 7px;
             border-radius: 10px;
-            border: 2px solid var(--color-ebony);
+            border: 2px solid var(--color-sisal);
         }
 
         /* ==================== 🔑 DESIGNER DASHBOARD 后台视觉重塑 ==================== */
         #adminSection { 
             margin-top: 140px; 
             padding: 60px 50px; 
-            background: rgba(110, 114, 94, 0.02); /* 极其轻透的苔藓绿微调，呼应雨林 */
+            background: rgba(156, 162, 137, 0.03); 
             border: 1px solid var(--color-clay); 
             display: none; 
         }
@@ -466,7 +466,6 @@
             letter-spacing: 3px; 
         }
         .form-group { margin-bottom: 30px; }
-        /* 统一标签字体：全面同步人文克制无衬线，拉大字距 */
         .form-group label { 
             display: block; 
             margin-bottom: 12px; 
@@ -477,7 +476,6 @@
             letter-spacing: 3px;
             font-weight: 500;
         }
-        /* 重塑输入框与选择框：注入无衬线呼吸感，去除生硬感 */
         .form-group input, .form-group textarea, .form-group select { 
             font-family: var(--font-sans); 
             font-size: 0.85rem;
@@ -485,35 +483,32 @@
             font-weight: 300;
             width: 100%; 
             padding: 16px; 
-            background: rgba(230, 225, 214, 0.2); /* 陶土色微弱半透明底，增加沉淀感 */
+            background: rgba(47, 42, 34, 0.4); 
             border: 1px solid var(--color-clay); 
             color: var(--color-ebony); 
             box-sizing: border-box; 
             transition: all 0.4s ease; 
-            border-radius: 0px; /* 坚持纯直角高定风 */
+            border-radius: 0px; 
         }
-        /* 输入框聚焦态 */
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { 
             border-color: var(--color-moss); 
             background: transparent;
             outline: none; 
-            box-shadow: 0 5px 15px rgba(110, 114, 94, 0.05);
+            box-shadow: 0 5px 15px rgba(156, 162, 137, 0.1);
         }
-        /* 更改 placeholder 字体质感 */
         .form-group input::placeholder, .form-group textarea::placeholder {
             font-family: var(--font-sans);
             font-weight: 300;
-            color: #b0aa9e;
+            color: #7a7469;
             font-size: 0.8rem;
         }
         
-        .preview-container { display: flex; align-items: center; gap: 30px; margin: 25px 0; background: rgba(47, 42, 29, 0.01); padding: 25px; border: 1px dashed var(--color-clay); flex-wrap: wrap;}
+        .preview-container { display: flex; align-items: center; gap: 30px; margin: 25px 0; background: rgba(0, 0, 0, 0.2); padding: 25px; border: 1px dashed var(--color-clay); flex-wrap: wrap;}
         .preview-img-wrap { position: relative; width: 110px; height: 110px; }
         .preview-img { width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--color-clay); }
         
         #imgLinkInput { display: none; }
 
-        /* 按钮与控制系统的字体适配 */
         .btn-secondary { 
             background: var(--color-moss); 
             color: var(--color-sisal); 
@@ -527,42 +522,41 @@
             letter-spacing: 3px; 
             transition: all 0.3s ease; 
         }
-        .btn-secondary:disabled { background: var(--color-clay); color: #999; cursor: not-allowed; }
+        .btn-secondary:disabled { background: var(--color-clay); color: #666; cursor: not-allowed; }
         .btn-secondary:hover { opacity: 0.9; letter-spacing: 4px; }
 
         .submit-btn { 
             background: var(--color-ebony); 
-            color: var(--color-sisal); 
+            color: #1a120b; 
             border: none; 
             padding: 16px 45px; 
             cursor: pointer; 
             font-family: var(--font-sans);
-            font-weight: 500; 
+            font-weight: 600; 
             font-size: 0.7rem; 
             text-transform: uppercase; 
             letter-spacing: 3px; 
             transition: all 0.3s ease;
         }
-        .submit-btn:hover { background: #332517; letter-spacing: 4px; }
+        .submit-btn:hover { background: #e6e1d6; letter-spacing: 4px; }
         
         .batch-save-btn { 
             width: 100%; 
             background: var(--color-ebony); 
-            color: var(--color-sisal); 
+            color: #1a120b; 
             border: none; 
             padding: 20px; 
             cursor: pointer; 
             font-family: var(--font-sans);
-            font-weight: 500; 
+            font-weight: 600; 
             font-size: 0.75rem; 
             letter-spacing: 4px; 
             text-transform: uppercase; 
             margin-top: 35px; 
             transition: all 0.3s ease;
         }
-        .batch-save-btn:disabled { background: var(--color-clay); color: #aaa; cursor: not-allowed; letter-spacing: 4px; }
+        .batch-save-btn:disabled { background: var(--color-clay); color: #666; cursor: not-allowed; letter-spacing: 4px; }
 
-        /* 后台列表字体优雅化 */
         .admin-list-item { 
             display: flex; 
             justify-content: space-between; 
@@ -575,7 +569,7 @@
             letter-spacing: 0.02em;
             font-weight: 300;
         }
-        .admin-list-item.pending-delete { border-color: #a64b4b; background: rgba(166, 75, 75, 0.02); opacity: 0.5; }
+        .admin-list-item.pending-delete { border-color: #a64b4b; background: rgba(166, 75, 75, 0.05); opacity: 0.5; }
         
         .action-group { display: flex; gap: 12px; }
         .modify-btn, .delete-btn { 
@@ -623,7 +617,7 @@
     <div class="hero-bg"></div>
     <div class="hero-content">
         <div class="hero-tag">Aesthetic Playful Flavors</div>
-        <!-- 已更新：高诗意度与顶奢电影感标语 -->
+        <!-- 意境诗意升级，主次高光分明 -->
         <h1 class="hero-title">Where the wild forest meets <em>refined gastronomy</em>.</h1>
         <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen, an elite digital ordering platform redefining the art of bespoke gastronomy.</p>
         <div class="click-anywhere-hint">[ Click anywhere to explore the menu ]</div>
@@ -649,7 +643,7 @@
         <div class="menu-section" id="menuContainer"></div>
     </div>
 
-    <div class="admin-toggle" onclick="handleAdminClick()">🤍</div>
+    <div class="admin-toggle" onclick="handleAdminClick()">♥︎</div>
 
     <!-- 录入管理区 -->
     <div id="adminSection">
@@ -736,7 +730,7 @@
 </div>
 
 <script>
-    // 云端基础菜单数组（每次 Sync 成功，GitHub 都会覆盖重写该数组）
+    // 云端基础菜单数组（每次 Sync 成功，GitHub 都会全自动覆盖改写该数组）
     let defaultRecipes = [
         { id: 1, name: "Amazon Canopy Berry Crepe", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream." },
         { id: 2, name: "Wood-Fired Rainforest Steak", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs." },
@@ -744,7 +738,7 @@
         { id: 4, name: "Iced Smoked Botanical Latte", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk." }
     ];
 
-    // 💡 云端优先核心逻辑：如果本地没有刚修改的、未同步的临时脏数据，一律以云端最新的代码为准！
+    // 💡 智能云端优先机制：本地未同步脏数据缓存拦截器
     let isEditingLocally = localStorage.getItem('my_recipes_dirty') === 'true';
     let recipes = (isEditingLocally && JSON.parse(localStorage.getItem('my_recipes'))) || defaultRecipes;
 
@@ -1019,7 +1013,7 @@
         changesCount++;
         resetForm();
         
-        // 激活临时脏数据保存，确保未上传前本地设备预览不丢失
+        // 激活本地临时数据并上色 dirty 标记
         localStorage.setItem('my_recipes', JSON.stringify(recipes));
         localStorage.setItem('my_recipes_dirty', 'true');
 
@@ -1080,7 +1074,6 @@
         if (index > -1) pendingDeleteIds.splice(index, 1);
         else pendingDeleteIds.push(id);
         
-        // 标记脏数据，预览删除后的效果
         localStorage.setItem('my_recipes_dirty', 'true');
         renderAdminList();
     }
@@ -1146,7 +1139,7 @@
                     pendingDeleteIds = [];
                     changesCount = 0;
                     
-                    // ✨ 核心清流：云端写入成功！擦除两端设备本地的肮脏缓存，强迫下一次直接读取最新的云端代码
+                    // ✨ 核心清流：云端写入成功！抹除设备本地沙盒，下次直接抓取最新云端代码
                     localStorage.removeItem('my_recipes_dirty');
                     localStorage.removeItem('my_recipes');
                     
