@@ -6,17 +6,17 @@
     <title>PHOEBE'S CANOPY | Sustainable Rainforest Kitchen</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- 引入了更高规格的 Cormorant Garamond (高级定制感衬线) 和 DM Sans (人文克制无衬线) -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         /* 🎨 重新校准的高定奢华·暗夜侘寂色盘 */
         :root {
-            --color-sisal: #1e1a15;        /* 网页主背景：深夜古炭棕（神秘且有分量感） */
-            --color-clay: #2f2a22;         /* 灰质暗陶土（用于边框和细分界线） */
-            --color-moss: #9ca289;         /* 迷雾植物绿（暗色底下的柔和点缀色） */
-            --color-lisbon: #e6e1d6;       /* 丰盈暖白真丝色（极高阅读舒适度的正文色） */
-            --color-ebony: #f4f1eb;        /* 顶级燕麦白（用于核心标题、重音、强调色） */
+            --color-sisal: #1e1a15;        /* 网页主背景：深夜古炭棕 */
+            --color-clay: #2f2a22;         /* 灰质暗陶土 */
+            --color-moss: #9ca289;         /* 迷雾植物绿 */
+            --color-lisbon: #e6e1d6;       /* 丰盈暖白真丝色 */
+            --color-ebony: #f4f1eb;        /* 顶级燕麦白 */
+            --color-gold: #d1ca9e;         /* 向日葵香槟金 */
             
             --font-serif: 'Cormorant Garamond', 'Playfair Display', serif;
             --font-sans: 'DM Sans', -apple-system, sans-serif;
@@ -28,7 +28,6 @@
 
         body { 
             background-color: var(--color-sisal);
-            /* 暗色下的微弱矿物肌理，让暗色留白同样充满光泽 */
             background-image: radial-gradient(rgba(244, 241, 235, 0.02) 1px, transparent 0), radial-gradient(rgba(244, 241, 235, 0.01) 1px, transparent 0);
             background-size: 24px 24px;
             background-position: 0 0, 12px 12px;
@@ -39,6 +38,16 @@
             padding: 0;
             letter-spacing: 0.03em;
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* 中文辅助样式优化：使其内敛不突兀 */
+        .zh-sub {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: var(--color-moss);
+            margin-top: 4px;
         }
 
         /* ==================== 🌳 HERO SECTION 电影感首屏 ==================== */
@@ -60,7 +69,6 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            /* 优化了渐变层：完美隔绝复杂背景，衬托出亮色文字的质感 */
             background: linear-gradient(to bottom, rgba(26, 18, 11, 0.65) 0%, rgba(26, 18, 11, 0.3) 50%, var(--color-sisal) 100%), 
                         url('https://images.unsplash.com/photo-1447078806655-40579c2520d6?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center;
             background-size: cover;
@@ -83,38 +91,35 @@
             text-transform: uppercase;
             letter-spacing: 8px;
             color: rgba(244, 241, 235, 0.8);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
             margin-bottom: 25px;
             font-weight: 500;
         }
 
         .hero-title {
             font-family: var(--font-serif);
-            font-size: 5rem; 
+            font-size: 4.5rem; 
             font-weight: 300;
-            line-height: 1.05;
+            line-height: 1.1;
             margin: 0 0 30px 0;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.01em;
             color: var(--color-ebony); 
-            text-shadow: 0 4px 24px rgba(26, 18, 11, 0.25);
         }
 
         .hero-title em {
             font-style: italic;
             font-weight: 400;
-            color: #d1ca9e; /* 半向日葵香槟金，画龙点睛 */
+            color: var(--color-gold); 
         }
 
         .hero-subtitle {
             font-size: 1.05rem;
-            max-width: 540px;
+            max-width: 600px;
             line-height: 1.8;
             color: var(--color-lisbon); 
             margin: 0 auto 50px auto;
             font-weight: 300;
             letter-spacing: 0.05em;
             opacity: 0.85;
-            text-shadow: 0 2px 15px rgba(26, 18, 11, 0.3);
         }
 
         .click-anywhere-hint {
@@ -124,7 +129,6 @@
             color: var(--color-moss);
             font-weight: 600;
             animation: pulse 2.5s infinite ease-in-out;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
 
         @keyframes pulse {
@@ -164,7 +168,6 @@
             font-weight: 500; 
         }
         
-        /* 导航标签美化 */
         .nav-tabs { 
             display: flex; 
             justify-content: center; 
@@ -184,9 +187,17 @@
             color: var(--color-moss); 
             padding: 8px 0; 
             transition: all 0.4s ease; 
-            letter-spacing: 4px; 
+            letter-spacing: 3px; 
             text-transform: uppercase; 
             position: relative;
+            text-align: center;
+        }
+        .tab-btn .zh-tab {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            margin-top: 2px;
+            opacity: 0.7;
         }
         .tab-btn::after {
             content: '';
@@ -206,7 +217,7 @@
             width: 100%;
         }
 
-        /* Bento Grid 意境板块网格布局 */
+        /* Bento Grid 网格布局 */
         .menu-section { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -215,7 +226,7 @@
         
         .menu-item { 
             position: relative;
-            height: 420px; 
+            height: 440px; 
             border-radius: 0px; 
             overflow: hidden;
             background-color: var(--color-clay);
@@ -240,11 +251,10 @@
             transform: scale(1.04);
         }
 
-        /* 极简雾感渐变遮罩 */
         .item-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(15, 12, 10, 0.95) 0%, rgba(15, 12, 10, 0.4) 55%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(to top, rgba(15, 12, 10, 0.98) 0%, rgba(15, 12, 10, 0.5) 55%, rgba(0,0,0,0) 100%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -254,13 +264,13 @@
 
         .item-name { 
             font-family: var(--font-serif);
-            font-size: 1.5rem; 
+            font-size: 1.4rem; 
             color: #f4f1eb; 
             margin-bottom: 0px;
             font-weight: 300;
-            line-height: 1.4;
+            line-height: 1.3;
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(65px); 
+            transform: translateY(85px); 
         }
         
         .menu-item:hover .item-name {
@@ -272,7 +282,7 @@
             visibility: hidden;
             transform: translateY(25px);
             transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
-            margin-top: 15px;
+            margin-top: 12px;
         }
 
         .menu-item:hover .item-details {
@@ -284,10 +294,10 @@
         .item-notes { 
             font-size: 0.8rem; 
             color: #c9c3b5; 
-            line-height: 1.7; 
-            margin-bottom: 25px;
+            line-height: 1.6; 
+            margin-bottom: 20px;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
             font-weight: 300;
@@ -312,7 +322,7 @@
             border-color: #f4f1eb;
         }
 
-        /* ==================== 🛒 SIDE CART 奢华侧滑面板 ==================== */
+        /* ==================== 🛒 SIDE CART 侧滑面板 ==================== */
         .cart-overlay {
             position: fixed;
             inset: 0;
@@ -335,7 +345,7 @@
             right: 0;
             width: 420px; 
             height: 100vh;
-            background: #231f1a; /* 同步调暗：高级夜幕炭黑面板 */
+            background: #231f1a; 
             border-left: 1px solid var(--color-clay); 
             padding: 50px 40px; 
             box-sizing: border-box;
@@ -411,7 +421,6 @@
         }
         .btn-submit-order:hover { background: #e6e1d6; }
 
-        /* 悬浮购物车圆形气泡 */
         .floating-cart-trigger {
             position: fixed;
             bottom: 40px;
@@ -456,13 +465,18 @@
             border: 1px solid var(--color-clay); 
             display: none; 
         }
+        .admin-header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 35px;
+        }
         #adminSection h3 { 
             font-family: var(--font-serif); 
             color: var(--color-ebony); 
             font-size: 1.8rem;
             font-weight: 300; 
-            margin-top: 0; 
-            margin-bottom: 35px;
+            margin: 0;
             letter-spacing: 3px; 
         }
         .form-group { margin-bottom: 30px; }
@@ -470,10 +484,10 @@
             display: block; 
             margin-bottom: 12px; 
             font-family: var(--font-sans);
-            font-size: 0.7rem; 
+            font-size: 0.75rem; 
             color: var(--color-moss); 
             text-transform: uppercase; 
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             font-weight: 500;
         }
         .form-group input, .form-group textarea, .form-group select { 
@@ -496,15 +510,9 @@
             outline: none; 
             box-shadow: 0 5px 15px rgba(156, 162, 137, 0.1);
         }
-        .form-group input::placeholder, .form-group textarea::placeholder {
-            font-family: var(--font-sans);
-            font-weight: 300;
-            color: #7a7469;
-            font-size: 0.8rem;
-        }
         
         .preview-container { display: flex; align-items: center; gap: 30px; margin: 25px 0; background: rgba(0, 0, 0, 0.2); padding: 25px; border: 1px dashed var(--color-clay); flex-wrap: wrap;}
-        .preview-img-wrap { position: relative; width: 110px; height: 110px; }
+        .preview-img-wrap { position: relative; width: 110px; height: 110px; background: #15120e; }
         .preview-img { width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--color-clay); }
         
         #imgLinkInput { display: none; }
@@ -523,7 +531,23 @@
             transition: all 0.3s ease; 
         }
         .btn-secondary:disabled { background: var(--color-clay); color: #666; cursor: not-allowed; }
-        .btn-secondary:hover { opacity: 0.9; letter-spacing: 4px; }
+        .btn-secondary:hover { opacity: 0.9; }
+
+        /* 新增：确认状态专属按钮样式 */
+        .btn-confirm-artwork {
+            background: #6e8467;
+            color: #f4f1eb;
+            border: none;
+            padding: 14px 28px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        .btn-confirm-artwork:hover { background: #859d7c; }
+        .btn-confirm-artwork.locked { background: #434f3f; color: #8fa38b; cursor: not-allowed; }
 
         .submit-btn { 
             background: var(--color-ebony); 
@@ -538,7 +562,8 @@
             letter-spacing: 3px; 
             transition: all 0.3s ease;
         }
-        .submit-btn:hover { background: #e6e1d6; letter-spacing: 4px; }
+        .submit-btn:hover { background: #e6e1d6; }
+        .submit-btn:disabled { background: var(--color-clay); color: #777; cursor: not-allowed; }
         
         .batch-save-btn { 
             width: 100%; 
@@ -555,7 +580,7 @@
             margin-top: 35px; 
             transition: all 0.3s ease;
         }
-        .batch-save-btn:disabled { background: var(--color-clay); color: #666; cursor: not-allowed; letter-spacing: 4px; }
+        .batch-save-btn:disabled { background: var(--color-clay); color: #666; cursor: not-allowed; }
 
         .admin-list-item { 
             display: flex; 
@@ -572,7 +597,7 @@
         .admin-list-item.pending-delete { border-color: #a64b4b; background: rgba(166, 75, 75, 0.05); opacity: 0.5; }
         
         .action-group { display: flex; gap: 12px; }
-        .modify-btn, .delete-btn { 
+        .modify-btn, .delete-btn, .exit-btn { 
             background: none; 
             font-family: var(--font-sans);
             font-weight: 500;
@@ -588,9 +613,17 @@
         .delete-btn { color: #a64b4b; border: 1px solid rgba(166, 75, 75, 0.3); }
         .delete-btn:hover { background: #a64b4b; color: #fff; }
         
+        .exit-btn { color: var(--color-lisbon); border: 1px solid var(--color-clay); }
+        .exit-btn:hover { background: var(--color-clay); color: var(--color-ebony); }
+
+        .admin-toggle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 140px;
+        }
         .admin-toggle { 
-            text-align: center; 
-            margin-top: 140px; 
             font-family: var(--font-sans);
             font-size: 0.65rem; 
             color: var(--color-moss); 
@@ -598,14 +631,13 @@
             transition: all 0.4s ease; 
             letter-spacing: 5px;
         }
-        .admin-toggle:hover { color: var(--color-ebony); letter-spacing: 6px; }
+        .admin-toggle:hover { color: var(--color-ebony); }
 
-        /* 手机端深度响应式微调 */
         @media (max-width: 768px) {
-            .hero-title { font-size: 3rem; }
+            .hero-title { font-size: 2.6rem; }
             .main-wrapper { padding: 80px 20px; }
-            header h2 { font-size: 2rem; }
-            .nav-tabs { gap: 20px; margin-bottom: 40px; }
+            header h2 { font-size: 1.8rem; }
+            .nav-tabs { gap: 15px; margin-bottom: 40px; }
             .cart-panel { width: 100%; padding: 30px 20px; }
         }
     </style>
@@ -617,10 +649,9 @@
     <div class="hero-bg"></div>
     <div class="hero-content">
         <div class="hero-tag">Aesthetic Playful Flavors</div>
-        <!-- 意境诗意升级，主次高光分明 -->
-        <h1 class="hero-title">Where the wild forest meets <em>refined gastronomy</em>.</h1>
-        <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen, an elite digital ordering platform redefining the art of bespoke gastronomy.</p>
-        <div class="click-anywhere-hint">[ Click anywhere to explore the menu ]</div>
+        <h1 class="hero-title">Where the wild forest meets <em>refined gastronomy</em>.<span class="zh-sub">当蛮荒雨林遇见高定料理艺术</span></h1>
+        <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen, an elite digital ordering platform redefining the art of bespoke gastronomy.<br><span style="font-size:0.9rem; opacity:0.7;">欢迎步入菲比私厨空间，重塑私享料理艺术的数字化餐台。</span></p>
+        <div class="click-anywhere-hint">[ Click anywhere to explore the menu / 点击此处探索菜单 ]</div>
     </div>
 </section>
 
@@ -629,74 +660,84 @@
     <div class="main-content">
         <header>
             <h2>PHOEBE'S EDIBLE ART</h2>
-            <p>— Handcrafted Gastronomy Selection —</p>
+            <p>— Handcrafted Gastronomy Selection · 菲比的可食艺术 —</p>
         </header>
 
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="filterMenu('all')">ALL DISHES</button>
-            <button class="tab-btn" onclick="filterMenu('Appetizers')">APPETIZERS</button>
-            <button class="tab-btn" onclick="filterMenu('Main Course')">MAIN COURSE</button>
-            <button class="tab-btn" onclick="filterMenu('Bakery')">BAKERY & SWEETS</button>
-            <button class="tab-btn" onclick="filterMenu('Botanical Cafe')">BOTANICAL CAFE</button>
+            <button class="tab-btn active" onclick="filterMenu('all')">ALL DISHES<span class="zh-tab">全部餐点</span></button>
+            <button class="tab-btn" onclick="filterMenu('Appetizers')">APPETIZERS<span class="zh-tab">前菜珍馐</span></button>
+            <button class="tab-btn" onclick="filterMenu('Main Course')">MAIN COURSE<span class="zh-tab">雨林主菜</span></button>
+            <button class="tab-btn" onclick="filterMenu('Bakery')">BAKERY & SWEETS<span class="zh-tab">烘焙甜点</span></button>
+            <button class="tab-btn" onclick="filterMenu('Botanical Cafe')">BOTANICAL CAFE<span class="zh-tab">植物咖啡</span></button>
         </div>
 
         <div class="menu-section" id="menuContainer"></div>
     </div>
 
-    <div class="admin-toggle" onclick="handleAdminClick()">♥︎</div>
+    <!-- 底部触发区：增加退出按钮 -->
+    <div class="admin-toggle-container">
+        <div class="admin-toggle" onclick="handleAdminClick()">♥︎</div>
+        <div class="admin-toggle" id="quickExitBtn" style="display:none; cursor:pointer;" onclick="closeAdminDashboard()">[ EXIT DASHBOARD / 退出管理面板 ]</div>
+    </div>
 
     <!-- 录入管理区 -->
     <div id="adminSection">
-        <h3>🔑 GLOBAL CONFIGURATION</h3>
+        <div class="admin-header-box">
+            <h3>🔑 GLOBAL CONFIGURATION <span class="zh-sub">全局密钥云端配置</span></h3>
+            <button class="exit-btn" onclick="closeAdminDashboard()">✕ Exit Dashboard / 退出</button>
+        </div>
+        
         <div class="form-group"><label>GitHub Token:</label><input type="password" id="ghToken" placeholder="github_pat_..."></div>
-        <div class="form-group"><label>GitHub User:</label><input type="text" id="ghUser" placeholder="username"></div>
-        <div class="form-group"><label>Repository Name:</label><input type="text" id="ghRepo" placeholder="repo-name"></div>
+        <div class="form-group"><label>GitHub User / 账户名:</label><input type="text" id="ghUser" placeholder="username"></div>
+        <div class="form-group"><label>Repository Name / 仓库名:</label><input type="text" id="ghRepo" placeholder="repo-name"></div>
         
         <hr style="border:0; border-top: 1px solid var(--color-clay); margin: 35px 0;">
         
-        <h3 id="formModeTitle">🍳 CREATE / MODIFY DISH</h3>
+        <h3 id="formModeTitle">🍳 CREATE / MODIFY DISH <span class="zh-sub">单品料理创作与修正</span></h3>
         <input type="hidden" id="editingRecipeId" value="">
         
-        <div class="form-group"><label>Dish Name:</label><input type="text" id="foodName" placeholder="e.g., Rainforest Berry Crepe Tower"></div>
+        <div class="form-group"><label>Dish Name / 菜品名称 (中英双语):</label><input type="text" id="foodName" placeholder="e.g., Rainforest Berry Crepe Tower | 雨林莓果千层塔"></div>
         <div class="form-group">
-            <label>Category:</label>
+            <label>Category / 划分类别:</label>
             <select id="foodCategory">
-                <option value="Appetizers">Appetizers</option>
-                <option value="Main Course">Main Course</option>
-                <option value="Bakery">Bakery & Sweets</option>
-                <option value="Botanical Cafe">Botanical Cafe</option>
+                <option value="Appetizers">Appetizers | 前菜珍馐</option>
+                <option value="Main Course">Main Course | 雨林主菜</option>
+                <option value="Bakery">Bakery & Sweets | 烘焙甜点</option>
+                <option value="Botanical Cafe">Botanical Cafe | 植物咖啡</option>
             </select>
         </div>
-        <div class="form-group"><label>Chef's Culinary Notes:</label><textarea id="foodNotes" rows="3" placeholder="Describe the ingredients, amazon herbs..."></textarea></div>
+        <div class="form-group"><label>Chef's Culinary Notes / 主厨赏味私札 (中英双语):</label><textarea id="foodNotes" rows="3" placeholder="Describe the organic ingredients... | 叙述食材的雨林风味脉络..."></textarea></div>
         
         <div class="form-group">
-            <label>Dish Image:</label>
-            <button class="tab-btn active" id="tabAiMode" onclick="toggleImageMode('ai')">Generate with AI</button>
-            <button class="tab-btn" id="tabLinkMode" onclick="toggleImageMode('link')">Paste Image Link</button>
+            <label>Dish Image / 视觉载入方案:</label>
+            <button class="tab-btn active" id="tabAiMode" onclick="toggleImageMode('ai')">Generate with AI<span class="zh-tab">智能AI生成</span></button>
+            <button class="tab-btn" id="tabLinkMode" onclick="toggleImageMode('link')">Paste Image Link<span class="zh-tab">外部静态链接</span></button>
             
             <div id="imgLinkInput" class="form-group" style="margin-top:15px;">
                 <input type="text" id="foodImgLink" placeholder="https://image-url.com/photo.jpg" oninput="previewExternalLink(this.value)">
             </div>
         </div>
 
+        <!-- 优化后的预览机制沙盒 -->
         <div class="preview-container" id="aiPreviewBox" style="display:none;">
             <div class="preview-img-wrap">
                 <img class="preview-img" id="previewImgElement" src="" alt="Culinary Artwork" onerror="handleImageError()">
             </div>
             <div>
-                <p id="aiStatusText" style="margin:0 0 10px 0; font-family: var(--font-sans); font-size:0.85rem; color:var(--color-ebony);">✨ AI Chef Canvas Ready.</p>
-                <button class="btn-secondary" id="aiGenerateBtn" onclick="generateAiImage()">Summon AI Illustrator</button>
-                <button class="modify-btn" id="aiRegenerateBtn" onclick="generateAiImage()" style="display:none;">🔄 Repaint</button>
+                <p id="aiStatusText" style="margin:0 0 10px 0; font-family: var(--font-sans); font-size:0.85rem; color:var(--color-ebony);">✨ AI Chef Canvas Ready. / AI 画布就绪。</p>
+                <button class="btn-secondary" id="aiGenerateBtn" onclick="generateAiImage()">Summon AI Illustrator / 呼唤AI作画</button>
+                <button class="modify-btn" id="aiRegenerateBtn" onclick="generateAiImage()" style="display:none;">🔄 Repaint / 重新绘制</button>
+                <button class="btn-confirm-artwork" id="aiConfirmBtn" onclick="confirmArtworkImage()" style="display:none;">✓ Confirm Image / 确认采用此图片</button>
             </div>
         </div>
 
-        <div style="margin-top: 20px;">
-            <button class="submit-btn" id="submitFormBtn" onclick="saveFormToRecipes()">🚀 Save to Local Inventory</button>
-            <button class="btn-secondary" id="cancelEditBtn" onclick="resetForm()" style="display:none; background:#a64b4b; color: #fff;">Cancel Edit</button>
+        <div style="margin-top: 30px;">
+            <button class="submit-btn" id="submitFormBtn" onclick="saveFormToRecipes()">🚀 Save to Local Inventory / 暂存至本地盘点</button>
+            <button class="btn-secondary" id="cancelEditBtn" onclick="resetForm()" style="display:none; background:#a64b4b; color: #fff; margin-left:10px;">Cancel Edit / 取消修改</button>
         </div>
 
         <hr style="border:0; border-top: 1px solid var(--color-clay); margin: 40px 0;">
-        <h3>🗑️ SYSTEM INVENTORY & BATCH CONTROL</h3>
+        <h3>🗑️ SYSTEM INVENTORY & BATCH CONTROL <span class="zh-sub">现有仓储清单与资产纳管</span></h3>
         <div id="adminRecipeList"></div>
         <button class="batch-save-btn" id="batchSaveBtn" onclick="pushToGithub()" disabled>💾 Sync to GitHub Cloud (0 changes)</button>
     </div>
@@ -712,39 +753,37 @@
     <div class="cart-panel" onclick="event.stopPropagation()">
         <div style="display: flex; flex-direction: column; flex-grow: 1;">
             <div class="cart-header">
-                <h3>YOUR CART</h3>
+                <h3>YOUR CART <span class="zh-sub" style="margin-top:2px;">餐台选品清单</span></h3>
                 <button class="close-cart" onclick="toggleCartDrawer(false)">✕</button>
             </div>
-            <div class="cart-items" id="cartItemsContainer">
-                <p style="color:var(--color-moss); font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty. Select culinary delights...</p>
-            </div>
+            <div class="cart-items" id="cartItemsContainer"></div>
         </div>
         <div class="cart-summary">
             <div class="summary-row">
-                <span>Total Items:</span>
+                <span>Total Items / 选品总计:</span>
                 <span id="totalCount" style="font-weight: 600; color: var(--color-ebony);">0</span>
             </div>
-            <button class="btn-submit-order" onclick="placeOrder()">🔔 PLACE ORDER NOW</button>
+            <button class="btn-submit-order" onclick="placeOrder()">🔔 PLACE ORDER NOW / 确认送入后厨</button>
         </div>
     </div>
 </div>
 
 <script>
-    // 云端基础菜单数组（每次 Sync 成功，GitHub 都会全自动覆盖改写该数组）
+    // 云端菜单数组
     let defaultRecipes = [
-        { id: 1, name: "Amazon Canopy Berry Crepe", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream." },
-        { id: 2, name: "Wood-Fired Rainforest Steak", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs." },
-        { id: 3, name: "Wild Botanical Green Salad", category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle." },
-        { id: 4, name: "Iced Smoked Botanical Latte", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk." }
+        { id: 1, name: "Amazon Canopy Berry Crepe | 雨林莓果千层", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream.<br>手作野生浆果千层，蕴含亚马逊香草荚独有的丰盈乳香。" },
+        { id: 2, name: "Wood-Fired Rainforest Steak | 炙烤雨林沙朗", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs.<br>原产地生态肉源，辅以林间现采迷迭香与原野密植草本的炭火慢熏。" },
+        { id: 3, name: "Wild Botanical Green Salad | 苍翠原生态沙拉", category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle.<br>饱含蕨类树影灵感的微生嫩苗，配有机牛油果及冷压雨林种籽油。 " },
+        { id: 4, name: "Iced Smoked Botanical Latte | 烟熏烟幕植物拿铁", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk.<br>山核桃木屑冷熏的慢滴有机浓缩，交融本地专属燕麦植物乳。" }
     ];
 
-    // 💡 智能云端优先机制：本地未同步脏数据缓存拦截器
     let isEditingLocally = localStorage.getItem('my_recipes_dirty') === 'true';
     let recipes = (isEditingLocally && JSON.parse(localStorage.getItem('my_recipes'))) || defaultRecipes;
 
     let cart = {};
     let pendingDeleteIds = [];
     let currentTempImageUrl = "";
+    let isArtworkConfirmed = false; // 控制图片确认锁
     let changesCount = 0;
     let currentImageInputMode = 'ai';
 
@@ -760,6 +799,8 @@
         const aiBox = document.getElementById('aiPreviewBox');
         const tabAi = document.getElementById('tabAiMode');
         const tabLink = document.getElementById('tabLinkMode');
+        const confirmBtn = document.getElementById('aiConfirmBtn');
+        const submitFormBtn = document.getElementById('submitFormBtn');
         
         tabAi.classList.remove('active');
         tabLink.classList.remove('active');
@@ -770,22 +811,32 @@
             aiBox.style.display = 'flex'; 
             document.getElementById('aiGenerateBtn').style.display = 'none';
             document.getElementById('aiRegenerateBtn').style.display = 'none';
-            document.getElementById('aiStatusText').innerText = '🖼️ Previews External Link.';
+            confirmBtn.style.display = 'none';
+            submitFormBtn.disabled = false; // 链接模式无需确认按钮锁
+            document.getElementById('aiStatusText').innerText = '🖼️ Previewing External Link. / 正在预览外部链接图源。';
         } else {
             tabAi.classList.add('active');
             linkInput.style.display = 'none';
+            
             if (!currentTempImageUrl || !currentTempImageUrl.includes('pollinations')) {
                 aiBox.style.display = 'none';
                 currentTempImageUrl = '';
+                isArtworkConfirmed = false;
                 document.getElementById('previewImgElement').src = '';
+                document.getElementById('aiGenerateBtn').style.display = 'inline-block';
+                document.getElementById('aiRegenerateBtn').style.display = 'none';
+                confirmBtn.style.display = 'none';
             } else {
                 aiBox.style.display = 'flex';
                 document.getElementById('aiGenerateBtn').style.display = 'none';
                 document.getElementById('aiRegenerateBtn').style.display = 'inline-block';
+                confirmBtn.style.display = 'inline-block';
             }
-            document.getElementById('aiGenerateBtn').style.display = currentTempImageUrl ? 'none' : 'inline-block';
-            aiBox.style.display = currentTempImageUrl ? 'flex' : 'none';
-            document.getElementById('aiStatusText').innerText = '✨ AI Chef Canvas Ready.';
+            
+            checkSubmitButtonState();
+            if(!currentTempImageUrl) {
+                document.getElementById('aiStatusText').innerText = '✨ AI Chef Canvas Ready. / AI 作画画布已就绪。';
+            }
         }
     }
 
@@ -815,7 +866,7 @@
                         <div class="item-details">
                             <div class="item-notes">${item.notes}</div>
                             <div class="order-action">
-                                <button class="btn-order" onclick="event.stopPropagation(); addToCart(${item.id})">+ Add To Order</button>
+                                <button class="btn-order" onclick="event.stopPropagation(); addToCart(${item.id})">+ Add To Order / 点单</button>
                             </div>
                         </div>
                     </div>
@@ -847,8 +898,10 @@
     function addToCart(id) {
         const item = recipes.find(r => r.id === id);
         if (!item) return;
+        // 兼容含有双语分隔符的展示
+        const shortName = item.name.split('|')[0].trim();
         if (cart[id]) cart[id].count++;
-        else cart[id] = { name: item.name, count: 1 };
+        else cart[id] = { name: shortName, count: 1 };
         updateCartUI();
     }
 
@@ -868,7 +921,7 @@
         const keys = Object.keys(cart);
         
         if (keys.length === 0) {
-            container.innerHTML = `<p style="color:var(--color-moss); font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty. Select culinary delights...</p>`;
+            container.innerHTML = `<p style="color:var(--color-moss); font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty.<br>桌台空闲，请挑选雨林艺术珍馐...</p>`;
             totalCountSpan.innerText = '0';
             floatingBadge.innerText = '0';
             return;
@@ -894,51 +947,63 @@
 
     function placeOrder() {
         const keys = Object.keys(cart);
-        if(keys.length === 0) { alert('Your cart is currently empty.'); return; }
-        let receipt = `🧾 【PHOEBE'S RAINFOREST CANOPY】\n———————————————\nOrder successful! Kitchen is now preparing:\n\n`;
+        if(keys.length === 0) { alert('Your cart is currently empty. / 您的账单台还是空的。'); return; }
+        let receipt = `🧾 【PHOEBE'S RAINFOREST CANOPY】\n———————————————\n后厨接单成功！正在为您雕琢作画:\n\n`;
         keys.forEach(id => { receipt += `▪️ ${cart[id].name}  x  ${cart[id].count}\n`; });
-        receipt += `———————————————\n✨ Enjoy your sustainable dining experience!`;
+        receipt += `———————————————\n✨ Enjoy your sustainable dining experience! / 祝您赏味愉快。`;
         alert(receipt);
         cart = {};
         updateCartUI();
         toggleCartDrawer(false);
     }
 
+    // 💡 AI绘图与双色状态机核心控制
     function generateAiImage() {
         if (currentImageInputMode !== 'ai') return;
         const name = document.getElementById('foodName').value;
-        if(!name) { alert('Please insert a dish name first.'); return; }
+        if(!name) { alert('Please insert a dish name first. / 请先填写料理名称以提供作画灵感。'); return; }
         
+        // 分割中英文提取出全英文核心 prompt 促使 AI 精准构图
+        const pureEnglishName = name.split('|')[0].trim();
+
         const previewElement = document.getElementById('previewImgElement');
         const aiBox = document.getElementById('aiPreviewBox');
         const aiStatusText = document.getElementById('aiStatusText');
         const generateBtn = document.getElementById('aiGenerateBtn');
         const regenerateBtn = document.getElementById('aiRegenerateBtn');
+        const confirmBtn = document.getElementById('aiConfirmBtn');
 
         generateBtn.disabled = true;
         regenerateBtn.disabled = true;
+        
+        // 撤销确认锁定
+        isArtworkConfirmed = false;
+        confirmBtn.innerText = "✓ Confirm Image / 确认采用此图片";
+        confirmBtn.classList.remove('locked');
+        checkSubmitButtonState();
 
         previewElement.src = 'https://i.gifer.com/ZKZg.gif'; 
-        aiStatusText.innerText = '🌀 Summoning AI Chef...';
+        aiStatusText.innerText = '🌀 Summoning AI Chef Illustrator... / 绘图黑卡正在渲染中...';
         aiBox.style.display = 'flex';
         
         const randomSeed = Math.floor(Math.random() * 100000);
-        const newImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true&seed=${randomSeed}`;
+        const newImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(pureEnglishName)},%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true&seed=${randomSeed}`;
         
         const imgPreloader = new Image();
         imgPreloader.onload = function() {
             previewElement.src = newImageUrl;
             currentTempImageUrl = newImageUrl;
-            aiStatusText.innerText = '✨ AI Chef Canvas Complete!';
+            aiStatusText.innerText = '✨ AI Chef Canvas Complete! Click confirm below to lock. / 画布铺设成功！请点击下方按钮确认锁定。';
             generateBtn.style.display = 'none';
             regenerateBtn.style.display = 'inline-block';
+            confirmBtn.style.display = 'inline-block';
             generateBtn.disabled = false;
             regenerateBtn.disabled = false;
         };
         
         imgPreloader.onerror = function() {
             previewElement.src = '';
-            aiStatusText.innerText = '❌ AI Canvas Failed. Retry.';
+            aiStatusText.innerText = '❌ AI Canvas Failed. Retry. / 渲染超时，请重新呼唤。';
             currentTempImageUrl = '';
             generateBtn.disabled = false;
             regenerateBtn.disabled = false;
@@ -947,9 +1012,31 @@
         imgPreloader.src = newImageUrl;
     }
 
+    // 确认预览图通过核心阻断函数
+    function confirmArtworkImage() {
+        if(!currentTempImageUrl) return;
+        isArtworkConfirmed = true;
+        
+        const confirmBtn = document.getElementById('aiConfirmBtn');
+        confirmBtn.innerText = "🔒 Confirmed & Locked / 图片已锁定";
+        confirmBtn.classList.add('locked');
+        
+        document.getElementById('aiStatusText').innerText = '🎉 Target Locked! Ready to save to Inventory. / 视觉资产已锁定！现在可以保存该料理。';
+        checkSubmitButtonState();
+    }
+
+    function checkSubmitButtonState() {
+        const submitFormBtn = document.getElementById('submitFormBtn');
+        if (currentImageInputMode === 'ai') {
+            submitFormBtn.disabled = !isArtworkConfirmed;
+        } else {
+            submitFormBtn.disabled = false;
+        }
+    }
+
     function handleImageError() {
         document.getElementById('previewImgElement').src = '';
-        document.getElementById('aiStatusText').innerText = '⚠️ Image broken. Repaint or link again.';
+        document.getElementById('aiStatusText').innerText = '⚠️ Image link broken. / 图源损毁，请重构链接或重新绘制。';
     }
 
     function startModifyRecipe(id) {
@@ -958,7 +1045,7 @@
 
         resetForm(); 
 
-        document.getElementById('formModeTitle').innerText = `📝 MODIFY DISH: 【${item.name}】`;
+        document.getElementById('formModeTitle').innerHTML = `📝 MODIFY DISH: 【${item.name.split('|')[0]}】 <span class="zh-sub">修正资产详情</span>`;
         document.getElementById('editingRecipeId').value = item.id;
         document.getElementById('foodName').value = item.name;
         document.getElementById('foodCategory').value = item.category;
@@ -970,7 +1057,15 @@
             toggleImageMode('ai');
             document.getElementById('aiPreviewBox').style.display = 'flex';
             document.getElementById('previewImgElement').src = item.img;
-            document.getElementById('aiStatusText').innerText = '✨ Currently using this AI Artwork.';
+            
+            // 修改已有菜品时默认判定其图片有效
+            isArtworkConfirmed = true;
+            const confirmBtn = document.getElementById('aiConfirmBtn');
+            confirmBtn.style.display = 'inline-block';
+            confirmBtn.innerText = "🔒 Confirmed & Locked / 图片已锁定";
+            confirmBtn.classList.add('locked');
+            
+            document.getElementById('aiStatusText').innerText = '✨ Currently using this AI Artwork. / 沿用当前锁定的 AI 视觉。';
             document.getElementById('aiGenerateBtn').style.display = 'none';
             document.getElementById('aiRegenerateBtn').style.display = 'inline-block';
         } else {
@@ -978,11 +1073,12 @@
             document.getElementById('foodImgLink').value = item.img;
             document.getElementById('aiPreviewBox').style.display = 'flex';
             document.getElementById('previewImgElement').src = item.img;
-            document.getElementById('aiStatusText').innerText = '🖼️ Using this external link.';
+            document.getElementById('aiStatusText').innerText = '🖼️ Using this external link. / 沿用当前指向的链接。';
         }
 
+        checkSubmitButtonState();
         document.getElementById('cancelEditBtn').style.display = 'inline-block';
-        document.getElementById('submitFormBtn').innerText = '💾 Save Temporary Changes';
+        document.getElementById('submitFormBtn').innerText = '💾 Save Temporary Changes / 暂存修改记录';
         document.getElementById('formModeTitle').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -992,10 +1088,11 @@
         const category = document.getElementById('foodCategory').value;
         const notes = document.getElementById('foodNotes').value;
 
-        if(!name) { alert('Please enter dish name.'); return; }
+        if(!name) { alert('Please enter dish name. / 必须赋予餐品高雅的名称。'); return; }
         
-        if(!currentTempImageUrl) {
-            currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true`;
+        if(currentImageInputMode === 'ai' && !isArtworkConfirmed) {
+            alert('Please lock the AI Image first by clicking "Confirm Image". / 请先点击“确认采用此图片”锁定视觉图稿。');
+            return;
         }
 
         if(idStr) {
@@ -1013,7 +1110,6 @@
         changesCount++;
         resetForm();
         
-        // 激活本地临时数据并上色 dirty 标记
         localStorage.setItem('my_recipes', JSON.stringify(recipes));
         localStorage.setItem('my_recipes_dirty', 'true');
 
@@ -1022,7 +1118,7 @@
     }
 
     function resetForm() {
-        document.getElementById('formModeTitle').innerText = `🍳 CREATE / MODIFY DISH`;
+        document.getElementById('formModeTitle').innerHTML = `🍳 CREATE / MODIFY DISH <span class="zh-sub">单品料理创作与修正</span>`;
         document.getElementById('editingRecipeId').value = "";
         document.getElementById('foodName').value = "";
         document.getElementById('foodNotes').value = "";
@@ -1031,11 +1127,19 @@
         document.getElementById('cancelEditBtn').style.display = 'none';
         document.getElementById('aiGenerateBtn').style.display = 'inline-block';
         document.getElementById('aiRegenerateBtn').style.display = 'none';
+        
+        const confirmBtn = document.getElementById('aiConfirmBtn');
+        confirmBtn.style.display = 'none';
+        confirmBtn.innerText = "✓ Confirm Image / 确认采用此图片";
+        confirmBtn.classList.remove('locked');
+        
         document.getElementById('aiRegenerateBtn').disabled = false;
         document.getElementById('aiGenerateBtn').disabled = false;
-        document.getElementById('submitFormBtn').innerText = '🚀 Save to Local Inventory';
-        document.getElementById('aiStatusText').innerText = '✨ AI Chef Canvas Ready.';
+        document.getElementById('submitFormBtn').innerText = '🚀 Save to Local Inventory / 暂存至本地盘点';
+        document.getElementById('aiStatusText').innerText = '✨ AI Chef Canvas Ready. / AI 作画画布已就绪。';
+        
         currentTempImageUrl = "";
+        isArtworkConfirmed = false;
         toggleImageMode('ai'); 
     }
 
@@ -1045,13 +1149,14 @@
         
         recipes.forEach(item => {
             const isPending = pendingDeleteIds.includes(item.id);
+            const displayName = item.name.split('|')[0].trim();
             adminListContainer.insertAdjacentHTML('beforeend', `
                 <div class="admin-list-item ${isPending ? 'pending-delete' : ''}">
-                    <span><strong style="color:var(--color-ebony);">[${item.category}]</strong> ${item.name}</span>
+                    <span><strong style="color:var(--color-moss);">[${item.category}]</strong> ${displayName}</span>
                     <div class="action-group">
-                        <button class="modify-btn" onclick="startModifyRecipe(${item.id})" ${isPending ? 'disabled style="opacity:0.3;"' : ''}>Edit</button>
+                        <button class="modify-btn" onclick="startModifyRecipe(${item.id})" ${isPending ? 'disabled style="opacity:0.3;"' : ''}>Edit / 改</button>
                         <button class="delete-btn" onclick="togglePendingDelete(${item.id})">
-                            ${isPending ? 'Revoke' : 'Archive'}
+                            ${isPending ? 'Revoke / 撤销' : 'Archive / 归档'}
                         </button>
                     </div>
                 </div>
@@ -1062,10 +1167,10 @@
         const activeChanges = pendingDeleteIds.length + changesCount;
         if (activeChanges > 0) {
             saveBtn.disabled = false;
-            saveBtn.innerText = `💾 Sync to GitHub Cloud (${activeChanges} changes pending)`;
+            saveBtn.innerText = `💾 Sync to GitHub Cloud (${activeChanges} changes pending) / 推送云端多媒体库`;
         } else {
             saveBtn.disabled = true;
-            saveBtn.innerText = `💾 Sync to GitHub Cloud (No Changes)`;
+            saveBtn.innerText = `💾 Sync to GitHub Cloud (No Changes) / 暂无挂起更改`;
         }
     }
 
@@ -1081,7 +1186,10 @@
     function filterMenu(category) {
         const buttons = document.querySelectorAll('.tab-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+        if (event && event.target) {
+            if (event.target.tagName === 'SPAN') event.target.parentElement.classList.add('active');
+            else event.target.classList.add('active');
+        }
         if (category === 'all') renderMenu(recipes);
         else renderMenu(recipes.filter(r => r.category === category));
     }
@@ -1091,21 +1199,31 @@
         clickCount++;
         if(clickCount >= 3) {
             document.getElementById('adminSection').style.display = 'block';
+            document.getElementById('quickExitBtn').style.display = 'inline-block';
             document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
             document.getElementById('ghUser').value = localStorage.getItem('gh_user') || '';
             document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
             renderAdminList();
             document.getElementById('adminSection').scrollIntoView({ behavior: 'smooth' });
+            clickCount = 0; 
         }
+    }
+
+    // 独立封装：关闭并折叠管理面板通道
+    function closeAdminDashboard() {
+        document.getElementById('adminSection').style.display = 'none';
+        document.getElementById('quickExitBtn').style.display = 'none';
+        document.getElementById('orderDesk').scrollIntoView({ behavior: 'smooth' });
+        resetForm();
     }
 
     async function pushToGithub() {
         const token = document.getElementById('ghToken').value;
         const user = document.getElementById('ghUser').value;
         const repo = document.getElementById('ghRepo').value;
-        if(!token || !user || !repo) { alert('Please fill configuration fields.'); return; }
+        if(!token || !user || !repo) { alert('Please fill credentials. / 请配齐云端密钥。'); return; }
 
-        if(confirm(`Sync all local updates and archiving items to GitHub?`)) {
+        if(confirm(`Sync all updates to GitHub Cloud? / 确认打包交付云端集群覆盖生产代码？`)) {
             if(pendingDeleteIds.length > 0) {
                 recipes = recipes.filter(r => !pendingDeleteIds.includes(r.id));
             }
@@ -1135,11 +1253,10 @@
                 });
 
                 if(putRes.ok) {
-                    alert('🎉 Cloud database successfully synced! Re-baking web node...');
+                    alert('🎉 Cloud synced! Re-baking web node... / 云数据同步完毕，正在热重载边缘节点...');
                     pendingDeleteIds = [];
                     changesCount = 0;
                     
-                    // ✨ 核心清流：云端写入成功！抹除设备本地沙盒，下次直接抓取最新云端代码
                     localStorage.removeItem('my_recipes_dirty');
                     localStorage.removeItem('my_recipes');
                     
@@ -1153,8 +1270,10 @@
         }
     }
 
+    // 初始化流
     toggleImageMode('ai');
     renderMenu(recipes);
+    updateCartUI();
 </script>
 </body>
 </html>
