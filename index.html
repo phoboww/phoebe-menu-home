@@ -40,7 +40,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 中文辅助样式优化 */
         .zh-sub {
             display: block;
             font-size: 0.85rem;
@@ -217,7 +216,6 @@
             width: 100%;
         }
 
-        /* Bento Grid 网格布局与图层调校优化 */
         .menu-section { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -251,7 +249,6 @@
             transform: scale(1.04);
         }
 
-        /* 优化渐变黑度，即使承载白色高亮图片仍能保持高质可读性 */
         .item-overlay {
             position: absolute;
             inset: 0;
@@ -512,6 +509,39 @@
             box-shadow: 0 5px 15px rgba(156, 162, 137, 0.1);
         }
         
+        /* AI智能绘图控制舱样式 */
+        .ai-generator-panel {
+            background: rgba(156, 162, 137, 0.05);
+            border: 1px dashed var(--color-moss);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .ai-btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .btn-ai {
+            background: transparent;
+            border: 1px solid var(--color-moss);
+            color: var(--color-moss);
+            padding: 10px 20px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-ai:hover:not(:disabled) {
+            background: var(--color-moss);
+            color: var(--color-sisal);
+        }
+        .btn-ai:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
         .preview-container { display: flex; align-items: center; gap: 30px; margin: 25px 0; background: rgba(0, 0, 0, 0.2); padding: 25px; border: 1px dashed var(--color-clay); flex-wrap: wrap;}
         .preview-img-wrap { position: relative; width: 110px; height: 110px; background: #15120e; }
         .preview-img { width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--color-clay); }
@@ -691,19 +721,30 @@
             <textarea id="foodNotes" rows="4" onblur="autoFormatCulinaryNotes()" placeholder="Describe the ingredients... 或输入：手作野生浆果千层，乳香丰盈。"></textarea>
             <div id="notesHintText" class="system-hint"></div>
         </div>
+
+        <!-- 🔮 核心升级：高定 AI 膳食视觉绘图控制舱 -->
+        <div class="ai-generator-panel">
+            <label style="display:block; margin-bottom:8px; font-size:0.75rem; color:var(--color-moss); text-transform:uppercase; font-weight:600; letter-spacing:2px;">🔮 AI Gastro-Art Generator / 智能膳食绘图空间</label>
+            <p style="color:var(--color-lisbon); font-size:0.8rem; margin:0 0 15px 0; opacity:0.7;">无需任何密钥。系统将自动提取上方输入的英文品名，智能烘焙出极致高画质食物写真。不满意可无限次重新“烘焙”。</p>
+            <div class="ai-btn-group">
+                <button type="button" class="btn-ai" id="generateAiBtn" onclick="bakeAiDishTexture()">✨ Bake Image with AI / 激发AI艺术创作</button>
+            </div>
+            <div id="aiStatusHint" style="font-size:0.75rem; color:var(--color-gold); margin-top:10px; font-style:italic;"></div>
+        </div>
         
         <div class="form-group">
-            <label>Paste Image Link / 粘贴外部图像链接:</label>
+            <label>Option: Paste Normal Image Link / 或选择手动粘贴外部图像链接 (如不使用AI图):</label>
             <input type="text" id="foodImgLink" placeholder="https://images.unsplash.com/photo-..." oninput="previewExternalLink(this.value)">
         </div>
 
         <!-- 纯预览画布区 -->
         <div class="preview-container" id="aiPreviewBox" style="display:none;">
             <div class="preview-img-wrap">
-                <img class="preview-img" id="previewImgElement" src="" alt="Culinary Artwork" onerror="handleImageError()">
+                <img class="preview-img" id="previewImgElement" src="" alt="Culinary Artwork" crossorigin="anonymous" onerror="handleImageError()">
             </div>
             <div>
-                <p style="margin:0; font-family: var(--font-sans); font-size:0.85rem; color:var(--color-ebony);">🖼️ Image Preview Sandbox / 图像预览沙盒</p>
+                <p style="margin:0; font-family: var(--font-sans); font-size:0.85rem; color:var(--color-ebony);" id="previewSandboxTitle">🖼️ Image Preview Sandbox / 图像预览沙盒</p>
+                <p style="margin:5px 0 0 0; font-size:0.75rem; color:var(--color-moss);" id="imageSourceType">Source: Awaiting Data</p>
             </div>
         </div>
 
@@ -760,8 +801,9 @@
     let pendingDeleteIds = [];
     let currentTempImageUrl = "";
     let changesCount = 0;
-    let isTranslating = false; // 智能异步操作状态锁
-    let currentCategoryFilter = 'all'; // 记录当前选择的分类标签
+    let isTranslating = false; 
+    let currentCategoryFilter = 'all'; 
+    let isAiBakingActive = false; // AI绘图状态锁
 
     function toggleCartDrawer(open) {
         const overlay = document.getElementById('cartOverlay');
@@ -772,17 +814,18 @@
     function previewExternalLink(url) {
         const previewElement = document.getElementById('previewImgElement');
         const aiBox = document.getElementById('aiPreviewBox');
+        const sourceType = document.getElementById('imageSourceType');
         
         if (url) {
             currentTempImageUrl = url;
             previewElement.src = url;
             aiBox.style.display = 'flex';
+            sourceType.innerText = url.startsWith('data:') ? "Source: Solidified Base64 Matrix (Unified Sync)" : "Source: Manual External Link";
         } else {
             aiBox.style.display = 'none';
         }
     }
 
-    // 免密公开免费核心翻译底座
     async function translateText(text, from, to) {
         try {
             const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(text)}`);
@@ -796,7 +839,6 @@
         return null;
     }
 
-    // 状态锁切换：防止翻译中强行按下保存按钮产生脏数据
     function toggleSubmitLock(lock) {
         isTranslating = lock;
         const btn = document.getElementById('submitFormBtn');
@@ -809,7 +851,6 @@
         }
     }
 
-    // 💡 菜名格式化补全引擎
     async function autoFormatDishName() {
         const inputElement = document.getElementById('foodName');
         const hintElement = document.getElementById('titleHintText');
@@ -825,10 +866,7 @@
         if (translated) {
             let finalEn = isChinese ? translated : rawName;
             let finalZh = isChinese ? rawName : translated;
-            
-            // 英文首字母美学大写化
             finalEn = finalEn.replace(/\b\w/g, c => c.toUpperCase());
-            
             inputElement.value = `${finalEn} | ${finalZh}`;
             hintElement.innerText = '✓ Name Format Autocomplete Done! / 菜名双语美学格式补全完毕。';
         } else {
@@ -837,7 +875,6 @@
         toggleSubmitLock(false);
     }
 
-    // 💡 赏味私札智能翻译排版引擎
     async function autoFormatCulinaryNotes() {
         const textareaElement = document.getElementById('foodNotes');
         const hintElement = document.getElementById('notesHintText');
@@ -854,10 +891,7 @@
         if (translated) {
             let finalEn = isChinese ? translated : rawNotes;
             let finalZh = isChinese ? rawNotes : translated;
-            
-            // 确保英文句首大写
             finalEn = finalEn.charAt(0).toUpperCase() + finalEn.slice(1);
-            
             textareaElement.value = `${finalEn}<br>${finalZh}`;
             hintElement.innerText = '✓ Notes Format Autocomplete Done! / 私札高定双语排版补全完毕。';
         } else {
@@ -866,12 +900,107 @@
         toggleSubmitLock(false);
     }
 
-    // 渲染前台主菜单组件
+    // 🔮 智能绘图引擎：支持不满意重新生成与防超时智能劫持
+    async function bakeAiDishTexture() {
+        if(isAiBakingActive) return;
+        
+        const nameInput = document.getElementById('foodName').value.trim();
+        const hint = document.getElementById('aiStatusHint');
+        const generateBtn = document.getElementById('generateAiBtn');
+        
+        if(!nameInput) {
+            alert("Please input dish name first, AI needs it for inspiration! / 请先输入菜品名称，以便激发 AI 创作灵感。");
+            return;
+        }
+        
+        // 提取出纯英文品名作为 Prompt
+        let englishPrompt = nameInput.split('|')[0].trim();
+        
+        isAiBakingActive = true;
+        generateBtn.disabled = true;
+        generateBtn.innerText = "🔮 Mixing Aesthetic Pixels... / 正在研磨色彩矩阵...";
+        hint.innerText = "⏳ Gathering forest energy... (Takes 3-5s) / 正在唤醒林间感官摄影艺术...";
+        
+        // 附加顶级高定菜品渲染Prompt，确保不同手机看都是统一顶级质感
+        let fullAestheticPrompt = `${englishPrompt}, macro gourmet food photography, high-end fine dining restaurant plating, moody lighting, dark atmospheric background, hyperrealistic texture, wabi-sabi aesthetic`;
+        
+        // 引入随机盐值因子防止浏览器强行读本地缓存，确保“不满意重新生成”能切实画出不同的新图
+        let salt = Math.floor(Math.random() * 999999);
+        let targetAiUrl = `https://image.pollinations.ai/p/${encodeURIComponent(fullAestheticPrompt)}?width=512&height=512&enhance=true&seed=${salt}`;
+        
+        console.log("AI Target:", targetAiUrl);
+        
+        // 核心纠错：利用网络探针预加载，处理潜在的平台失败或超时挂起
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8秒无响应自动视作超时并启动二级重试
+        
+        try {
+            await fetch(targetAiUrl, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            
+            // 探针通过，送入预览沙盒
+            const previewElement = document.getElementById('previewImgElement');
+            previewElement.src = targetAiUrl;
+            
+            document.getElementById('aiPreviewBox').style.display = 'flex';
+            document.getElementById('imageSourceType').innerText = "Source: Live AI Canvas (Unsolidified)";
+            hint.innerText = "✓ Render complete! Click 'Bake' again if unsatisfied. / 画布上色完成！不满意可再次点击重新生成。";
+        } catch (e) {
+            console.warn("AI generation mesh heavy, switching to swift path...", e);
+            // 应急降级备用节点，确保功能在任何极端极端网络下不崩溃
+            let fallbackUrl = `https://image.pollinations.ai/p/${encodeURIComponent(englishPrompt + " delicious gastronomy close up")}.jpg?seed=${salt}`;
+            document.getElementById('previewImgElement').src = fallbackUrl;
+            document.getElementById('aiPreviewBox').style.display = 'flex';
+            document.getElementById('imageSourceType').innerText = "Source: Live AI Backup Node";
+            hint.innerText = "✓ Synced with secondary canvas node. / 已为您无缝调取备用数字画布渲染。";
+        } finally {
+            isAiBakingActive = false;
+            generateBtn.disabled = false;
+            generateBtn.innerText = "🔄 Re-Bake Art Texture / 不满意，重新激发生成";
+        }
+    }
+
+    // 🌟 核心绝对一致性引擎：在最终保存本地时，将满意的AI图片实时压制并固化为永久 Base64 字符串
+    function solidifyImageMatrixThenSave(callback) {
+        const previewImg = document.getElementById('previewImgElement');
+        const sourceType = document.getElementById('imageSourceType').innerText;
+        
+        // 只有当源头是AI实时画布，或者损坏状态时，才需要固化。手动粘贴的普通网络URL原样放行选项
+        if(!previewImg.src || sourceType.includes("Manual External Link") || previewImg.src.startsWith('data:')) {
+            callback(previewImg.src);
+            return;
+        }
+        
+        document.getElementById('aiStatusHint').innerText = "⚡ Formulating global matrix consistency... / 正在进行全平台数据一致性固化锁...";
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = previewImg.naturalWidth || 512;
+        canvas.height = previewImg.naturalHeight || 512;
+        const ctx = canvas.getContext('2d');
+        
+        // 建立一张影中画快照
+        const tempImg = new Image();
+        tempImg.crossOrigin = "anonymous"; // 允许跨域读像素
+        tempImg.onload = function() {
+            try {
+                ctx.drawImage(tempImg, 0, 0, canvas.width, canvas.height);
+                let base64Data = canvas.toDataURL('image/jpeg', 0.85); // 转换为永久离线字符串
+                callback(base64Data);
+            } catch(e) {
+                console.error("Matrix solidification missed, safety fallback.", e);
+                callback(previewImg.src); // 如果画布污染，直接降级存储原URL，确保保存功能畅通
+            }
+        };
+        tempImg.onerror = function() {
+            callback(previewImg.src);
+        };
+        tempImg.src = previewImg.src;
+    }
+
     function renderMenu(data) {
         const container = document.getElementById('menuContainer');
         container.innerHTML = '';
         
-        // 核心改动：前台不渲染被归档(待删除)的菜品列表，建立前后台视觉假象关联
         const visibleData = data.filter(item => !pendingDeleteIds.includes(item.id));
         
         if (visibleData.length === 0) {
@@ -898,9 +1027,7 @@
         init3DEffect();
     }
 
-    // 3D 悬停微动特效
     function init3DEffect() {
-        // 优化体验：如果是手机触控屏设备，直接跳过倾斜，避免与手势滑动冲突抖动
         if (window.matchMedia("(pointer: coarse)").matches) return;
 
         const cards = document.querySelectorAll('.menu-item');
@@ -921,125 +1048,42 @@
         });
     }
 
-    function addToCart(id) {
-        const item = recipes.find(r => r.id === id);
-        if (!item) return;
-        const shortName = item.name.split('|')[0].trim();
-        if (cart[id]) cart[id].count++;
-        else cart[id] = { name: shortName, count: 1 };
-        updateCartUI();
-    }
-
-    function changeCount(id, delta) {
-        if (!cart[id]) return;
-        cart[id].count += delta;
-        if (cart[id].count <= 0) delete cart[id];
-        updateCartUI();
-    }
-
-    function updateCartUI() {
-        const container = document.getElementById('cartItemsContainer');
-        const totalCountSpan = document.getElementById('totalCount');
-        const floatingBadge = document.getElementById('floatingBadge');
-        container.innerHTML = '';
-        let totalCount = 0;
-        const keys = Object.keys(cart);
-        
-        if (keys.length === 0) {
-            container.innerHTML = `<p style="color:var(--color-moss); font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty.<br>桌台空闲，请挑选雨林艺术珍馐...</p>`;
-            totalCountSpan.innerText = '0';
-            floatingBadge.innerText = '0';
-            return;
-        }
-        
-        keys.forEach(id => {
-            const item = cart[id];
-            totalCount += item.count;
-            container.insertAdjacentHTML('beforeend', `
-                <div class="cart-item">
-                    <span style="font-weight:500; max-width:180px; color:var(--color-lisbon);">${item.name}</span>
-                    <div class="cart-item-counter">
-                        <button class="btn-count" onclick="changeCount(${id}, -1)">-</button>
-                        <span style="min-width:15px; text-align:center; font-weight:600;">${item.count}</span>
-                        <button class="btn-count" onclick="changeCount(${id}, 1)">+</button>
-                    </div>
-                </div>
-            `);
-        });
-        totalCountSpan.innerText = totalCount;
-        floatingBadge.innerText = totalCount;
-    }
-
-    function placeOrder() {
-        const keys = Object.keys(cart);
-        if(keys.length === 0) { alert('Your cart is currently empty. / 您的账单台还是空的。'); return; }
-        let receipt = `🧾 【PHOEBE'S RAINFOREST CANOPY】\n———————————————\n后厨接单成功！正在为您雕琢作画:\n\n`;
-        keys.forEach(id => { receipt += `▪️ ${cart[id].name}  x  ${cart[id].count}\n`; });
-        receipt += `———————————————\n✨ Enjoy your sustainable dining experience! / 祝您赏味愉快。`;
-        alert(receipt);
-        cart = {};
-        updateCartUI();
-        toggleCartDrawer(false);
-    }
-
-    function handleImageError() {
-        document.getElementById('previewImgElement').src = '';
-        alert('⚠️ Image URL invalid or broken. / 输入的图片链接失效，无法正确加载。');
-    }
-
-    function startModifyRecipe(id) {
-        const item = recipes.find(r => r.id === id);
-        if (!item) return;
-
-        resetForm(); 
-
-        document.getElementById('formModeTitle').innerHTML = `📝 MODIFY DISH: 【${item.name.split('|')[0]}】 <span class="zh-sub">修正资产详情</span>`;
-        document.getElementById('editingRecipeId').value = item.id;
-        document.getElementById('foodName').value = item.name;
-        document.getElementById('foodCategory').value = item.category;
-        document.getElementById('foodNotes').value = item.notes;
-        
-        document.getElementById('foodImgLink').value = item.img;
-        previewExternalLink(item.img);
-
-        document.getElementById('cancelEditBtn').style.display = 'inline-block';
-        document.getElementById('submitFormBtn').innerText = '💾 Save Temporary Changes / 暂存修改记录';
-        document.getElementById('formModeTitle').scrollIntoView({ behavior: 'smooth' });
-    }
-
     function saveFormToRecipes() {
-        if (isTranslating) return; // 拦截锁防呆
+        if (isTranslating || isAiBakingActive) return; 
 
         const idStr = document.getElementById('editingRecipeId').value;
         const name = document.getElementById('foodName').value;
         const category = document.getElementById('foodCategory').value;
         const notes = document.getElementById('foodNotes').value;
-        const imgLink = document.getElementById('foodImgLink').value.trim();
 
         if(!name) { alert('Please enter dish name. / 必须赋予餐品高雅的名称。'); return; }
         
-        const finalImg = imgLink || "https://via.placeholder.com/400/aca494/3c2005?text=Rainforest+Cuisine";
+        // 启动绝对一致性压制引擎，压制成功后执行内部存储逻辑
+        solidifyImageMatrixThenSave(function(finalSolidifiedImg) {
+            const finalImg = finalSolidifiedImg || "https://via.placeholder.com/400/aca494/3c2005?text=Rainforest+Cuisine";
 
-        if(idStr) {
-            const targetId = parseInt(idStr);
-            recipes = recipes.map(r => {
-                if(r.id === targetId) {
-                    return { id: targetId, name, category, img: finalImg, notes };
-                }
-                return r;
-            });
-        } else {
-            recipes.push({ id: Date.now(), name, category, img: finalImg, notes });
-        }
+            if(idStr) {
+                const targetId = parseInt(idStr);
+                recipes = recipes.map(r => {
+                    if(r.id === targetId) {
+                        return { id: targetId, name, category, img: finalImg, notes };
+                    }
+                    return r;
+                });
+            } else {
+                recipes.push({ id: Date.now(), name, category, img: finalImg, notes });
+            }
 
-        changesCount++;
-        resetForm();
-        
-        localStorage.setItem('my_recipes', JSON.stringify(recipes));
-        localStorage.setItem('my_recipes_dirty', 'true');
+            changesCount++;
+            resetForm();
+            document.getElementById('aiStatusHint').innerText = "";
+            
+            localStorage.setItem('my_recipes', JSON.stringify(recipes));
+            localStorage.setItem('my_recipes_dirty', 'true');
 
-        applyCurrentFilter();
-        renderAdminList();
+            applyCurrentFilter();
+            renderAdminList();
+        });
     }
 
     function resetForm() {
@@ -1053,6 +1097,8 @@
         document.getElementById('submitFormBtn').innerText = '🚀 Save to Local Inventory / 暂存至本地盘点';
         document.getElementById('titleHintText').innerText = '';
         document.getElementById('notesHintText').innerText = '';
+        document.getElementById('aiStatusHint').innerText = '';
+        document.getElementById('generateAiBtn').innerText = "✨ Bake Image with AI / 激发AI艺术创作";
         currentTempImageUrl = "";
     }
 
@@ -1094,18 +1140,14 @@
         
         localStorage.setItem('my_recipes_dirty', 'true');
         renderAdminList();
-        applyCurrentFilter(); // 删除切换同步影响前台菜单
+        applyCurrentFilter();
     }
 
     function filterMenu(category, e) {
         currentCategoryFilter = category;
         const buttons = document.querySelectorAll('.tab-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
-        
-        // 修正全局依赖的安全传参
-        if (e && e.currentTarget) {
-            e.currentTarget.classList.add('active');
-        }
+        if (e && e.currentTarget) e.currentTarget.classList.add('active');
         applyCurrentFilter();
     }
 
@@ -1123,7 +1165,6 @@
         }
     }
 
-    // 💡 高级升级：监听键盘秘密进入后台管理器快捷键（Ctrl + Shift + A）
     window.addEventListener('keydown', (e) => {
         if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
             e.preventDefault();
@@ -1181,7 +1222,7 @@
                     method: 'PUT',
                     headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: `Chef updated system inventory`,
+                        message: `Chef updated system inventory with AI assets`,
                         content: btoa(unescape(encodeURIComponent(newCode))),
                         sha: sha
                     })
@@ -1191,10 +1232,8 @@
                     alert('🎉 Cloud synced! Re-baking web node... / 云数据同步完毕，正在热重载边缘节点...');
                     pendingDeleteIds = [];
                     changesCount = 0;
-                    
                     localStorage.removeItem('my_recipes_dirty');
                     localStorage.removeItem('my_recipes');
-                    
                     location.reload();
                 } else {
                     alert('Sync failed. Check credentials.');
@@ -1205,6 +1244,60 @@
                 renderAdminList();
             }
         }
+    }
+
+    function addToCart(id) {
+        const item = recipes.find(r => r.id === id);
+        if (!item) return;
+        const shortName = item.name.split('|')[0].trim();
+        if (cart[id]) cart[id].count++;
+        else cart[id] = { name: shortName, count: 1 };
+        updateCartUI();
+    }
+
+    function changeCount(id, delta) {
+        if (!cart[id]) return;
+        cart[id].count += delta;
+        if (cart[id].count <= 0) delete cart[id];
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const container = document.getElementById('cartItemsContainer');
+        const totalCountSpan = document.getElementById('totalCount');
+        const floatingBadge = document.getElementById('floatingBadge');
+        container.innerHTML = '';
+        let totalCount = 0;
+        const keys = Object.keys(cart);
+        
+        if (keys.length === 0) {
+            container.innerHTML = `<p style="color:var(--color-moss); font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty.<br>桌台空闲，请挑选雨林艺术珍馐...</p>`;
+            totalCountSpan.innerText = '0';
+            floatingBadge.innerText = '0';
+            return;
+        }
+        
+        keys.forEach(id => {
+            const item = cart[id];
+            totalCount += item.count;
+            container.insertAdjacentHTML('beforeend', `
+                <div class="cart-item">
+                    <span style="font-weight:500; max-width:180px; color:var(--color-lisbon);">${item.name}</span>
+                    <div class="cart-item-counter">
+                        <button class="btn-count" onclick="changeCount(${id}, -1)">-</button>
+                        <span style="min-width:15px; text-align:center; font-weight:600;">${item.count}</span>
+                        <button class="btn-count" onclick="changeCount(${id}, 1)">+</button>
+                    </div>
+                </div>
+            `);
+        });
+        totalCountSpan.innerText = totalCount;
+        floatingBadge.innerText = totalCount;
+    }
+
+    function handleImageError() {
+        document.getElementById('previewImgElement').src = '';
+        document.getElementById('aiStatusHint').innerText = "⚠️ Image loading failed. Click 'Re-Bake' to forge a new matrix. / 图像纹理加载失败，请点击重新烘焙。";
     }
 
     renderMenu(recipes);
