@@ -388,11 +388,35 @@
 <script>
     // ✨ 默认菜单替换为契合雨林餐厅意向的高清图和英文
     let defaultRecipes = [
-        { id: 1, name: "Amazon Canopy Berry Crepe", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream." },
-        { id: 2, name: "Wood-Fired Rainforest Steak", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs." },
-        { id: 3, name: "Wild Botanical Green Salad", category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle." },
-        { id: 4, name: "Iced Smoked Botanical Latte", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk." }
-    ];
+    {
+        "id": 1783699243836,
+        "name": "拿铁",
+        "category": "中餐",
+        "img": "https://www.gafei.com/uploadfile/ueditor/image/202403/1709977684176cac.jpg",
+        "notes": ""
+    },
+    {
+        "id": 1783699940792,
+        "name": "法式草莓千层蛋糕",
+        "category": "烘焙",
+        "img": "https://image.pollinations.ai/p/%E6%B3%95%E5%BC%8F%E8%8D%89%E8%8E%93%E5%8D%83%E5%B1%82%E8%9B%8B%E7%B3%95,%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true",
+        "notes": ""
+    },
+    {
+        "id": 1783700601984,
+        "name": "老北京宫保鸡丁",
+        "category": "中餐",
+        "img": "https://image.pollinations.ai/p/%E8%80%81%E5%8C%97%E4%BA%AC%E5%AE%AB%E4%BF%9D%E9%B8%A1%E4%B8%81,%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true&seed=50642",
+        "notes": ""
+    },
+    {
+        "id": 1783701808992,
+        "name": "玛德琳蛋糕",
+        "category": "Bakery",
+        "img": "https://image.pollinations.ai/p/%E7%8E%9B%E5%BE%B7%E7%90%B3%E8%9B%8B%E7%B3%95,%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true&seed=44881",
+        "notes": ""
+    }
+];
 
     let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
     let cart = {};
