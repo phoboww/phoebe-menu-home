@@ -146,7 +146,6 @@
         .tab-btn { background: none; border: none; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: #777; padding: 6px 0; transition: all 0.3s; letter-spacing: 3px; text-transform: uppercase; }
         .tab-btn.active, .tab-btn:hover { color: var(--color-yellow); border-bottom: 2px solid var(--color-yellow); }
 
-        /* Bento Grid 板块平均分布 */
         .menu-section { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -322,7 +321,6 @@
         .btn-submit-order { width: 100%; background: var(--color-red); color: var(--color-light); border: none; padding: 15px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; letter-spacing: 3px; text-transform: uppercase; transition: opacity 0.2s; }
         .btn-submit-order:hover { opacity: 0.9; }
 
-        /* 右下角优雅的悬浮点单通知气泡 */
         .floating-cart-trigger {
             position: fixed;
             bottom: 30px;
@@ -367,9 +365,18 @@
         .form-group input, .form-group textarea, .form-group select { font-family: var(--font-sans); width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid rgba(255,255,255,0.08); color: var(--color-light); box-sizing: border-box; border-radius: 6px; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--color-yellow); outline: none; }
         
-        .preview-container { display: flex; align-items: center; gap: 20px; margin: 15px 0; background: #2a2a2a; padding: 15px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); }
-        .preview-img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--color-yellow); }
+        .preview-container { display: flex; align-items: center; gap: 20px; margin: 15px 0; background: #2a2a2a; padding: 15px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); flex-wrap: wrap;}
+        
+        /* ✨ AI 预览框优化：防止加载时显示损坏图标 */
+        .preview-img-wrap { position: relative; width: 120px; height: 120px; }
+        .preview-img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--color-yellow); }
+        
+        /* 独立控制输入方式的样式 */
+        #imgLinkInput { display: none; }
+        #aiGenerateBtn { display: inline-block; }
+
         .btn-secondary { background: var(--color-blue); color: #FFF; border: none; padding: 11px 22px; cursor: pointer; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-right: 10px; }
+        .btn-secondary:disabled { background: #555; cursor: not-allowed; opacity: 0.8; }
 
         .submit-btn { background: var(--color-yellow); color: var(--color-dark); border: none; padding: 12px 32px; cursor: pointer; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 6px; }
         
@@ -400,7 +407,7 @@
     </div>
 </section>
 
-<!-- 🍽️ 点单台主体区（全宽、无右侧分栏阻挡，图片更加匀称） -->
+<!-- 🍽️ 点单台主体区 -->
 <div class="main-wrapper" id="orderDesk">
     <div class="main-content">
         <header>
@@ -445,16 +452,30 @@
         </div>
         <div class="form-group"><label>Chef's Culinary Notes:</label><textarea id="foodNotes" rows="3" placeholder="Describe the ingredients, amazon herbs..."></textarea></div>
         
+        <div class="form-group">
+            <label>Dish Image:</label>
+            <!-- ✨ 8.1 优化：允许切换输入外部链接或生成 AI 图片 -->
+            <button class="tab-btn active" id="tabAiMode" onclick="toggleImageMode('ai')">Generate with AI</button>
+            <button class="tab-btn" id="tabLinkMode" onclick="toggleImageMode('link')">Paste Image Link</button>
+            
+            <div id="imgLinkInput" class="form-group" style="margin-top:15px;">
+                <input type="text" id="foodImgLink" placeholder="https://image-url.com/photo.jpg" oninput="previewExternalLink(this.value)">
+            </div>
+        </div>
+
         <div class="preview-container" id="aiPreviewBox" style="display:none;">
-            <img class="preview-img" id="previewImgElement" src="" alt="AI Artwork">
+            <!-- ✨ 8.1 优化：增加图片外层，处理加载时的损坏状态 -->
+            <div class="preview-img-wrap">
+                <img class="preview-img" id="previewImgElement" src="" alt="Culinary Artwork" onerror="handleImageError()">
+            </div>
             <div>
-                <p style="margin:0 0 10px 0; font-size:0.85rem; color:var(--color-yellow);">✨ AI Chef Canvas Complete!</p>
-                <button class="btn-secondary" onclick="generateAiImage()">🔄 Repaint Artwork</button>
+                <p id="aiStatusText" style="margin:0 0 10px 0; font-size:0.85rem; color:var(--color-yellow);">✨ AI Chef Canvas Ready.</p>
+                <button class="btn-secondary" id="aiGenerateBtn" onclick="generateAiImage()">Summon AI Illustrator</button>
+                <button class="modify-btn" id="aiRegenerateBtn" onclick="generateAiImage()" style="display:none;">🔄 Repaint</button>
             </div>
         </div>
 
         <div style="margin-top: 20px;">
-            <button class="btn-secondary" onclick="generateAiImage()">🎨 Summon AI Illustrator</button>
             <button class="submit-btn" id="submitFormBtn" onclick="saveFormToRecipes()">🚀 Save to Local Inventory</button>
             <button class="btn-secondary" id="cancelEditBtn" onclick="resetForm()" style="display:none; background:var(--color-red);">Cancel Edit</button>
         </div>
@@ -471,7 +492,7 @@
     📦 <span class="cart-badge" id="floatingBadge">0</span>
 </div>
 
-<!-- 🛒 侧滑抽屉面板（点击背景蒙版或Close按钮隐藏） -->
+<!-- 🛒 侧滑抽屉面板 -->
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)">
     <div class="cart-panel" onclick="event.stopPropagation()">
         <div style="display: flex; flex-direction: column; flex-grow: 1;">
@@ -498,7 +519,7 @@
         { id: 1, name: "Amazon Canopy Berry Crepe", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream." },
         { id: 2, name: "Wood-Fired Rainforest Steak", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs." },
         { id: 3, name: "Wild Botanical Green Salad", category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle." },
-        { id: 4, name: "Iced Smoked Botanical Latte", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk." }
+        { id: 4, name: "Iced Smoked Botanical Latte", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-151770155092的2d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk." }
     ];
 
     let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
@@ -506,12 +527,68 @@
     let pendingDeleteIds = [];
     let currentTempImageUrl = "";
     let changesCount = 0;
+    let currentImageInputMode = 'ai'; // 'ai' or 'link'
 
-    // 控制侧滑购物车的开启与关闭
     function toggleCartDrawer(open) {
         const overlay = document.getElementById('cartOverlay');
         if (open) overlay.classList.add('active');
         else overlay.classList.remove('active');
+    }
+
+    // ✨ 8.1 优化：切换图片输入模式
+    function toggleImageMode(mode) {
+        currentImageInputMode = mode;
+        const linkInput = document.getElementById('imgLinkInput');
+        const aiBox = document.getElementById('aiPreviewBox');
+        const tabAi = document.getElementById('tabAiMode');
+        const tabLink = document.getElementById('tabLinkMode');
+        
+        tabAi.classList.remove('active');
+        tabLink.classList.remove('active');
+
+        if (mode === 'link') {
+            tabLink.classList.add('active');
+            linkInput.style.display = 'block';
+            aiBox.style.display = 'flex'; // 显示预览框用于预览 Link
+            
+            // 切换为 Link 模式时隐藏 AI 生成按钮
+            document.getElementById('aiGenerateBtn').style.display = 'none';
+            document.getElementById('aiRegenerateBtn').style.display = 'none';
+            document.getElementById('aiStatusText').innerText = '🖼️ Previews External Link.';
+        } else {
+            tabAi.classList.add('active');
+            linkInput.style.display = 'none';
+            // 如果已有图片URL且是AI生成，显示AI按钮和预览
+            // 这里暂处理为默认收起，点击生成时弹出
+            if (!currentTempImageUrl || !currentTempImageUrl.includes('pollinations')) {
+                aiBox.style.display = 'none';
+                currentTempImageUrl = '';
+                document.getElementById('previewImgElement').src = '';
+            } else {
+                // 已有AI图片，显示重新生成和预览
+                aiBox.style.display = 'flex';
+                document.getElementById('aiGenerateBtn').style.display = 'none';
+                document.getElementById('aiRegenerateBtn').style.display = 'inline-block';
+            }
+            document.getElementById('aiGenerateBtn').style.display = currentTempImageUrl ? 'none' : 'inline-block';
+            aiBox.style.display = currentTempImageUrl ? 'flex' : 'none';
+            document.getElementById('aiStatusText').innerText = '✨ AI Chef Canvas Ready.';
+        }
+    }
+
+    // ✨ 8.1 优化：预览外部 Link 图片
+    function previewExternalLink(url) {
+        if (currentImageInputMode !== 'link') return;
+        const previewElement = document.getElementById('previewImgElement');
+        const aiBox = document.getElementById('aiPreviewBox');
+        
+        if (url) {
+            currentTempImageUrl = url;
+            previewElement.src = url;
+            aiBox.style.display = 'flex';
+        } else {
+            aiBox.style.display = 'none';
+        }
     }
 
     function renderMenu(data) {
@@ -615,18 +692,72 @@
         toggleCartDrawer(false);
     }
 
+    // ✨ 8.1 核心：优化 AI 生成逻辑，处理损坏图片状态
     function generateAiImage() {
+        if (currentImageInputMode !== 'ai') return;
         const name = document.getElementById('foodName').value;
         if(!name) { alert('Please insert a dish name first.'); return; }
+        
+        const previewElement = document.getElementById('previewImgElement');
+        const aiBox = document.getElementById('aiPreviewBox');
+        const aiStatusText = document.getElementById('aiStatusText');
+        const generateBtn = document.getElementById('aiGenerateBtn');
+        const regenerateBtn = document.getElementById('aiRegenerateBtn');
+
+        // 在重新加载图片完成前，先禁用按钮，防止多次点击
+        generateBtn.disabled = true;
+        regenerateBtn.disabled = true;
+
+        // 设置 Loading 状态，防止显示损坏的图片图标
+        // 这里使用一个透明底的 Loading 占位图
+        previewElement.src = 'https://i.gifer.com/ZKZg.gif'; 
+        aiStatusText.innerText = '🌀 Summoning AI Chef...';
+        aiBox.style.display = 'flex';
+        
         const randomSeed = Math.floor(Math.random() * 100000);
-        currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true&seed=${randomSeed}`;
-        document.getElementById('previewImgElement').src = currentTempImageUrl;
-        document.getElementById('aiPreviewBox').style.display = 'flex';
+        const newImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true&seed=${randomSeed}`;
+        
+        // ✨ 8.1 核心核心：引入预加载，避免用户看见损坏图片图标
+        const imgPreloader = new Image();
+        imgPreloader.onload = function() {
+            // 图片已完全加载完成
+            previewElement.src = newImageUrl;
+            currentTempImageUrl = newImageUrl;
+            aiStatusText.innerText = '✨ AI Chef Canvas Complete!';
+            
+            // 切换为重新生成按钮状态
+            generateBtn.style.display = 'none';
+            regenerateBtn.style.display = 'inline-block';
+            
+            // 启用按钮
+            generateBtn.disabled = false;
+            regenerateBtn.disabled = false;
+        };
+        
+        imgPreloader.onerror = function() {
+            // 如果生成失败，设为空白并允许重试
+            previewElement.src = '';
+            aiStatusText.innerText = '❌ AI Canvas Failed. Retry.';
+            currentTempImageUrl = '';
+            generateBtn.disabled = false;
+            regenerateBtn.disabled = false;
+        };
+
+        // 开始后台静默加载
+        imgPreloader.src = newImageUrl;
+    }
+
+    function handleImageError() {
+        // 如果预览框本身加载失败，设为空白
+        document.getElementById('previewImgElement').src = '';
+        document.getElementById('aiStatusText').innerText = '⚠️ Image broken. Repaint or link again.';
     }
 
     function startModifyRecipe(id) {
         const item = recipes.find(r => r.id === id);
         if (!item) return;
+
+        resetForm(); // 先重置
 
         document.getElementById('formModeTitle').innerText = `📝 MODIFY DISH: 【${item.name}】`;
         document.getElementById('editingRecipeId').value = item.id;
@@ -635,8 +766,21 @@
         document.getElementById('foodNotes').value = item.notes;
         
         currentTempImageUrl = item.img;
-        document.getElementById('previewImgElement').src = item.img;
-        document.getElementById('aiPreviewBox').style.display = 'flex';
+        
+        if (item.img.includes('pollinations')) {
+            toggleImageMode('ai');
+            document.getElementById('aiPreviewBox').style.display = 'flex';
+            document.getElementById('previewImgElement').src = item.img;
+            document.getElementById('aiStatusText').innerText = '✨ Currently using this AI Artwork.';
+            document.getElementById('aiGenerateBtn').style.display = 'none';
+            document.getElementById('aiRegenerateBtn').style.display = 'inline-block';
+        } else {
+            toggleImageMode('link');
+            document.getElementById('foodImgLink').value = item.img;
+            document.getElementById('aiPreviewBox').style.display = 'flex';
+            document.getElementById('previewImgElement').src = item.img;
+            document.getElementById('aiStatusText').innerText = '🖼️ Using this external link.';
+        }
 
         document.getElementById('cancelEditBtn').style.display = 'inline-block';
         document.getElementById('submitFormBtn').innerText = '💾 Save Temporary Changes';
@@ -652,6 +796,7 @@
         if(!name) { alert('Please enter dish name.'); return; }
         
         if(!currentTempImageUrl) {
+            // 如果未设置图片，自动生成一张
             currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true`;
         }
 
@@ -679,10 +824,17 @@
         document.getElementById('editingRecipeId').value = "";
         document.getElementById('foodName').value = "";
         document.getElementById('foodNotes').value = "";
+        document.getElementById('foodImgLink').value = "";
         document.getElementById('aiPreviewBox').style.display = 'none';
         document.getElementById('cancelEditBtn').style.display = 'none';
+        document.getElementById('aiGenerateBtn').style.display = 'inline-block';
+        document.getElementById('aiRegenerateBtn').style.display = 'none';
+        document.getElementById('aiRegenerateBtn').disabled = false;
+        document.getElementById('aiGenerateBtn').disabled = false;
         document.getElementById('submitFormBtn').innerText = '🚀 Save to Local Inventory';
+        document.getElementById('aiStatusText').innerText = '✨ AI Chef Canvas Ready.';
         currentTempImageUrl = "";
+        toggleImageMode('ai'); // 重置为 AI 模式
     }
 
     function renderAdminList() {
@@ -792,6 +944,8 @@
         }
     }
 
+    // 初始化显示 AI 模式
+    toggleImageMode('ai');
     renderMenu(recipes);
 </script>
 </body>
