@@ -1,134 +1,220 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phoebe's Order System | 菲比的私房点单台</title>
+    <title>PHOEBE'S CANOPY | Sustainable Rainforest Kitchen</title>
+    <!-- 引入艺术谷歌衬线字体，大幅度提升排版高级感 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
-        /* 延续专属莫兰迪高级色盘 */
-        body { 
-            background-color: #2F3B36; 
-            color: #F7F6EE; 
-            font-family: 'Times New Roman', 'Georgia', 'PingFang SC', sans-serif; 
-            margin: 0; 
-            padding: 40px 20px;
-            letter-spacing: 1px;
-        }
-        
-        .container { 
-            max-width: 1200px; /* 放大容器，给板块布局更多空间 */
-            margin: 0 auto; 
-            border: 1px solid #4D5C56; 
-            padding: 40px; 
-            background: #3B4A43; 
-            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
-            border-radius: 12px;
-            display: grid;
-            grid-template-columns: 1fr 340px; 
-            gap: 40px;
-            /* 开启整个容器的3D景深空间 */
-            perspective: 1000px;
+        /* 🎨 延续复古高阶色盘 */
+        :root {
+            --color-dark: #232525;    
+            --color-blue: #3D6C93;    
+            --color-yellow: #E9B140;  
+            --color-orange: #E08851;  
+            --color-red: #DD4A30;     
+            --color-light: #F7F6EE;   
+            
+            /* 字体变量 */
+            --font-serif: 'Playfair Display', 'Georgia', serif;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        @media (max-width: 992px) {
-            .container { grid-template-columns: 1fr; padding: 20px; }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body { 
+            background-color: var(--color-dark); 
+            color: var(--color-light); 
+            font-family: var(--font-sans); 
+            margin: 0; 
+            padding: 0;
+            letter-spacing: 0.5px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ==================== 🌳 场景化大首屏 (Hero Section) ==================== */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* 选用高精度的现代生态雨林餐厅设计意向图 */
+            background: linear-gradient(to bottom, rgba(35, 37, 37, 0.4) 0%, rgba(35, 37, 37, 0.95) 100%), 
+                        url('https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=1600&q=80') no-repeat center center;
+            background-size: cover;
+            box-sizing: border-box;
+            padding: 0 20px;
+        }
+
+        .hero-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: var(--color-yellow);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 4.5rem;
+            font-weight: 400;
+            line-height: 1.1;
+            margin: 0 0 25px 0;
+            letter-spacing: -1px;
+            color: var(--color-light);
+            max-width: 900px;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--color-orange);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            max-width: 600px;
+            line-height: 1.7;
+            color: #b5b5b5;
+            margin: 0 0 40px 0;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .btn-explore {
+            font-family: var(--font-sans);
+            background: transparent;
+            border: 1px solid var(--color-yellow);
+            color: var(--color-yellow);
+            padding: 15px 35px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .btn-explore:hover {
+            background: var(--color-yellow);
+            color: var(--color-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(233, 177, 64, 0.2);
+        }
+
+        /* ==================== 🍽️ 主网格主体布局 ==================== */
+        .main-wrapper {
+            max-width: 1300px; 
+            margin: 0 auto; 
+            padding: 80px 20px;
+            display: grid;
+            grid-template-columns: 1fr 360px; 
+            gap: 50px;
+            perspective: 1200px; /* 强化全局 3D 景深空间 */
+        }
+
+        @media (max-width: 1024px) {
+            .main-wrapper { grid-template-columns: 1fr; padding: 40px 20px; }
         }
 
         .main-content { grid-column: span 1; }
 
         header { 
-            text-align: center; 
-            border-bottom: 1px solid #4D5C56; 
-            padding-bottom: 25px; 
-            margin-bottom: 30px; 
+            text-align: left; 
+            border-bottom: 1px solid rgba(255,255,255,0.08); 
+            padding-bottom: 30px; 
+            margin-bottom: 40px; 
         }
-        header h1 { font-size: 2.4rem; margin: 0 0 10px 0; letter-spacing: 6px; color: #EFDB96; font-weight: 300; }
-        header p { font-style: italic; color: #B7CDC2; margin: 0; font-size: 0.9rem; letter-spacing: 2px; }
+        header h2 { font-family: var(--font-serif); font-size: 2.2rem; margin: 0 0 8px 0; letter-spacing: 2px; color: var(--color-light); font-weight: 400; }
+        header p { color: #888; margin: 0; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; }
         
-        .nav-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 40px; border-bottom: 1px solid #4D5C56; padding-bottom: 15px; }
-        .tab-btn { background: none; border: none; font-size: 0.9rem; cursor: pointer; color: #EAE6DA; padding: 6px 12px; transition: all 0.3s; letter-spacing: 2px; }
-        .tab-btn.active, .tab-btn:hover { color: #EFDB96; border-bottom: 1px solid #EFDB96; }
+        .nav-tabs { display: flex; justify-content: flex-start; flex-wrap: wrap; gap: 25px; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; }
+        .tab-btn { background: none; border: none; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: #777; padding: 6px 0; transition: all 0.3s; letter-spacing: 3px; text-transform: uppercase; }
+        .tab-btn.active, .tab-btn:hover { color: var(--color-yellow); border-bottom: 2px solid var(--color-yellow); }
 
-        /* ==================== 🛠️ UI设计师重构：3D网格板块 ==================== */
+        /* ==================== Bento Grid & 3D Cards ==================== */
         .menu-section { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* 自动响应式网格 */
-            gap: 25px; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 30px; 
         }
         
         .menu-item { 
             position: relative;
-            height: 320px; /* 固定板块高度 */
-            border-radius: 10px;
+            height: 350px; 
+            border-radius: 14px;
             overflow: hidden;
-            background-color: #2F3B36;
-            border: 1px solid #4D5C56;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            
-            /* 核心：3D与动画过渡设置 */
+            background-color: #1a1a1a;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s ease;
+            will-change: transform;
+            transition: transform 0.1s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             cursor: pointer;
         }
         
-        /* 鼠标悬停时的 3D 微悬浮与倾斜视觉 */
         .menu-item:hover {
-            transform: translateY(-8px) rotateX(4deg) rotateY(-2deg);
-            box-shadow: 0 22px 40px rgba(0,0,0,0.4);
-            border-color: #EFDB96;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+            border-color: var(--color-blue);
         }
 
-        /* 隐藏的原生样式覆盖，改用全景大图背景 */
         .item-bg-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
         
-        /* 悬停时图片放大比例 */
         .menu-item:hover .item-bg-img {
-            transform: scale(1.12);
+            transform: scale(1.08);
         }
 
-        /* 默认状态：仅精致显示菜名板块 */
         .item-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(15, 23, 20, 0.85) 30%, rgba(15, 23, 20, 0.2) 100%);
+            background: linear-gradient(to top, rgba(20, 21, 21, 0.98) 25%, rgba(20, 21, 21, 0.4) 60%, rgba(20, 21, 21, 0.1) 100%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 20px;
+            padding: 25px;
             box-sizing: border-box;
-            transition: background 0.4s ease;
         }
 
         .item-name { 
-            font-size: 1.3rem; 
-            color: #EFDB96; 
+            font-family: var(--font-serif);
+            font-size: 1.4rem; 
+            color: var(--color-light); 
             margin-bottom: 0px;
             font-weight: 400;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-            transition: transform 0.4s ease;
-            transform: translateY(45px); /* 将菜名往下拉，留出空白 */
+            line-height: 1.3;
+            transition: transform 0.4s ease, color 0.4s ease;
+            transform: translateY(45px); 
         }
         
-        /* 悬停时菜名归位 */
         .menu-item:hover .item-name {
             transform: translateY(0);
+            color: var(--color-yellow);
         }
 
-        /* 默认隐藏的细节内容 */
         .item-details {
             opacity: 0;
             visibility: hidden;
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
-        /* 悬停时显示细节（主厨笔记和点单按钮） */
         .menu-item:hover .item-details {
             opacity: 1;
             visibility: visible;
@@ -136,201 +222,227 @@
         }
 
         .item-notes { 
-            font-size: 0.85rem; 
-            color: #B7CDC2; 
-            font-style: italic; 
-            line-height: 1.5; 
+            font-size: 0.8rem; 
+            color: #999; 
+            line-height: 1.6; 
             margin-bottom: 15px;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            font-weight: 300;
         }
         
-        .order-action { display: block; }
         .btn-order { 
             width: 100%;
-            background: #EFDB96; 
-            color: #2F3B36; 
+            background: var(--color-orange); 
+            color: var(--color-light); 
             border: none; 
-            padding: 10px 0; 
+            padding: 11px 0; 
             border-radius: 6px; 
             cursor: pointer; 
-            font-weight: bold; 
-            font-size: 0.85rem; 
+            font-weight: 600; 
+            font-size: 0.75rem; 
             letter-spacing: 2px;
+            text-transform: uppercase;
             transition: all 0.2s; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        .btn-order:hover { background: #FFF; transform: scale(1.02); }
-        /* ==================================================================== */
+        .btn-order:hover { background: var(--color-yellow); color: var(--color-dark); }
 
-        /* 购物车面板 */
-        .cart-panel { background: #2F3B36; border: 1px solid #4D5C56; border-radius: 8px; padding: 25px; align-self: start; position: sticky; top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .cart-panel h2 { color: #EFDB96; font-size: 1.3rem; font-weight: 300; margin-top: 0; border-bottom: 1px solid #4D5C56; padding-bottom: 10px; letter-spacing: 2px; }
+        /* ==================== 右侧购物车面板 ==================== */
+        .cart-panel { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 30px; align-self: start; position: sticky; top: 40px; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .cart-panel h3 { font-family: var(--font-serif); color: var(--color-yellow); font-size: 1.4rem; font-weight: 400; margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 15px; letter-spacing: 1px; }
         .cart-items { max-height: 280px; overflow-y: auto; margin-bottom: 15px; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #3B4A43; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #2a2a2a; }
         .cart-item-counter { display: flex; align-items: center; gap: 8px; }
-        .btn-count { background: #4D5C56; color: #FFF; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+        .btn-count { background: var(--color-blue); color: #FFF; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
         
-        .cart-summary { border-top: 1px solid #4D5C56; padding-top: 15px; margin-top: 15px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.95rem; }
-        .btn-submit-order { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; letter-spacing: 2px; margin-top: 10px; transition: all 0.2s; }
-        .btn-submit-order:hover { background: #FFF; }
+        .cart-summary { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px; margin-top: 15px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;}
+        
+        .btn-submit-order { width: 100%; background: var(--color-red); color: var(--color-light); border: none; padding: 15px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; letter-spacing: 3px; text-transform: uppercase; margin-top: 10px; transition: opacity 0.2s; }
+        .btn-submit-order:hover { opacity: 0.9; }
 
         /* 后台管理区 */
-        #adminSection { grid-column: span 2; margin-top: 40px; padding: 30px; background: #2F3B36; border: 1px solid #4D5C56; display: none; border-radius: 8px; }
-        #adminSection h3 { color: #EFDB96; font-weight: 300; margin-top: 0; letter-spacing: 1px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #B7CDC2; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; color: #F7F6EE; box-sizing: border-box; border-radius: 6px; }
-        .form-group input:focus, .form-group textarea:focus { border-color: #EFDB96; outline: none; }
+        #adminSection { grid-column: span 2; margin-top: 40px; padding: 40px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); display: none; border-radius: 12px; }
+        #adminSection h3 { font-family: var(--font-serif); color: var(--color-yellow); font-weight: 400; margin-top: 0; letter-spacing: 1px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;}
+        .form-group input, .form-group textarea, .form-group select { font-family: var(--font-sans); width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid rgba(255,255,255,0.08); color: var(--color-light); box-sizing: border-box; border-radius: 6px; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--color-yellow); outline: none; }
         
-        /* AI 预览区域样式 */
-        .preview-container { display: flex; align-items: center; gap: 20px; margin: 15px 0; background: #3B4A43; padding: 15px; border-radius: 6px; border: 1px dashed #4D5C56; }
-        .preview-img { width: 120px; height: 120px; object-fit: cover; border-radius: 6px; border: 1px solid #EFDB96; background: #2F3B36; }
-        .btn-secondary { background: #4D5C56; color: #FFF; border: none; padding: 10px 20px; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 0.9rem; margin-right: 10px; transition: background 0.2s; }
-        .btn-secondary:hover { background: #5c6e66; }
+        .preview-container { display: flex; align-items: center; gap: 20px; margin: 15px 0; background: #2a2a2a; padding: 15px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); }
+        .preview-img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--color-yellow); }
+        .btn-secondary { background: var(--color-blue); color: #FFF; border: none; padding: 11px 22px; cursor: pointer; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-right: 10px; }
 
-        .submit-btn { background: #EFDB96; color: #2F3B36; border: none; padding: 12px 28px; cursor: pointer; font-weight: bold; letter-spacing: 1px; transition: all 0.3s; border-radius: 6px; }
-        .submit-btn:hover { background: #FFF; color: #2F3B36; }
+        .submit-btn { background: var(--color-yellow); color: var(--color-dark); border: none; padding: 12px 32px; cursor: pointer; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 6px; }
         
-        /* 批量管理列表与按钮 */
-        .batch-save-btn { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.05rem; border-radius: 6px; letter-spacing: 2px; margin-top: 15px; }
-        .batch-save-btn:disabled { background: #4D5C56; color: #8c8273; cursor: not-allowed; }
+        .batch-save-btn { width: 100%; background: var(--color-yellow); color: var(--color-dark); border: none; padding: 16px; cursor: pointer; font-weight: 600; font-size: 0.9rem; border-radius: 6px; letter-spacing: 2px; text-transform: uppercase; margin-top: 15px; }
+        .batch-save-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
 
-        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #3B4A43; border: 1px solid #4D5C56; margin-bottom: 8px; border-radius: 6px; }
-        .admin-list-item.pending-delete { border-color: #A64B4B; background: #4a3333; opacity: 0.6; }
+        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 14px; background: #2a2a2a; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 6px; font-size: 0.85rem;}
+        .admin-list-item.pending-delete { border-color: var(--color-red); background: #3d2121; opacity: 0.6; }
         
         .action-group { display: flex; gap: 8px; }
-        .modify-btn { background: none; color: #EFDB96; border: 1px solid #EFDB96; padding: 4px 10px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
-        .modify-btn:hover { background: #EFDB96; color: #2F3B36; }
-        .delete-btn { background: none; color: #FF9E9E; border: 1px solid #A64B4B; padding: 4px 10px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
-        .delete-btn:hover { background: #A64B4B; color: #fff; }
+        .modify-btn { background: none; color: var(--color-yellow); border: 1px solid var(--color-yellow); padding: 4px 12px; cursor: pointer; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;}
+        .delete-btn { background: none; color: #FF9E9E; border: 1px solid var(--color-red); padding: 4px 12px; cursor: pointer; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;}
         
-        .admin-toggle { grid-column: span 2; text-align: center; margin-top: 40px; font-size: 0.75rem; color: #4D5C56; cursor: pointer; transition: color 0.2s; }
-        .admin-toggle:hover { color: #EFDB96; }
+        .admin-toggle { grid-column: span 2; text-align: center; margin-top: 60px; font-size: 0.7rem; color: #555; cursor: pointer; transition: color 0.2s; letter-spacing: 3px;}
+        .admin-toggle:hover { color: var(--color-yellow); }
     </style>
 </head>
 <body>
 
-<div class="container">
+<!-- 🌳 大画幅全屏入口区 -->
+<section class="hero-section">
+    <div class="hero-tag">Canopy To Table</div>
+    <h1 class="hero-title">Experience cuisine inspired by <em>nature’s bounty</em>.</h1>
+    <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen. An eco-friendly digital ordering platform set deep in the heart of the sustainable rainforest.</p>
+    <button class="btn-explore" onclick="document.getElementById('orderDesk').scrollIntoView({behavior: 'smooth'});">Explore The Menu</button>
+</section>
+
+<!-- 🍽️ 点单台主体区 -->
+<div class="main-wrapper" id="orderDesk">
     
+    <!-- 左侧主营业厅 -->
     <div class="main-content">
         <header>
-            <h1>PHOEBE'S PRIVATE KITCHEN</h1>
-            <p>— 欢迎光临 · 菲比的私房点单台 —</p>
+            <h2>PHOEBE'S CANOPY DESK</h2>
+            <p>— Handcrafted Gastronomy Selection —</p>
         </header>
 
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="filterMenu('all')">全部 ALL</button>
-            <button class="tab-btn" onclick="filterMenu('中餐')">中餐 CHINESE</button>
-            <button class="tab-btn" onclick="filterMenu('西餐')">西餐 WESTERN</button>
-            <button class="tab-btn" onclick="filterMenu('烘焙')">烘焙 BAKERY</button>
-            <button class="tab-btn" onclick="filterMenu('咖啡调配')">特调 BAR & CAFE</button>
+            <button class="tab-btn active" onclick="filterMenu('all')">ALL DISHES</button>
+            <button class="tab-btn" onclick="filterMenu('Appetizers')">APPETIZERS</button>
+            <button class="tab-btn" onclick="filterMenu('Main Course')">MAIN COURSE</button>
+            <button class="tab-btn" onclick="filterMenu('Bakery')">BAKERY & SWEETS</button>
+            <button class="tab-btn" onclick="filterMenu('Botanical Cafe')">BOTANICAL CAFE</button>
         </div>
 
         <div class="menu-section" id="menuContainer"></div>
     </div>
 
+    <!-- 右侧点单收银台 -->
     <div class="cart-panel">
-        <h2>已点清单 CART</h2>
+        <h3>YOUR CART</h3>
         <div class="cart-items" id="cartItemsContainer">
-            <p style="color:#B7CDC2; font-style:italic; font-size:0.85rem; text-align:center; margin-top:20px;">桌上空空如也，点个菜吧...</p>
+            <p style="color:#666; font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty. Select culinary delights...</p>
         </div>
         <div class="cart-summary">
             <div class="summary-row">
-                <span>总道数 Items:</span>
-                <span id="totalCount">0</span>
+                <span>Total Items:</span>
+                <span id="totalCount" style="font-weight: 600; color: var(--color-yellow);">0</span>
             </div>
-            <button class="btn-submit-order" onclick="placeOrder()">🔔 确认下单 PLACE ORDER</button>
+            <button class="btn-submit-order" onclick="placeOrder()">🔔 PLACE ORDER NOW</button>
         </div>
     </div>
 
-    <div class="admin-toggle" onclick="handleAdminClick()">ENTER MANAGEMENT DASHBOARD</div>
+    <!-- 后台隐藏开关 -->
+    <div class="admin-toggle" onclick="handleAdminClick()">ENTER DESIGNER DASHBOARD</div>
 
+    <!-- 录入管理区 -->
     <div id="adminSection">
         <h3>🔑 GLOBAL CONFIGURATION</h3>
         <div class="form-group"><label>GitHub Token:</label><input type="password" id="ghToken" placeholder="github_pat_..."></div>
-        <div class="form-group"><label>GitHub User:</label><input type="text" id="ghUser" placeholder="phoboww"></div>
-        <div class="form-group"><label>Repository Name:</label><input type="text" id="ghRepo" placeholder="phoebe-menu-home"></div>
+        <div class="form-group"><label>GitHub User:</label><input type="text" id="ghUser" placeholder="username"></div>
+        <div class="form-group"><label>Repository Name:</label><input type="text" id="ghRepo" placeholder="repo-name"></div>
         
-        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 25px 0;">
+        <hr style="border:0; border-top: 1px solid rgba(255,255,255,0.08); margin: 35px 0;">
         
         <h3 id="formModeTitle">🍳 CREATE / MODIFY DISH</h3>
         <input type="hidden" id="editingRecipeId" value="">
         
-        <div class="form-group"><label>品名 (AI 将根据这个名字为你现场画图):</label><input type="text" id="foodName" placeholder="如：法式草莓千层蛋糕"></div>
+        <div class="form-group"><label>Dish Name (AI will paint based on this):</label><input type="text" id="foodName" placeholder="e.g., Rainforest Berry Crepe Tower"></div>
         <div class="form-group">
-            <label>分类:</label>
+            <label>Category:</label>
             <select id="foodCategory">
-                <option value="中餐">中餐 / CHINESE</option>
-                <option value="西餐">西餐 / WESTERN</option>
-                <option value="烘焙">烘焙 / BAKERY</option>
-                <option value="咖啡调配">咖啡调配 / BAR & CAFE</option>
+                <option value="Appetizers">Appetizers</option>
+                <option value="Main Course">Main Course</option>
+                <option value="Bakery">Bakery & Sweets</option>
+                <option value="Botanical Cafe">Botanical Cafe</option>
             </select>
         </div>
-        <div class="form-group"><label>菜品介绍/主厨笔记:</label><textarea id="foodNotes" rows="3" placeholder="介绍一下这道拿手绝活..."></textarea></div>
+        <div class="form-group"><label>Chef's Culinary Notes:</label><textarea id="foodNotes" rows="3" placeholder="Describe the ingredients, amazon herbs, or wood-fired style..."></textarea></div>
         
         <div class="preview-container" id="aiPreviewBox" style="display:none;">
-            <img class="preview-img" id="previewImgElement" src="" alt="AI 画布">
+            <img class="preview-img" id="previewImgElement" src="" alt="AI Artwork">
             <div>
-                <p style="margin:0 0 10px 0; font-size:0.9rem; color:#EFDB96;">✨ AI 主厨作画完成！</p>
-                <button class="btn-secondary" onclick="generateAiImage()">🔄 不满意，重新画一张</button>
+                <p style="margin:0 0 10px 0; font-size:0.85rem; color:var(--color-yellow);">✨ AI Chef Canvas Complete!</p>
+                <button class="btn-secondary" onclick="generateAiImage()">🔄 Repaint Artwork</button>
             </div>
         </div>
 
         <div style="margin-top: 20px;">
-            <button class="btn-secondary" onclick="generateAiImage()">🎨 召唤 AI 绘制/刷新配图</button>
-            <button class="submit-btn" id="submitFormBtn" onclick="saveFormToRecipes()">🚀 确认并把当前数据存入本地</button>
-            <button class="btn-secondary" id="cancelEditBtn" onclick="resetForm()" style="display:none; background:#8c4f4f;">取消修改</button>
+            <button class="btn-secondary" onclick="generateAiImage()">🎨 Summon AI Illustrator</button>
+            <button class="submit-btn" id="submitFormBtn" onclick="saveFormToRecipes()">🚀 Save to Local Inventory</button>
+            <button class="btn-secondary" id="cancelEditBtn" onclick="resetForm()" style="display:none; background:var(--color-red);">Cancel Edit</button>
         </div>
 
-        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 30px 0;">
-        <h3>🗑️ 菜单盘点、编辑与批量下架 (✨Batch 模式升级)</h3>
+        <hr style="border:0; border-top: 1px solid rgba(255,255,255,0.08); margin: 40px 0;">
+        <h3>🗑️ SYSTEM INVENTORY & BATCH CONTROL</h3>
         <div id="adminRecipeList"></div>
-        <button class="batch-save-btn" id="batchSaveBtn" onclick="pushToGithub()" disabled>💾 同步云端：保存当前所有修改与盘点 (0项变更)</button>
+        <button class="batch-save-btn" id="batchSaveBtn" onclick="pushToGithub()" disabled>💾 Sync to GitHub Cloud (0 changes)</button>
     </div>
 </div>
 
 <script>
+    // ✨ 默认菜单替换为契合雨林餐厅意向的高清图和英文
     let defaultRecipes = [
-        { id: 1, name: "经典冰拿铁", category: "咖啡调配", img: "https://image.pollinations.ai/p/a%20gourmet%20iced%20latte%20with%20perfect%20layers%20of%20milk%20and%20espresso,%20high%20end%20restaurant%20photography?width=400&height=400&nologo=true", notes: "深烘豆 18g 提取 36g 浓缩，搭配 150ml 冰牛奶。冰爽香醇。" },
-        { id: 2, name: "黑椒迷迭香牛排", category: "西餐", img: "https://image.pollinations.ai/p/a%20luxurious%20medium%20rare%20ribeye%20steak%20with%20rosemary,%20fine%20dining%20plating?width=400&height=400&nologo=true", notes: "厚切眼肉，大火双面锁汁各 2 分钟，出锅前淋黄油静置。" }
+        { id: 1, name: "Amazon Canopy Berry Crepe", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream." },
+        { id: 2, name: "Wood-Fired Rainforest Steak", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs." },
+        { id: 3, name: "Wild Botanical Green Salad", category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle." },
+        { id: 4, name: "Iced Smoked Botanical Latte", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk." }
     ];
 
     let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
     let cart = {};
     let pendingDeleteIds = [];
-    
-    // 用来存放当前正在预览的临时 AI 图片 URL
     let currentTempImageUrl = "";
-    // 用来记录本地相较于云端的总变更计数（无论是添加、修改、还是删除）
     let changesCount = 0;
 
-    // ✨ UI设计师重构了动态渲染模版：图片改为大背景，细节装入 Hover 面板
     function renderMenu(data) {
         const container = document.getElementById('menuContainer');
         container.innerHTML = '';
         data.forEach(item => {
             container.insertAdjacentHTML('beforeend', `
                 <div class="menu-item">
-                    <img class="item-bg-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/400/2F3B36/EFDB96?text=Food'">
+                    <img class="item-bg-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/400/232525/E9B140?text=Rainforest+Cuisine'">
                     <div class="item-overlay">
                         <div class="item-name">${item.name}</div>
                         <div class="item-details">
-                            <div class="item-notes">“ ${item.notes} ”</div>
+                            <div class="item-notes">${item.notes}</div>
                             <div class="order-action">
-                                <button class="btn-order" onclick="event.stopPropagation(); addToCart(${item.id})">+ 点单</button>
+                                <button class="btn-order" onclick="event.stopPropagation(); addToCart(${item.id})">+ Add To Order</button>
                             </div>
                         </div>
                     </div>
                 </div>
             `);
         });
+        init3DEffect();
     }
 
-    // 🛒 购物车逻辑
+    /* ==================== 🧠 3D Tracking Logic ==================== */
+    function init3DEffect() {
+        const cards = document.querySelectorAll('.menu-item');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; 
+                const y = e.clientY - rect.top;  
+                const xc = rect.width / 2;
+                const yc = rect.height / 2;
+                const angleX = (yc - y) / 10;
+                const angleY = (x - xc) / 10;
+                card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0)';
+            });
+        });
+    }
+
+    // 🛒 Cart Logic
     function addToCart(id) {
         const item = recipes.find(r => r.id === id);
         if (!item) return;
@@ -353,7 +465,7 @@
         let totalCount = 0;
         const keys = Object.keys(cart);
         if (keys.length === 0) {
-            container.innerHTML = `<p style="color:#B7CDC2; font-style:italic; font-size:0.85rem; text-align:center; margin-top:20px;">桌上空空如也，点个菜吧...</p>`;
+            container.innerHTML = `<p style="color:#666; font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty. Select culinary delights...</p>`;
             totalCountSpan.innerText = '0';
             return;
         }
@@ -362,10 +474,10 @@
             totalCount += item.count;
             container.insertAdjacentHTML('beforeend', `
                 <div class="cart-item">
-                    <span>${item.name}</span>
+                    <span style="font-weight:500; max-width:180px;">${item.name}</span>
                     <div class="cart-item-counter">
                         <button class="btn-count" onclick="changeCount(${id}, -1)">-</button>
-                        <span>${item.count}</span>
+                        <span style="min-width:15px; text-align:center; font-weight:600;">${item.count}</span>
                         <button class="btn-count" onclick="changeCount(${id}, 1)">+</button>
                     </div>
                 </div>
@@ -376,10 +488,10 @@
 
     function placeOrder() {
         const keys = Object.keys(cart);
-        if(keys.length === 0) { alert('您还没有点任何东西哦！'); return; }
-        let receipt = `🧾 【PHOEBE'S PRIVATE KITCHEN】\n———————————————\n点单成功！主厨正在为您烹饪：\n\n`;
+        if(keys.length === 0) { alert('Your cart is currently empty.'); return; }
+        let receipt = `🧾 【PHOEBE'S RAINFOREST CANOPY】\n———————————————\nOrder successful! Kitchen is now preparing:\n\n`;
         keys.forEach(id => { receipt += `▪️ ${cart[id].name}  x  ${cart[id].count}\n`; });
-        receipt += `———————————————\n✨ 祝您用餐愉快！Enjoy your meal!`;
+        receipt += `———————————————\n✨ Enjoy your sustainable dining experience!`;
         alert(receipt);
         cart = {};
         updateCartUI();
@@ -387,10 +499,9 @@
 
     function generateAiImage() {
         const name = document.getElementById('foodName').value;
-        if(!name) { alert('请先填入菜品名称，AI 才能根据名字进行绘画哦！'); return; }
+        if(!name) { alert('Please insert a dish name first.'); return; }
         const randomSeed = Math.floor(Math.random() * 100000);
-        // 调高分辨率至 400x400，完美适配大图板块
-        currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true&seed=${randomSeed}`;
+        currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true&seed=${randomSeed}`;
         document.getElementById('previewImgElement').src = currentTempImageUrl;
         document.getElementById('aiPreviewBox').style.display = 'flex';
     }
@@ -410,8 +521,7 @@
         document.getElementById('aiPreviewBox').style.display = 'flex';
 
         document.getElementById('cancelEditBtn').style.display = 'inline-block';
-        document.getElementById('submitFormBtn').innerText = '💾 临时保存本次修改';
-        
+        document.getElementById('submitFormBtn').innerText = '💾 Save Temporary Changes';
         document.getElementById('formModeTitle').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -421,10 +531,10 @@
         const category = document.getElementById('foodCategory').value;
         const notes = document.getElementById('foodNotes').value;
 
-        if(!name) { alert('请输入菜品/商品名称！'); return; }
+        if(!name) { alert('Please enter dish name.'); return; }
         
         if(!currentTempImageUrl) {
-            currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true`;
+            currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true`;
         }
 
         if(idStr) {
@@ -435,16 +545,13 @@
                 }
                 return r;
             });
-            alert(`【${name}】的细节修改已记入盘点单！`);
         } else {
             recipes.push({ id: Date.now(), name, category, img: currentTempImageUrl, notes });
-            alert(`全新菜品【${name}】已成功加入盘点单！`);
         }
 
         changesCount++;
         resetForm();
         localStorage.setItem('my_recipes', JSON.stringify(recipes));
-        
         renderMenu(recipes);
         renderAdminList();
     }
@@ -456,7 +563,7 @@
         document.getElementById('foodNotes').value = "";
         document.getElementById('aiPreviewBox').style.display = 'none';
         document.getElementById('cancelEditBtn').style.display = 'none';
-        document.getElementById('submitFormBtn').innerText = '🚀 确认并把当前数据存入本地';
+        document.getElementById('submitFormBtn').innerText = '🚀 Save to Local Inventory';
         currentTempImageUrl = "";
     }
 
@@ -466,14 +573,13 @@
         
         recipes.forEach(item => {
             const isPending = pendingDeleteIds.includes(item.id);
-            
             adminListContainer.insertAdjacentHTML('beforeend', `
                 <div class="admin-list-item ${isPending ? 'pending-delete' : ''}">
-                    <span><strong style="color:#EFDB96;">[${item.category}]</strong> ${item.name}</span>
+                    <span><strong style="color:var(--color-yellow);">[${item.category}]</strong> ${item.name}</span>
                     <div class="action-group">
-                        <button class="modify-btn" onclick="startModifyRecipe(${item.id})" ${isPending ? 'disabled style="opacity:0.3;"' : ''}>📝 修改细节</button>
+                        <button class="modify-btn" onclick="startModifyRecipe(${item.id})" ${isPending ? 'disabled style="opacity:0.3;"' : ''}>Edit</button>
                         <button class="delete-btn" onclick="togglePendingDelete(${item.id})">
-                            ${isPending ? '↩️ 撤销下架' : '❌ 下架'}
+                            ${isPending ? 'Revoke' : 'Archive'}
                         </button>
                     </div>
                 </div>
@@ -484,10 +590,10 @@
         const activeChanges = pendingDeleteIds.length + changesCount;
         if (activeChanges > 0) {
             saveBtn.disabled = false;
-            saveBtn.innerText = `💾 同步云端：保存当前所有修改与盘点 (有 ${activeChanges} 项变更待同步)`;
+            saveBtn.innerText = `💾 Sync to GitHub Cloud (${activeChanges} changes pending)`;
         } else {
             saveBtn.disabled = true;
-            saveBtn.innerText = `💾 同步云端：保存当前所有修改与盘点 (无变更)`;
+            saveBtn.innerText = `💾 Sync to GitHub Cloud (No Changes)`;
         }
     }
 
@@ -515,7 +621,7 @@
             document.getElementById('ghUser').value = localStorage.getItem('gh_user') || '';
             document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
             renderAdminList();
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            document.getElementById('adminSection').scrollIntoView({ behavior: 'smooth' });
         }
     }
 
@@ -523,21 +629,18 @@
         const token = document.getElementById('ghToken').value;
         const user = document.getElementById('ghUser').value;
         const repo = document.getElementById('ghRepo').value;
+        if(!token || !user || !repo) { alert('Please fill configuration fields.'); return; }
 
-        if(!token || !user || !repo) { alert('请完善全局配置。'); return; }
-
-        if(confirm(`确认要把当前所有的添加、修改和批量下架的数据，一次性全网同步吗？`)) {
+        if(confirm(`Sync all local updates and archiving items to GitHub?`)) {
             if(pendingDeleteIds.length > 0) {
                 recipes = recipes.filter(r => !pendingDeleteIds.includes(r.id));
             }
-
             localStorage.setItem('my_recipes', JSON.stringify(recipes));
             localStorage.setItem('gh_token', token);
             localStorage.setItem('gh_user', user);
             localStorage.setItem('gh_repo', repo);
 
             const url = `https://api.github.com/repos/${user}/${repo}/contents/index.html`;
-            
             try {
                 const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
                 const fileData = await res.json();
@@ -558,15 +661,15 @@
                 });
 
                 if(putRes.ok) {
-                    alert('🎉 全盘数据已成功发布上云！正在重新烹饪网页，请于一分钟后刷新查看最新点单台。');
+                    alert('🎉 Cloud database successfully synced! Re-baking web node...');
                     pendingDeleteIds = [];
                     changesCount = 0;
                     location.reload();
                 } else {
-                    alert('同步失败，请检查配置。');
+                    alert('Sync failed. Check credentials.');
                 }
             } catch (e) {
-                alert('发生错误: ' + e.message);
+                alert('Error: ' + e.message);
             }
         }
     }
