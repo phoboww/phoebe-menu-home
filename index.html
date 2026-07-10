@@ -774,11 +774,42 @@
 <script>
     // 云端菜单数组
     let defaultRecipes = [
-        { id: 1, name: "Amazon Canopy Berry Crepe | 雨林莓果千层", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream.<br>手作野生浆果千层，蕴含亚马逊香草荚独有的丰盈乳香。" },
-        { id: 2, name: "Wood-Fired Rainforest Steak | 炙烤雨林沙朗", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs.<br>原产地生态肉源，辅以林间现采迷迭香与原野密植草本的炭火慢熏。" },
-        { id: 3, name: "Wild Botanical Green Salad | 苍翠原生态沙拉", category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle.<br>饱含蕨类树影灵感的微生嫩苗，配有机牛油果及冷压雨林种籽油。 " },
-        { id: 4, name: "Iced Smoked Botanical Latte | 烟熏烟幕植物拿铁", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk.<br>山核桃木屑冷熏的慢滴有机浓缩，交融本地专属燕麦植物乳。" }
-    ];
+    {
+        "id": 1,
+        "name": "Amazon Canopy Berry Crepe | 雨林莓果千层",
+        "category": "Bakery",
+        "img": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80",
+        "notes": "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream.<br>手作野生浆果千层，蕴含亚马逊香草荚独有的丰盈乳香。"
+    },
+    {
+        "id": 2,
+        "name": "Wood-Fired Rainforest Steak | 炙烤雨林沙朗",
+        "category": "Main Course",
+        "img": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80",
+        "notes": "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs.<br>原产地生态肉源，辅以林间现采迷迭香与原野密植草本的炭火慢熏。"
+    },
+    {
+        "id": 3,
+        "name": "Wild Botanical Green Salad | 苍翠原生态沙拉",
+        "category": "Appetizers",
+        "img": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80",
+        "notes": "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle.<br>饱含蕨类树影灵感的微生嫩苗，配有机牛油果及冷压雨林种籽油。 "
+    },
+    {
+        "id": 4,
+        "name": "Iced Smoked Botanical Latte | 烟熏烟幕植物拿铁",
+        "category": "Botanical Cafe",
+        "img": "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80",
+        "notes": "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk.<br>山核桃木屑冷熏的慢滴有机浓缩，交融本地专属燕麦植物乳。"
+    },
+    {
+        "id": 1783709493519,
+        "name": "Iced Americano | 冰美式咖啡",
+        "category": "Botanical Cafe",
+        "img": "",
+        "notes": ""
+    }
+];
 
     let isEditingLocally = localStorage.getItem('my_recipes_dirty') === 'true';
     let recipes = (isEditingLocally && JSON.parse(localStorage.getItem('my_recipes'))) || defaultRecipes;
