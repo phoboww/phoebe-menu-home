@@ -16,19 +16,21 @@
         }
         
         .container { 
-            max-width: 950px; 
+            max-width: 1200px; /* 放大容器，给板块布局更多空间 */
             margin: 0 auto; 
             border: 1px solid #4D5C56; 
             padding: 40px; 
             background: #3B4A43; 
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-            border-radius: 6px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+            border-radius: 12px;
             display: grid;
-            grid-template-columns: 1fr 320px; 
-            gap: 30px;
+            grid-template-columns: 1fr 340px; 
+            gap: 40px;
+            /* 开启整个容器的3D景深空间 */
+            perspective: 1000px;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .container { grid-template-columns: 1fr; padding: 20px; }
         }
 
@@ -40,60 +42,164 @@
             padding-bottom: 25px; 
             margin-bottom: 30px; 
         }
-        header h1 { font-size: 2.2rem; margin: 0 0 10px 0; letter-spacing: 4px; color: #EFDB96; font-weight: 300; }
+        header h1 { font-size: 2.4rem; margin: 0 0 10px 0; letter-spacing: 6px; color: #EFDB96; font-weight: 300; }
         header p { font-style: italic; color: #B7CDC2; margin: 0; font-size: 0.9rem; letter-spacing: 2px; }
         
-        .nav-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #4D5C56; padding-bottom: 15px; }
-        .tab-btn { background: none; border: none; font-size: 0.9rem; cursor: pointer; color: #EAE6DA; padding: 6px 12px; transition: all 0.3s; letter-spacing: 1px; }
+        .nav-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 40px; border-bottom: 1px solid #4D5C56; padding-bottom: 15px; }
+        .tab-btn { background: none; border: none; font-size: 0.9rem; cursor: pointer; color: #EAE6DA; padding: 6px 12px; transition: all 0.3s; letter-spacing: 2px; }
         .tab-btn.active, .tab-btn:hover { color: #EFDB96; border-bottom: 1px solid #EFDB96; }
 
-        /* 菜品展示 */
-        .menu-section { display: grid; gap: 20px; }
-        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #4D5C56; }
-        .item-info { flex-grow: 1; padding-right: 15px; }
-        .item-name { font-size: 1.15rem; color: #F7F6EE; margin-bottom: 4px; }
-        .item-notes { font-size: 0.85rem; color: #B7CDC2; font-style: italic; line-height: 1.4; }
-        .item-img { width: 75px; height: 75px; object-fit: cover; border-radius: 4px; border: 1px solid #4D5C56; background-color: #2F3B36; }
+        /* ==================== 🛠️ UI设计师重构：3D网格板块 ==================== */
+        .menu-section { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* 自动响应式网格 */
+            gap: 25px; 
+        }
         
-        .order-action { display: flex; align-items: center; gap: 10px; margin-left: 15px; }
-        .btn-order { background: #EFDB96; color: #2F3B36; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
-        .btn-order:hover { background: #FFF; }
+        .menu-item { 
+            position: relative;
+            height: 320px; /* 固定板块高度 */
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #2F3B36;
+            border: 1px solid #4D5C56;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            
+            /* 核心：3D与动画过渡设置 */
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s ease;
+            cursor: pointer;
+        }
+        
+        /* 鼠标悬停时的 3D 微悬浮与倾斜视觉 */
+        .menu-item:hover {
+            transform: translateY(-8px) rotateX(4deg) rotateY(-2deg);
+            box-shadow: 0 22px 40px rgba(0,0,0,0.4);
+            border-color: #EFDB96;
+        }
+
+        /* 隐藏的原生样式覆盖，改用全景大图背景 */
+        .item-bg-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        /* 悬停时图片放大比例 */
+        .menu-item:hover .item-bg-img {
+            transform: scale(1.12);
+        }
+
+        /* 默认状态：仅精致显示菜名板块 */
+        .item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(15, 23, 20, 0.85) 30%, rgba(15, 23, 20, 0.2) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: background 0.4s ease;
+        }
+
+        .item-name { 
+            font-size: 1.3rem; 
+            color: #EFDB96; 
+            margin-bottom: 0px;
+            font-weight: 400;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+            transition: transform 0.4s ease;
+            transform: translateY(45px); /* 将菜名往下拉，留出空白 */
+        }
+        
+        /* 悬停时菜名归位 */
+        .menu-item:hover .item-name {
+            transform: translateY(0);
+        }
+
+        /* 默认隐藏的细节内容 */
+        .item-details {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+            margin-top: 8px;
+        }
+
+        /* 悬停时显示细节（主厨笔记和点单按钮） */
+        .menu-item:hover .item-details {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .item-notes { 
+            font-size: 0.85rem; 
+            color: #B7CDC2; 
+            font-style: italic; 
+            line-height: 1.5; 
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .order-action { display: block; }
+        .btn-order { 
+            width: 100%;
+            background: #EFDB96; 
+            color: #2F3B36; 
+            border: none; 
+            padding: 10px 0; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 0.85rem; 
+            letter-spacing: 2px;
+            transition: all 0.2s; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-order:hover { background: #FFF; transform: scale(1.02); }
+        /* ==================================================================== */
 
         /* 购物车面板 */
-        .cart-panel { background: #2F3B36; border: 1px solid #4D5C56; border-radius: 4px; padding: 20px; align-self: start; position: sticky; top: 40px; }
+        .cart-panel { background: #2F3B36; border: 1px solid #4D5C56; border-radius: 8px; padding: 25px; align-self: start; position: sticky; top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .cart-panel h2 { color: #EFDB96; font-size: 1.3rem; font-weight: 300; margin-top: 0; border-bottom: 1px solid #4D5C56; padding-bottom: 10px; letter-spacing: 2px; }
-        .cart-items { max-height: 240px; overflow-y: auto; margin-bottom: 15px; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #3B4A43; }
+        .cart-items { max-height: 280px; overflow-y: auto; margin-bottom: 15px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #3B4A43; }
         .cart-item-counter { display: flex; align-items: center; gap: 8px; }
-        .btn-count { background: #4D5C56; color: #FFF; border: none; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+        .btn-count { background: #4D5C56; color: #FFF; border: none; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
         
         .cart-summary { border-top: 1px solid #4D5C56; padding-top: 15px; margin-top: 15px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
-        .btn-submit-order { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; letter-spacing: 2px; margin-top: 10px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.95rem; }
+        .btn-submit-order { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; letter-spacing: 2px; margin-top: 10px; transition: all 0.2s; }
         .btn-submit-order:hover { background: #FFF; }
 
         /* 后台管理区 */
-        #adminSection { grid-column: span 2; margin-top: 40px; padding: 30px; background: #2F3B36; border: 1px solid #4D5C56; display: none; border-radius: 4px; }
+        #adminSection { grid-column: span 2; margin-top: 40px; padding: 30px; background: #2F3B36; border: 1px solid #4D5C56; display: none; border-radius: 8px; }
         #adminSection h3 { color: #EFDB96; font-weight: 300; margin-top: 0; letter-spacing: 1px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #B7CDC2; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px; background: #3B4A43; border: 1px solid #4D5C56; color: #F7F6EE; box-sizing: border-box; border-radius: 4px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; color: #F7F6EE; box-sizing: border-box; border-radius: 6px; }
         .form-group input:focus, .form-group textarea:focus { border-color: #EFDB96; outline: none; }
         
         /* AI 预览区域样式 */
-        .preview-container { display: flex; align-items: center; gap: 20px; margin: 15px 0; background: #3B4A43; padding: 15px; border-radius: 4px; border: 1px dashed #4D5C56; }
-        .preview-img { width: 120px; height: 120px; object-fit: cover; border-radius: 4px; border: 1px solid #EFDB96; background: #2F3B36; }
-        .btn-secondary { background: #4D5C56; color: #FFF; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 0.9rem; margin-right: 10px; }
+        .preview-container { display: flex; align-items: center; gap: 20px; margin: 15px 0; background: #3B4A43; padding: 15px; border-radius: 6px; border: 1px dashed #4D5C56; }
+        .preview-img { width: 120px; height: 120px; object-fit: cover; border-radius: 6px; border: 1px solid #EFDB96; background: #2F3B36; }
+        .btn-secondary { background: #4D5C56; color: #FFF; border: none; padding: 10px 20px; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 0.9rem; margin-right: 10px; transition: background 0.2s; }
         .btn-secondary:hover { background: #5c6e66; }
 
-        .submit-btn { background: #EFDB96; color: #2F3B36; border: none; padding: 12px 28px; cursor: pointer; font-weight: bold; letter-spacing: 1px; transition: all 0.3s; border-radius: 4px; }
+        .submit-btn { background: #EFDB96; color: #2F3B36; border: none; padding: 12px 28px; cursor: pointer; font-weight: bold; letter-spacing: 1px; transition: all 0.3s; border-radius: 6px; }
         .submit-btn:hover { background: #FFF; color: #2F3B36; }
         
         /* 批量管理列表与按钮 */
-        .batch-save-btn { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.05rem; border-radius: 4px; letter-spacing: 2px; margin-top: 15px; }
+        .batch-save-btn { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.05rem; border-radius: 6px; letter-spacing: 2px; margin-top: 15px; }
         .batch-save-btn:disabled { background: #4D5C56; color: #8c8273; cursor: not-allowed; }
 
-        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; margin-bottom: 6px; border-radius: 4px; }
+        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #3B4A43; border: 1px solid #4D5C56; margin-bottom: 8px; border-radius: 6px; }
         .admin-list-item.pending-delete { border-color: #A64B4B; background: #4a3333; opacity: 0.6; }
         
         .action-group { display: flex; gap: 8px; }
@@ -102,14 +208,14 @@
         .delete-btn { background: none; color: #FF9E9E; border: 1px solid #A64B4B; padding: 4px 10px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
         .delete-btn:hover { background: #A64B4B; color: #fff; }
         
-        .admin-toggle { grid-column: span 2; text-align: center; margin-top: 40px; font-size: 0.75rem; color: #4D5C56; cursor: pointer; }
+        .admin-toggle { grid-column: span 2; text-align: center; margin-top: 40px; font-size: 0.75rem; color: #4D5C56; cursor: pointer; transition: color 0.2s; }
+        .admin-toggle:hover { color: #EFDB96; }
     </style>
 </head>
 <body>
 
 <div class="container">
     
-    <!-- 左侧主营业厅 -->
     <div class="main-content">
         <header>
             <h1>PHOEBE'S PRIVATE KITCHEN</h1>
@@ -127,7 +233,6 @@
         <div class="menu-section" id="menuContainer"></div>
     </div>
 
-    <!-- 右侧点单收银台 -->
     <div class="cart-panel">
         <h2>已点清单 CART</h2>
         <div class="cart-items" id="cartItemsContainer">
@@ -142,10 +247,8 @@
         </div>
     </div>
 
-    <!-- 底部隐藏开关 -->
     <div class="admin-toggle" onclick="handleAdminClick()">ENTER MANAGEMENT DASHBOARD</div>
 
-    <!-- 录入管理区 -->
     <div id="adminSection">
         <h3>🔑 GLOBAL CONFIGURATION</h3>
         <div class="form-group"><label>GitHub Token:</label><input type="password" id="ghToken" placeholder="github_pat_..."></div>
@@ -154,9 +257,7 @@
         
         <hr style="border:0; border-top: 1px solid #4D5C56; margin: 25px 0;">
         
-        <!-- 动态标题：支持切换新增或修改 -->
         <h3 id="formModeTitle">🍳 CREATE / MODIFY DISH</h3>
-        <!-- 隐藏域用来标记当前是在修改哪一个ID的菜，若为空代表在创建新菜 -->
         <input type="hidden" id="editingRecipeId" value="">
         
         <div class="form-group"><label>品名 (AI 将根据这个名字为你现场画图):</label><input type="text" id="foodName" placeholder="如：法式草莓千层蛋糕"></div>
@@ -171,7 +272,6 @@
         </div>
         <div class="form-group"><label>菜品介绍/主厨笔记:</label><textarea id="foodNotes" rows="3" placeholder="介绍一下这道拿手绝活..."></textarea></div>
         
-        <!-- ✨ 8.0 新增：AI 独立画布预览及重新生成模块 -->
         <div class="preview-container" id="aiPreviewBox" style="display:none;">
             <img class="preview-img" id="previewImgElement" src="" alt="AI 画布">
             <div>
@@ -195,28 +295,9 @@
 
 <script>
     let defaultRecipes = [
-    {
-        "id": 1783699243836,
-        "name": "拿铁",
-        "category": "中餐",
-        "img": "https://www.gafei.com/uploadfile/ueditor/image/202403/1709977684176cac.jpg",
-        "notes": ""
-    },
-    {
-        "id": 1783699940792,
-        "name": "法式草莓千层蛋糕",
-        "category": "烘焙",
-        "img": "https://image.pollinations.ai/p/%E6%B3%95%E5%BC%8F%E8%8D%89%E8%8E%93%E5%8D%83%E5%B1%82%E8%9B%8B%E7%B3%95,%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true",
-        "notes": ""
-    },
-    {
-        "id": 1783700601984,
-        "name": "老北京宫保鸡丁",
-        "category": "中餐",
-        "img": "https://image.pollinations.ai/p/%E8%80%81%E5%8C%97%E4%BA%AC%E5%AE%AB%E4%BF%9D%E9%B8%A1%E4%B8%81,%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true&seed=50642",
-        "notes": ""
-    }
-];
+        { id: 1, name: "经典冰拿铁", category: "咖啡调配", img: "https://image.pollinations.ai/p/a%20gourmet%20iced%20latte%20with%20perfect%20layers%20of%20milk%20and%20espresso,%20high%20end%20restaurant%20photography?width=400&height=400&nologo=true", notes: "深烘豆 18g 提取 36g 浓缩，搭配 150ml 冰牛奶。冰爽香醇。" },
+        { id: 2, name: "黑椒迷迭香牛排", category: "西餐", img: "https://image.pollinations.ai/p/a%20luxurious%20medium%20rare%20ribeye%20steak%20with%20rosemary,%20fine%20dining%20plating?width=400&height=400&nologo=true", notes: "厚切眼肉，大火双面锁汁各 2 分钟，出锅前淋黄油静置。" }
+    ];
 
     let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
     let cart = {};
@@ -227,19 +308,22 @@
     // 用来记录本地相较于云端的总变更计数（无论是添加、修改、还是删除）
     let changesCount = 0;
 
+    // ✨ UI设计师重构了动态渲染模版：图片改为大背景，细节装入 Hover 面板
     function renderMenu(data) {
         const container = document.getElementById('menuContainer');
         container.innerHTML = '';
         data.forEach(item => {
             container.insertAdjacentHTML('beforeend', `
                 <div class="menu-item">
-                    <div class="item-info">
-                        <div class="item-name"><span>${item.name}</span></div>
-                        <div class="item-notes">“ ${item.notes} ”</div>
-                    </div>
-                    <img class="item-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150/2F3B36/EFDB96?text=Food'">
-                    <div class="order-action">
-                        <button class="btn-order" onclick="addToCart(${item.id})">+ 点单</button>
+                    <img class="item-bg-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/400/2F3B36/EFDB96?text=Food'">
+                    <div class="item-overlay">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-details">
+                            <div class="item-notes">“ ${item.notes} ”</div>
+                            <div class="order-action">
+                                <button class="btn-order" onclick="event.stopPropagation(); addToCart(${item.id})">+ 点单</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `);
@@ -301,53 +385,36 @@
         updateCartUI();
     }
 
-    /* =======================================================
-       ✨ 8.0 新增的核心：AI 独立绘图、预览与不满意重新生成逻辑
-       ======================================================= */
     function generateAiImage() {
         const name = document.getElementById('foodName').value;
         if(!name) { alert('请先填入菜品名称，AI 才能根据名字进行绘画哦！'); return; }
-        
-        // 加上随机数种子 (seed)，确保每次点击“重新画一张”时，图片会有所不同！
         const randomSeed = Math.floor(Math.random() * 100000);
-        
-        // 生成专属 Pollinations AI 绘图链接
-        currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true&seed=${randomSeed}`;
-        
-        // 渲染到预览框中
+        // 调高分辨率至 400x400，完美适配大图板块
+        currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true&seed=${randomSeed}`;
         document.getElementById('previewImgElement').src = currentTempImageUrl;
         document.getElementById('aiPreviewBox').style.display = 'flex';
     }
 
-    /* =======================================================
-       ✨ 8.0 新增的核心：修改 (Modify) 功能与表单提交分配
-       ======================================================= */
-    // 1. 当主厨点击“修改”按钮时，把数据吸入表单
     function startModifyRecipe(id) {
         const item = recipes.find(r => r.id === id);
         if (!item) return;
 
-        // 切换表单为修改模式
         document.getElementById('formModeTitle').innerText = `📝 MODIFY DISH: 【${item.name}】`;
         document.getElementById('editingRecipeId').value = item.id;
         document.getElementById('foodName').value = item.name;
         document.getElementById('foodCategory').value = item.category;
         document.getElementById('foodNotes').value = item.notes;
         
-        // 加载它原有的图片作为 AI 预览框的内容
         currentTempImageUrl = item.img;
         document.getElementById('previewImgElement').src = item.img;
         document.getElementById('aiPreviewBox').style.display = 'flex';
 
-        // 显示取消修改按钮
         document.getElementById('cancelEditBtn').style.display = 'inline-block';
         document.getElementById('submitFormBtn').innerText = '💾 临时保存本次修改';
         
-        // 顺便帮主厨平滑滚动回表单区方便修改
         document.getElementById('formModeTitle').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 2. 点击保存时，判断当前是“新增”还是“修改”，并把数据写入本地变量（此时不联网）
     function saveFormToRecipes() {
         const idStr = document.getElementById('editingRecipeId').value;
         const name = document.getElementById('foodName').value;
@@ -356,13 +423,11 @@
 
         if(!name) { alert('请输入菜品/商品名称！'); return; }
         
-        // 如果主厨没有触发过 AI 绘图预览，我们就自动生成一个图
         if(!currentTempImageUrl) {
-            currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true`;
+            currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true`;
         }
 
         if(idStr) {
-            // 模式 A：修改现有菜品
             const targetId = parseInt(idStr);
             recipes = recipes.map(r => {
                 if(r.id === targetId) {
@@ -372,21 +437,18 @@
             });
             alert(`【${name}】的细节修改已记入盘点单！`);
         } else {
-            // 模式 B：创建全新菜品
             recipes.push({ id: Date.now(), name, category, img: currentTempImageUrl, notes });
             alert(`全新菜品【${name}】已成功加入盘点单！`);
         }
 
-        changesCount++; // 触发了一次本地变更
+        changesCount++;
         resetForm();
         localStorage.setItem('my_recipes', JSON.stringify(recipes));
         
-        // 刷新列表
         renderMenu(recipes);
         renderAdminList();
     }
 
-    // 3. 重置表单状态回到“创建模式”
     function resetForm() {
         document.getElementById('formModeTitle').innerText = `🍳 CREATE / MODIFY DISH`;
         document.getElementById('editingRecipeId').value = "";
@@ -398,7 +460,6 @@
         currentTempImageUrl = "";
     }
 
-    // 后台管理面板列表渲染
     function renderAdminList() {
         const adminListContainer = document.getElementById('adminRecipeList');
         adminListContainer.innerHTML = '';
@@ -410,9 +471,7 @@
                 <div class="admin-list-item ${isPending ? 'pending-delete' : ''}">
                     <span><strong style="color:#EFDB96;">[${item.category}]</strong> ${item.name}</span>
                     <div class="action-group">
-                        <!-- 修改按钮 -->
                         <button class="modify-btn" onclick="startModifyRecipe(${item.id})" ${isPending ? 'disabled style="opacity:0.3;"' : ''}>📝 修改细节</button>
-                        <!-- 下架按钮 -->
                         <button class="delete-btn" onclick="togglePendingDelete(${item.id})">
                             ${isPending ? '↩️ 撤销下架' : '❌ 下架'}
                         </button>
@@ -421,7 +480,6 @@
             `);
         });
 
-        // 刷新同步云端大按钮的状态
         const saveBtn = document.getElementById('batchSaveBtn');
         const activeChanges = pendingDeleteIds.length + changesCount;
         if (activeChanges > 0) {
@@ -461,7 +519,6 @@
         }
     }
 
-    // 🌟 终极打包一键发往 GitHub 的核心
     async function pushToGithub() {
         const token = document.getElementById('ghToken').value;
         const user = document.getElementById('ghUser').value;
@@ -470,7 +527,6 @@
         if(!token || !user || !repo) { alert('请完善全局配置。'); return; }
 
         if(confirm(`确认要把当前所有的添加、修改和批量下架的数据，一次性全网同步吗？`)) {
-            // 执行真正的批量删除过滤
             if(pendingDeleteIds.length > 0) {
                 recipes = recipes.filter(r => !pendingDeleteIds.includes(r.id));
             }
