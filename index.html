@@ -3,203 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phoebe's Secret Menu | 菲比的私房主厨菜单</title>
+    <title>Phoebe's Order System | 菲比的私房点单台</title>
     <style>
-        /* 1. 注入你给的专属莫兰迪高级色盘 */
+        /* 延续专属莫兰迪高级色盘 */
         body { 
-            background-color: #2F3B36; /* 精调深墨绿衬底 (#84A295的深色延伸，衬托高级感) */
-            color: #F7F6EE; /* 珍珠白正文 */
+            background-color: #2F3B36; 
+            color: #F7F6EE; 
             font-family: 'Times New Roman', 'Georgia', 'PingFang SC', sans-serif; 
             margin: 0; 
-            padding: 60px 20px;
+            padding: 40px 20px;
             letter-spacing: 1px;
         }
         
         .container { 
-            max-width: 850px; 
+            max-width: 900px; 
             margin: 0 auto; 
             border: 1px solid #4D5C56; 
-            padding: 50px 40px; 
-            background: #3B4A43; /* 对应 #84A295 与 #B7CDC2 之间的中和灰绿 */
+            padding: 40px; 
+            background: #3B4A43; 
             box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-            border-radius: 4px;
+            border-radius: 6px;
+            display: grid;
+            grid-template-columns: 1fr 320px; 
+            gap: 30px;
         }
 
-        /* 2. 餐厅门面 Header */
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; padding: 20px; }
+        }
+
+        .main-content { grid-column: span 1; }
+
         header { 
             text-align: center; 
             border-bottom: 1px solid #4D5C56; 
-            padding-bottom: 35px; 
-            margin-bottom: 40px; 
+            padding-bottom: 25px; 
+            margin-bottom: 30px; 
         }
-        header h1 { 
-            font-size: 2.6rem; 
-            margin: 0 0 12px 0; 
-            letter-spacing: 5px; 
-            color: #EFDB96; /* 核心高亮：你指定的古铜金 */
-            font-weight: 300;
-        }
-        header p { 
-            font-style: italic; 
-            color: #B7CDC2; /* 浅青灰副标题 */
-            margin: 0;
-            font-size: 0.95rem;
-            letter-spacing: 2px;
-        }
+        header h1 { font-size: 2.2rem; margin: 0 0 10px 0; letter-spacing: 4px; color: #EFDB96; font-weight: 300; }
+        header p { font-style: italic; color: #B7CDC2; margin: 0; font-size: 0.9rem; letter-spacing: 2px; }
         
-        /* 3. 专属分类导航 */
-        .nav-tabs { 
-            display: flex; 
-            justify-content: center; 
-            flex-wrap: wrap;
-            gap: 25px; 
-            margin-bottom: 50px; 
-            border-bottom: 1px solid #4D5C56;
-            padding-bottom: 15px;
-        }
-        .tab-btn { 
-            background: none; 
-            border: none; 
-            font-size: 0.95rem; 
-            cursor: pointer; 
-            color: #EAE6DA; /* 亚麻灰未激活状态 */
-            padding: 8px 4px; 
-            transition: all 0.4s ease;
-            letter-spacing: 2px;
-        }
-        .tab-btn.active, .tab-btn:hover { 
-            color: #EFDB96; /* 激活时切换成古铜金 */
-            border-bottom: 1px solid #EFDB96;
-        }
+        .nav-tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #4D5C56; padding-bottom: 15px; }
+        .tab-btn { background: none; border: none; font-size: 0.9rem; cursor: pointer; color: #EAE6DA; padding: 6px 12px; transition: all 0.3s; letter-spacing: 1px; }
+        .tab-btn.active, .tab-btn:hover { color: #EFDB96; border-bottom: 1px solid #EFDB96; }
 
-        /* 4. 菜单板块 */
-        .menu-section { 
-            display: grid; 
-            gap: 40px; 
-        }
-        .menu-item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 15px 0; 
-            border-bottom: 1px dashed #4D5C56;
-            transition: all 0.3s ease;
-        }
-        .menu-item:hover {
-            border-bottom: 1px dashed #EFDB96;
-        }
-        .item-info { 
-            flex-grow: 1; 
-            padding-right: 30px; 
-        }
-        .item-name { 
-            font-size: 1.3rem; 
-            font-weight: 400; 
-            color: #F7F6EE;
-            margin-bottom: 8px;
-        }
-        .item-notes {
-            font-size: 0.9rem; 
-            color: #B7CDC2; /* 优雅的笔记颜色 */
-            line-height: 1.6;
-            font-style: italic;
-        }
-        .item-img { 
-            width: 85px; 
-            height: 85px; 
-            object-fit: cover; 
-            border-radius: 4px; 
-            border: 1px solid #4D5C56; 
-            transition: all 0.3s ease;
-        }
-        .menu-item:hover .item-img {
-            border-color: #EFDB96;
-            transform: scale(1.02);
-        }
-        .item-dots { 
-            flex-grow: 1; 
-            border-bottom: 1px dotted #4D5C56; 
-            margin: 0 15px; 
-            align-self: flex-end; 
-            margin-bottom: 8px;
-        }
+        /* 菜品展示 */
+        .menu-section { display: grid; gap: 20px; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #4D5C56; }
+        .item-info { flex-grow: 1; padding-right: 15px; }
+        .item-name { font-size: 1.15rem; color: #F7F6EE; margin-bottom: 4px; }
+        .item-notes { font-size: 0.85rem; color: #B7CDC2; font-style: italic; line-height: 1.4; }
+        .item-img { width: 75px; height: 75px; object-fit: cover; border-radius: 4px; border: 1px solid #4D5C56; background-color: #2F3B36; }
+        
+        .order-action { display: flex; align-items: center; gap: 10px; margin-left: 15px; }
+        .btn-order { background: #EFDB96; color: #2F3B36; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
+        .btn-order:hover { background: #FFF; }
 
-        /* 5. 后台管理区配色同步 */
-        #adminSection { 
-            margin-top: 60px; 
-            padding: 35px; 
-            background: #2F3B36; 
-            border: 1px solid #4D5C56; 
-            display: none; 
-            border-radius: 4px;
-        }
-        #adminSection h3 { color: #EFDB96; font-weight: 300; margin-top: 0; letter-spacing: 2px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: #B7CDC2; text-transform: uppercase; }
-        .form-group input, .form-group textarea, .form-group select { 
-            width: 100%; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; color: #F7F6EE; box-sizing: border-box; border-radius: 4px;
-        }
+        /* 购物车面板 */
+        .cart-panel { background: #2F3B36; border: 1px solid #4D5C56; border-radius: 4px; padding: 20px; align-self: start; position: sticky; top: 40px; }
+        .cart-panel h2 { color: #EFDB96; font-size: 1.3rem; font-weight: 300; margin-top: 0; border-bottom: 1px solid #4D5C56; padding-bottom: 10px; letter-spacing: 2px; }
+        .cart-items { max-height: 240px; overflow-y: auto; margin-bottom: 15px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #3B4A43; }
+        .cart-item-counter { display: flex; align-items: center; gap: 8px; }
+        .btn-count { background: #4D5C56; color: #FFF; border: none; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+        
+        .cart-summary { border-top: 1px solid #4D5C56; padding-top: 15px; margin-top: 15px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
+        .btn-submit-order { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; letter-spacing: 2px; margin-top: 10px; }
+        .btn-submit-order:hover { background: #FFF; }
+
+        /* 后台管理区 */
+        #adminSection { grid-column: span 2; margin-top: 40px; padding: 30px; background: #2F3B36; border: 1px solid #4D5C56; display: none; border-radius: 4px; }
+        #adminSection h3 { color: #EFDB96; font-weight: 300; margin-top: 0; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #B7CDC2; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px; background: #3B4A43; border: 1px solid #4D5C56; color: #F7F6EE; box-sizing: border-box; border-radius: 4px; }
         .form-group input:focus, .form-group textarea:focus { border-color: #EFDB96; outline: none; }
         
-        .submit-btn { 
-            background: #EFDB96; color: #2F3B36; border: none; padding: 12px 28px; cursor: pointer; font-weight: bold; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px;
-        }
+        .submit-btn { background: #EFDB96; color: #2F3B36; border: none; padding: 12px 28px; cursor: pointer; font-weight: bold; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px; }
         .submit-btn:hover { background: #FFF; color: #2F3B36; }
         
-        /* 后台盘点列表 */
-        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; margin-bottom: 8px; border-radius: 4px; }
-        .delete-btn { background: none; color: #FF9E9E; border: 1px solid #A64B4B; padding: 4px 12px; cursor: pointer; transition: all 0.3s; border-radius: 4px; }
+        /* 批量管理专用按钮 */
+        .batch-save-btn { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.05rem; border-radius: 4px; letter-spacing: 2px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .batch-save-btn:hover { background: #fff; }
+        .batch-save-btn:disabled { background: #4D5C56; color: #8c8273; cursor: not-allowed; box-shadow: none; }
+
+        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; margin-bottom: 6px; border-radius: 4px; transition: all 0.3s; }
+        .admin-list-item.pending-delete { border-color: #A64B4B; background: #4a3333; opacity: 0.6; } /* 标记为待删除状态 */
+        
+        .delete-btn { background: none; color: #FF9E9E; border: 1px solid #A64B4B; padding: 4px 12px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
         .delete-btn:hover { background: #A64B4B; color: #fff; }
-        .admin-toggle { text-align: center; margin-top: 60px; font-size: 0.75rem; color: #4D5C56; cursor: pointer; letter-spacing: 2px; }
+        
+        .admin-toggle { grid-column: span 2; text-align: center; margin-top: 40px; font-size: 0.75rem; color: #4D5C56; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>PHOEBE'S SECRET MENU</h1>
-        <p>— THE ART OF PRIVATE CUISINE —</p>
-    </header>
+    
+    <!-- 左侧主营业厅 -->
+    <div class="main-content">
+        <header>
+            <h1>PHOEBE'S PRIVATE KITCHEN</h1>
+            <p>— 欢迎光临 · 菲比的私房点单台 —</p>
+        </header>
 
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="filterMenu('all')">ALL</button>
-        <button class="tab-btn" onclick="filterMenu('中餐')">CHINESE</button>
-        <button class="tab-btn" onclick="filterMenu('西餐')">WESTERN</button>
-        <button class="tab-btn" onclick="filterMenu('烘焙')">BAKERY</button>
-        <button class="tab-btn" onclick="filterMenu('咖啡调配')">BAR & CAFE</button>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="filterMenu('all')">全部 ALL</button>
+            <button class="tab-btn" onclick="filterMenu('中餐')">中餐 CHINESE</button>
+            <button class="tab-btn" onclick="filterMenu('西餐')">西餐 WESTERN</button>
+            <button class="tab-btn" onclick="filterMenu('烘焙')">烘焙 BAKERY</button>
+            <button class="tab-btn" onclick="filterMenu('咖啡调配')">特调 BAR & CAFE</button>
+        </div>
+
+        <div class="menu-section" id="menuContainer"></div>
     </div>
 
-    <!-- 菜单主板 -->
-    <div class="menu-section" id="menuContainer"></div>
+    <!-- 右侧点单收银台 -->
+    <div class="cart-panel">
+        <h2>已点清单 CART</h2>
+        <div class="cart-items" id="cartItemsContainer">
+            <p style="color:#B7CDC2; font-style:italic; font-size:0.85rem; text-align:center; margin-top:20px;">桌上空空如也，点个菜吧...</p>
+        </div>
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span>总道数 Items:</span>
+                <span id="totalCount">0</span>
+            </div>
+            <button class="btn-submit-order" onclick="placeOrder()">🔔 确认下单 PLACE ORDER</button>
+        </div>
+    </div>
 
-    <!-- 开启暗黑主厨看板 -->
-    <div class="admin-toggle" onclick="handleAdminClick()">ENTER CHEF DASHBOARD</div>
+    <!-- 底部隐藏开关 -->
+    <div class="admin-toggle" onclick="handleAdminClick()">ENTER MANAGEMENT DASHBOARD</div>
 
     <!-- 录入管理区 -->
     <div id="adminSection">
         <h3>🔑 GLOBAL CONFIGURATION</h3>
-        <div class="form-group">
-            <label>GitHub Token:</label>
-            <input type="password" id="ghToken" placeholder="github_pat_...">
-        </div>
-        <div class="form-group">
-            <label>GitHub User:</label>
-            <input type="text" id="ghUser" placeholder="phoboww">
-        </div>
-        <div class="form-group">
-            <label>Repository Name:</label>
-            <input type="text" id="ghRepo" placeholder="phoebe-menu-home">
-        </div>
+        <div class="form-group"><label>GitHub Token:</label><input type="password" id="ghToken" placeholder="github_pat_..."></div>
+        <div class="form-group"><label>GitHub User:</label><input type="text" id="ghUser" placeholder="phoboww"></div>
+        <div class="form-group"><label>Repository Name:</label><input type="text" id="ghRepo" placeholder="phoebe-menu-home"></div>
         
-        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 30px 0;">
-        
-        <h3>🍳 CREATE NEW DISH</h3>
+        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 20px 0;">
+        <h3>🍳 添加新商品/菜品（✨AI 自动生图）</h3>
+        <div class="form-group"><label>品名:</label><input type="text" id="foodName" placeholder="如：法式草莓千层蛋糕"></div>
         <div class="form-group">
-            <label>Dish Name (菜品名称):</label>
-            <input type="text" id="foodName" placeholder="E.g., 经典冰拿铁">
-        </div>
-        <div class="form-group">
-            <label>Category (分类):</label>
+            <label>分类:</label>
             <select id="foodCategory">
                 <option value="中餐">中餐 / CHINESE</option>
                 <option value="西餐">西餐 / WESTERN</option>
@@ -207,36 +156,29 @@
                 <option value="咖啡调配">咖啡调配 / BAR & CAFE</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>Image Link (图片网址):</label>
-            <input type="text" id="foodImg" placeholder="Image URL">
-        </div>
-        <div class="form-group">
-            <label>Chef's Notes (主厨描述与心得):</label>
-            <textarea id="foodNotes" rows="4" placeholder="Share your secret key to success..."></textarea>
-        </div>
-        <button class="submit-btn" onclick="submitToGithub('add')">🚀 PUBLISH TO MENU</button>
+        <div class="form-group"><label>菜品介绍/主厨笔记:</label><textarea id="foodNotes" rows="3" placeholder="介绍一下这道拿手绝活..."></textarea></div>
+        <button class="submit-btn" onclick="submitToGithub('add')">🚀 让 AI 绘图并立刻上架</button>
 
-        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 30px 0;">
-
-        <h3>🗑️ INVENTORY & DELETION</h3>
+        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 20px 0;">
+        <h3>🗑️ 菜单盘点与批量下架 (✨Batch 模式)</h3>
         <div id="adminRecipeList"></div>
+        <!-- 批量确认删除的终极按钮 -->
+        <button class="batch-save-btn" id="batchSaveBtn" onclick="saveBatchDelete()" disabled>💾 保存盘点并统一更新 (有0项变更)</button>
     </div>
 </div>
 
 <script>
-    // 基础演示菜单数据
+    // 基础演示菜单数据库
     let defaultRecipes = [
-    {
-        "id": 1783699243836,
-        "name": "拿铁",
-        "category": "中餐",
-        "img": "https://www.gafei.com/uploadfile/ueditor/image/202403/1709977684176cac.jpg",
-        "notes": ""
-    }
-];
+        { id: 1, name: "经典冰拿铁", category: "咖啡调配", img: "https://image.pollinations.ai/p/a%20gourmet%20iced%20latte%20with%20perfect%20layers%20of%20milk%20and%20espresso,%20high%20end%20restaurant%20photography?width=200&height=200&nologo=true", notes: "深烘豆 18g 提取 36g 浓缩，搭配 150ml 冰牛奶。冰爽香醇。" },
+        { id: 2, name: "黑椒迷迭香牛排", category: "西餐", img: "https://image.pollinations.ai/p/a%20luxurious%20medium%20rare%20ribeye%20steak%20with%20rosemary,%20fine%20dining%20plating?width=200&height=200&nologo=true", notes: "厚切眼肉，大火双面锁汁各 2 分钟，出锅前淋黄油静置。" }
+    ];
 
     let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
+    let cart = {};
+    
+    // 🌟 新增：临时记录准备在本次批量删除中被干掉的 ID
+    let pendingDeleteIds = [];
 
     function renderMenu(data) {
         const container = document.getElementById('menuContainer');
@@ -245,34 +187,130 @@
             container.insertAdjacentHTML('beforeend', `
                 <div class="menu-item">
                     <div class="item-info">
-                        <div class="item-name">${item.name}</div>
+                        <div class="item-name"><span>${item.name}</span></div>
                         <div class="item-notes">“ ${item.notes} ”</div>
                     </div>
-                    <div class="item-dots"></div>
-                    <img class="item-img" src="${item.img || 'https://via.placeholder.com/150/2F3B36/EFDB96?text=Phoebe+Menu'}" alt="${item.name}">
+                    <img class="item-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150/2F3B36/EFDB96?text=Food'">
+                    <div class="order-action">
+                        <button class="btn-order" onclick="addToCart(${item.id})">+ 点单</button>
+                    </div>
                 </div>
             `);
         });
     }
 
-    function renderAdminList() {
-        const adminListContainer = document.getElementById('adminRecipeList');
-        adminListContainer.innerHTML = '';
-        recipes.forEach(item => {
-            adminListContainer.insertAdjacentHTML('beforeend', `
-                <div class="admin-list-item">
-                    <span><strong style="color:#EFDB96;">[${item.category}]</strong> ${item.name}</span>
-                    <button class="delete-btn" onclick="deleteRecipe(${item.id}, '${item.name}')">❌ DISCARD</button>
+    function addToCart(id) {
+        const item = recipes.find(r => r.id === id);
+        if (!item) return;
+        if (cart[id]) cart[id].count++;
+        else cart[id] = { name: item.name, count: 1 };
+        updateCartUI();
+    }
+
+    function changeCount(id, delta) {
+        if (!cart[id]) return;
+        cart[id].count += delta;
+        if (cart[id].count <= 0) delete cart[id];
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const container = document.getElementById('cartItemsContainer');
+        const totalCountSpan = document.getElementById('totalCount');
+        container.innerHTML = '';
+        let totalCount = 0;
+        const keys = Object.keys(cart);
+        if (keys.length === 0) {
+            container.innerHTML = `<p style="color:#B7CDC2; font-style:italic; font-size:0.85rem; text-align:center; margin-top:20px;">桌上空空如也，点个菜吧...</p>`;
+            totalCountSpan.innerText = '0';
+            return;
+        }
+        keys.forEach(id => {
+            const item = cart[id];
+            totalCount += item.count;
+            container.insertAdjacentHTML('beforeend', `
+                <div class="cart-item">
+                    <span>${item.name}</span>
+                    <div class="cart-item-counter">
+                        <button class="btn-count" onclick="changeCount(${id}, -1)">-</button>
+                        <span>${item.count}</span>
+                        <button class="btn-count" onclick="changeCount(${id}, 1)">+</button>
+                    </div>
                 </div>
             `);
         });
+        totalCountSpan.innerText = totalCount;
+    }
+
+    function placeOrder() {
+        const keys = Object.keys(cart);
+        if(keys.length === 0) { alert('您还没有点任何东西哦！'); return; }
+        let receipt = `🧾 【PHOEBE'S PRIVATE KITCHEN】\n———————————————\n点单成功！主厨正在为您烹饪：\n\n`;
+        keys.forEach(id => { receipt += `▪️ ${cart[id].name}  x  ${cart[id].count}\n`; });
+        receipt += `———————————————\n✨ 祝您用餐愉快！Enjoy your meal!`;
+        alert(receipt);
+        cart = {};
+        updateCartUI();
+    }
+
+    // 渲染管理后台列表
+    function renderAdminList() {
+        const adminListContainer = document.getElementById('adminRecipeList');
+        adminListContainer.innerHTML = '';
+        
+        recipes.forEach(item => {
+            // 检查这道菜是否已被标记为“准备删除”
+            const isPending = pendingDeleteIds.includes(item.id);
+            
+            adminListContainer.insertAdjacentHTML('beforeend', `
+                <div class="admin-list-item ${isPending ? 'pending-delete' : ''}" id="admin-item-${item.id}">
+                    <span><strong style="color:#EFDB96;">[${item.category}]</strong> ${item.name}</span>
+                    <button class="delete-btn" onclick="togglePendingDelete(${item.id})">
+                        ${isPending ? '↩️ 撤销下架' : '❌ 下架'}
+                    </button>
+                </div>
+            `);
+        });
+
+        // 更新大保存按钮的状态
+        const saveBtn = document.getElementById('batchSaveBtn');
+        if (pendingDeleteIds.length > 0) {
+            saveBtn.disabled = false;
+            saveBtn.innerText = `💾 保存盘点并统一更新 (有 ${pendingDeleteIds.length} 项变更)`;
+        } else {
+            saveBtn.disabled = true;
+            saveBtn.innerText = `💾 保存盘点并统一更新 (有 0 项变更)`;
+        }
+    }
+
+    // 🌟 核心改动：点击删除时，先不联网，只在本地打上“删除标记”
+    function togglePendingDelete(id) {
+        const index = pendingDeleteIds.indexOf(id);
+        if (index > -1) {
+            // 如果已经在删除队列里，说明主人想反悔，从队列里移出
+            pendingDeleteIds.splice(index, 1);
+        } else {
+            // 否则，加进待删除队列
+            pendingDeleteIds.push(id);
+        }
+        // 重新画一遍后台列表，红框和状态马上生效
+        renderAdminList();
+    }
+
+    // 🌟 核心改动：点击最终的保存按钮，才一次性真删除，并联网
+    function saveBatchDelete() {
+        if (confirm(`确定要一次性下架这 ${pendingDeleteIds.length} 道菜吗？这将会触发云端同步。`)) {
+            // 真正从 recipes 数组里过滤掉所有被打上删除标记的菜
+            recipes = recipes.filter(r => !pendingDeleteIds.includes(r.id));
+            // 触发联网同步
+            submitToGithub('delete_batch');
+        }
     }
 
     function filterMenu(category) {
         const buttons = document.querySelectorAll('.tab-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
-
         if (category === 'all') renderMenu(recipes);
         else renderMenu(recipes.filter(r => r.category === category));
     }
@@ -285,15 +323,9 @@
             document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
             document.getElementById('ghUser').value = localStorage.getItem('gh_user') || '';
             document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
+            pendingDeleteIds = []; // 每次点开后台重置删除队列
             renderAdminList();
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
-    }
-
-    function deleteRecipe(id, name) {
-        if(confirm(`确定要把【${name}】从菜单中撤出吗？此操作将同步修改云端。`)) {
-            recipes = recipes.filter(r => r.id !== id);
-            submitToGithub('delete');
         }
     }
 
@@ -302,19 +334,16 @@
         const user = document.getElementById('ghUser').value;
         const repo = document.getElementById('ghRepo').value;
 
-        if(!token || !user || !repo) {
-            alert('请完善全局配置。');
-            return;
-        }
+        if(!token || !user || !repo) { alert('请完善全局配置。'); return; }
 
         if (actionType === 'add') {
             const name = document.getElementById('foodName').value;
             const category = document.getElementById('foodCategory').value;
-            const img = document.getElementById('foodImg').value;
             const notes = document.getElementById('foodNotes').value;
-            if(!name) { alert('请输入菜品名称。'); return; }
+            if(!name) { alert('请输入商品名称。'); return; }
             
-            recipes.push({ id: Date.now(), name, category, img, notes });
+            const aiImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true`;
+            recipes.push({ id: Date.now(), name, category, img: aiImageUrl, notes });
         }
 
         localStorage.setItem('my_recipes', JSON.stringify(recipes));
@@ -337,18 +366,18 @@
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: actionType === 'add' ? `Chef added ${foodName.value}` : `Chef removed a dish`,
+                    message: actionType === 'add' ? `Chef inventory updated by AI` : `Chef processed batch deletion`,
                     content: btoa(unescape(encodeURIComponent(newCode))),
                     sha: sha
                 })
             });
 
             if(putRes.ok) {
-                alert('🎉 菜单已同步上云！正在重新烹饪网页，请于一分钟后刷新查看。');
+                alert('🎉 菜单盘点已全部成功发布上云！正在重新烹饪网页，请于一分钟后刷新查看最新状态。');
+                pendingDeleteIds = []; // 清空队列
                 location.reload();
             } else {
-                const err = await putRes.json();
-                alert('发布失败: ' + err.message);
+                alert('同步失败，请检查配置。');
             }
         } catch (e) {
             alert('发生错误: ' + e.message);
