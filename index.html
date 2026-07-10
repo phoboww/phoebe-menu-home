@@ -28,7 +28,7 @@
 
         body { 
             background-color: var(--color-sisal);
-            /* 💡 奇迹技巧：使用纯 CSS 渲染出极其微弱的陶土矿物肌理，让留白充满细节 */
+            /* 使用纯 CSS 渲染出极其微弱的陶土矿物肌理，让留白充满细节 */
             background-image: radial-gradient(rgba(47, 42, 29, 0.03) 1px, transparent 0), radial-gradient(rgba(47, 42, 29, 0.02) 1px, transparent 0);
             background-size: 24px 24px;
             background-position: 0 0, 12px 12px;
@@ -60,7 +60,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            /* 微调了渐变蒙层，让上半部分的暗度稍微加深一点点（0.6 -> 0.65），更能衬托出白字的质感 */
+            /* 优化了渐变层：从深邃的檀木黑自然过渡到地面的燕麦白，营造晨雾穿透林间的效果 */
             background: linear-gradient(to bottom, rgba(26, 18, 11, 0.65) 0%, rgba(26, 18, 11, 0.3) 50%, var(--color-sisal) 100%), 
                         url('https://images.unsplash.com/photo-1447078806655-40579c2520d6?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center;
             background-size: cover;
@@ -90,19 +90,19 @@
 
         .hero-title {
             font-family: var(--font-serif);
-            font-size: 5rem; 
+            font-size: 5rem; /* 放大衬线字，拉开戏剧张力 */
             font-weight: 300;
             line-height: 1.05;
             margin: 0 0 30px 0;
             letter-spacing: -0.02em;
-            color: var(--color-sisal); /* ✨ 核心修改：改为顶级燕麦暖白，瞬间拉开高定对比度 */
+            color: var(--color-sisal); /* ✨ 核心修改：改为顶级燕麦暖白，在大暗底色下对比强烈 */
             text-shadow: 0 4px 24px rgba(26, 18, 11, 0.25); /* 极轻微的微弱暗影，防止背景复杂处穿帮 */
         }
 
         .hero-title em {
             font-style: italic;
             font-weight: 400;
-            color: #d1ca9e; /* ✨ 核心修改：由于背景暗，这里改用半饱和的“香槟淡金苔藓”，保持优雅斜体的画龙点睛作用 */
+            color: #d1ca9e; /* ✨ 核心修改：改用低饱和的“香槟淡金”，在暗色背景下画龙点睛 */
         }
 
         .hero-subtitle {
@@ -113,7 +113,7 @@
             margin: 0 auto 50px auto;
             font-weight: 300;
             letter-spacing: 0.05em;
-            opacity: 0.8; /* 降低一点透明度，形成主次层级 */
+            opacity: 0.8;
             text-shadow: 0 2px 15px rgba(26, 18, 11, 0.3);
         }
 
@@ -125,6 +125,11 @@
             font-weight: 600;
             animation: pulse 2.5s infinite ease-in-out;
             text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-3px); }
         }
 
         /* ==================== 🍽️ MAIN DESK 侘寂艺术点单台 ==================== */
@@ -171,6 +176,7 @@
         .tab-btn { 
             background: none; 
             border: none; 
+            font-family: var(--font-sans);
             font-size: 0.75rem; 
             font-weight: 500; 
             cursor: pointer; 
@@ -450,7 +456,6 @@
             border: 1px solid var(--color-clay); 
             display: none; 
         }
-        
         #adminSection h3 { 
             font-family: var(--font-serif); 
             color: var(--color-ebony); 
@@ -460,9 +465,7 @@
             margin-bottom: 35px;
             letter-spacing: 3px; 
         }
-
         .form-group { margin-bottom: 30px; }
-        
         /* 统一标签字体：全面同步人文克制无衬线，拉大字距 */
         .form-group label { 
             display: block; 
@@ -474,11 +477,8 @@
             letter-spacing: 3px;
             font-weight: 500;
         }
-        
         /* 重塑输入框与选择框：注入无衬线呼吸感，去除生硬感 */
-        .form-group input, 
-        .form-group textarea, 
-        .form-group select { 
+        .form-group input, .form-group textarea, .form-group select { 
             font-family: var(--font-sans); 
             font-size: 0.85rem;
             letter-spacing: 0.05em;
@@ -492,37 +492,22 @@
             transition: all 0.4s ease; 
             border-radius: 0px; /* 坚持纯直角高定风 */
         }
-        
-        /* 输入框聚焦态：温和的阴影与边界过渡 */
-        .form-group input:focus, 
-        .form-group textarea:focus,
-        .form-group select:focus { 
+        /* 输入框聚焦态 */
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { 
             border-color: var(--color-moss); 
             background: transparent;
             outline: none; 
             box-shadow: 0 5px 15px rgba(110, 114, 94, 0.05);
         }
-        
         /* 更改 placeholder 字体质感 */
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
+        .form-group input::placeholder, .form-group textarea::placeholder {
             font-family: var(--font-sans);
             font-weight: 300;
             color: #b0aa9e;
             font-size: 0.8rem;
         }
         
-        .preview-container { 
-            display: flex; 
-            align-items: center; 
-            gap: 30px; 
-            margin: 25px 0; 
-            background: rgba(47, 42, 29, 0.01); 
-            padding: 25px; 
-            border: 1px dashed var(--color-clay); 
-            flex-wrap: wrap;
-        }
-        
+        .preview-container { display: flex; align-items: center; gap: 30px; margin: 25px 0; background: rgba(47, 42, 29, 0.01); padding: 25px; border: 1px dashed var(--color-clay); flex-wrap: wrap;}
         .preview-img-wrap { position: relative; width: 110px; height: 110px; }
         .preview-img { width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--color-clay); }
         
@@ -593,7 +578,6 @@
         .admin-list-item.pending-delete { border-color: #a64b4b; background: rgba(166, 75, 75, 0.02); opacity: 0.5; }
         
         .action-group { display: flex; gap: 12px; }
-        
         .modify-btn, .delete-btn { 
             background: none; 
             font-family: var(--font-sans);
@@ -639,7 +623,8 @@
     <div class="hero-bg"></div>
     <div class="hero-content">
         <div class="hero-tag">Aesthetic Playful Flavors</div>
-        <h1 class="hero-title">Immerse yourself in gastronomy reimagined through <em>sophistication</em>.</h1>
+        <!-- 已更新：高诗意度与顶奢电影感标语 -->
+        <h1 class="hero-title">Where the wild forest meets <em>refined gastronomy</em>.</h1>
         <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen, an elite digital ordering platform redefining the art of bespoke gastronomy.</p>
         <div class="click-anywhere-hint">[ Click anywhere to explore the menu ]</div>
     </div>
@@ -664,7 +649,7 @@
         <div class="menu-section" id="menuContainer"></div>
     </div>
 
-    <div class="admin-toggle" onclick="handleAdminClick()">ENTER DESIGNER DASHBOARD</div>
+    <div class="admin-toggle" onclick="handleAdminClick()">🤍</div>
 
     <!-- 录入管理区 -->
     <div id="adminSection">
@@ -705,7 +690,7 @@
                 <img class="preview-img" id="previewImgElement" src="" alt="Culinary Artwork" onerror="handleImageError()">
             </div>
             <div>
-                <p id="aiStatusText" style="margin:0 0 10px 0; font-size:0.85rem; color:var(--color-ebony);">✨ AI Chef Canvas Ready.</p>
+                <p id="aiStatusText" style="margin:0 0 10px 0; font-family: var(--font-sans); font-size:0.85rem; color:var(--color-ebony);">✨ AI Chef Canvas Ready.</p>
                 <button class="btn-secondary" id="aiGenerateBtn" onclick="generateAiImage()">Summon AI Illustrator</button>
                 <button class="modify-btn" id="aiRegenerateBtn" onclick="generateAiImage()" style="display:none;">🔄 Repaint</button>
             </div>
@@ -751,46 +736,18 @@
 </div>
 
 <script>
-    // 保持你原本优秀的逻辑内核完全不破坏
+    // 云端基础菜单数组（每次 Sync 成功，GitHub 都会覆盖重写该数组）
     let defaultRecipes = [
-    {
-        "id": 1783699243836,
-        "name": "拿铁",
-        "category": "中餐",
-        "img": "https://www.gafei.com/uploadfile/ueditor/image/202403/1709977684176cac.jpg",
-        "notes": ""
-    },
-    {
-        "id": 1783699940792,
-        "name": "法式草莓千层蛋糕",
-        "category": "烘焙",
-        "img": "https://image.pollinations.ai/p/%E6%B3%95%E5%BC%8F%E8%8D%89%E8%8E%93%E5%8D%83%E5%B1%82%E8%9B%8B%E7%B3%95,%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true",
-        "notes": ""
-    },
-    {
-        "id": 1783700601984,
-        "name": "老北京宫保鸡丁",
-        "category": "中餐",
-        "img": "https://image.pollinations.ai/p/%E8%80%81%E5%8C%97%E4%BA%AC%E5%AE%AB%E4%BF%9D%E9%B8%A1%E4%B8%81,%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true&seed=50642",
-        "notes": ""
-    },
-    {
-        "id": 1783701808992,
-        "name": "lemon madeleines",
-        "category": "Bakery",
-        "img": "https://liliebakery.fr/wp-content/uploads/2021/05/Madeleines-au-citron-et-pavot-Lilie-Bakery-2.jpg",
-        "notes": ""
-    },
-    {
-        "id": 1783707484872,
-        "name": "coffee latte",
-        "category": "Botanical Cafe",
-        "img": "https://image.pollinations.ai/p/coffee%20latte,%20gourmet%20rainforest%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=400&height=400&nologo=true",
-        "notes": "espresso and lactose free milk"
-    }
-];
+        { id: 1, name: "Amazon Canopy Berry Crepe", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream." },
+        { id: 2, name: "Wood-Fired Rainforest Steak", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs." },
+        { id: 3, name: "Wild Botanical Green Salad", category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle." },
+        { id: 4, name: "Iced Smoked Botanical Latte", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk." }
+    ];
 
-    let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
+    // 💡 云端优先核心逻辑：如果本地没有刚修改的、未同步的临时脏数据，一律以云端最新的代码为准！
+    let isEditingLocally = localStorage.getItem('my_recipes_dirty') === 'true';
+    let recipes = (isEditingLocally && JSON.parse(localStorage.getItem('my_recipes'))) || defaultRecipes;
+
     let cart = {};
     let pendingDeleteIds = [];
     let currentTempImageUrl = "";
@@ -883,7 +840,7 @@
                 const y = e.clientY - rect.top;  
                 const xc = rect.width / 2;
                 const yc = rect.height / 2;
-                const angleX = (yc - y) / 15; // 稍微降低晃动幅度，更显沉稳
+                const angleX = (yc - y) / 15; 
                 const angleY = (x - xc) / 15;
                 card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-4px)`;
             });
@@ -1061,7 +1018,11 @@
 
         changesCount++;
         resetForm();
+        
+        // 激活临时脏数据保存，确保未上传前本地设备预览不丢失
         localStorage.setItem('my_recipes', JSON.stringify(recipes));
+        localStorage.setItem('my_recipes_dirty', 'true');
+
         renderMenu(recipes);
         renderAdminList();
     }
@@ -1118,6 +1079,9 @@
         const index = pendingDeleteIds.indexOf(id);
         if (index > -1) pendingDeleteIds.splice(index, 1);
         else pendingDeleteIds.push(id);
+        
+        // 标记脏数据，预览删除后的效果
+        localStorage.setItem('my_recipes_dirty', 'true');
         renderAdminList();
     }
 
@@ -1152,7 +1116,7 @@
             if(pendingDeleteIds.length > 0) {
                 recipes = recipes.filter(r => !pendingDeleteIds.includes(r.id));
             }
-            localStorage.setItem('my_recipes', JSON.stringify(recipes));
+            
             localStorage.setItem('gh_token', token);
             localStorage.setItem('gh_user', user);
             localStorage.setItem('gh_repo', repo);
@@ -1181,6 +1145,11 @@
                     alert('🎉 Cloud database successfully synced! Re-baking web node...');
                     pendingDeleteIds = [];
                     changesCount = 0;
+                    
+                    // ✨ 核心清流：云端写入成功！擦除两端设备本地的肮脏缓存，强迫下一次直接读取最新的云端代码
+                    localStorage.removeItem('my_recipes_dirty');
+                    localStorage.removeItem('my_recipes');
+                    
                     location.reload();
                 } else {
                     alert('Sync failed. Check credentials.');
