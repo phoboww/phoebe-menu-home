@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHOEBE'S CANOPY | Sustainable Rainforest Kitchen</title>
+    <title>PHOEBE'S TABLE | Boutique Home Kitchen</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     
+    <!-- 引入 EmailJS 核心 SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
     <style>
         /* 🎨 重新校准的高定奢华·暗夜侘寂色盘 */
         :root {
@@ -260,21 +263,35 @@
             box-sizing: border-box;
         }
 
+        .item-name-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(85px);
+            margin-bottom: 0px;
+        }
+
+        .menu-item:hover .item-name-row {
+            transform: translateY(0);
+        }
+
         .item-name { 
             font-family: var(--font-serif);
             font-size: 1.4rem; 
             color: #f4f1eb; 
-            margin-bottom: 0px;
             font-weight: 300;
             line-height: 1.3;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(85px); 
-        }
-        
-        .menu-item:hover .item-name {
-            transform: translateY(0);
+            max-width: 75%;
         }
 
+        .item-price-tag {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            color: var(--color-gold);
+            font-weight: 300;
+        }
+        
         .item-details {
             opacity: 0;
             visibility: hidden;
@@ -401,7 +418,7 @@
         .btn-count:hover { border-color: var(--color-ebony); background-color: var(--color-clay); }
         
         .cart-summary { border-top: 1px solid var(--color-clay); padding-top: 25px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;}
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;}
         
         .btn-submit-order { 
             width: 100%; 
@@ -697,6 +714,11 @@
         <div class="form-group"><label>GitHub User / 账户名:</label><input type="text" id="ghUser" placeholder="username"></div>
         <div class="form-group"><label>Repository Name / 仓库名:</label><input type="text" id="ghRepo" placeholder="repo-name"></div>
         
+        <!-- 🔒 EmailJS 凭证本地安全隐蔽管理舱区 -->
+        <div class="form-group"><label>EmailJS Public Key (公共密钥):</label><input type="password" id="ejsPublicKey" placeholder="通常由英文字符或下划线打底，如: pX9_..."></div>
+        <div class="form-group"><label>EmailJS Service ID (服务唯一码):</label><input type="text" id="ejsServiceId" placeholder="e.g., service_xxxx"></div>
+        <div class="form-group"><label>EmailJS Template ID (高定模板唯一码):</label><input type="text" id="ejsTemplateId" placeholder="e.g., template_xxxx"></div>
+
         <hr style="border:0; border-top: 1px solid var(--color-clay); margin: 35px 0;">
         
         <h3 id="formModeTitle">🍳 CREATE / MODIFY DISH <span class="zh-sub">单品料理创作与修正</span></h3>
@@ -706,6 +728,10 @@
             <label>Dish Name / 菜品名称 (输入中文或英文，移开焦点后系统自动补全格式):</label>
             <input type="text" id="foodName" onblur="autoFormatDishName()" placeholder="e.g., Rainforest Berry Crepe Tower 或输入：雨林莓果千层塔">
             <div id="titleHintText" class="system-hint"></div>
+        </div>
+        <div class="form-group">
+            <label>Price / 高定单价 (元):</label>
+            <input type="number" id="foodPrice" placeholder="e.g., 128">
         </div>
         <div class="form-group">
             <label>Category / 划分类别:</label>
@@ -780,18 +806,22 @@
                 <span>Total Items / 选品总计:</span>
                 <span id="totalCount" style="font-weight: 600; color: var(--color-ebony);">0</span>
             </div>
-            <button class="btn-submit-order" onclick="placeOrder()">🔔 PLACE ORDER NOW / 确认送入后厨</button>
+            <div class="summary-row" style="margin-bottom: 30px;">
+                <span>Total Amount / 消费总额:</span>
+                <span style="font-weight: 600; color: var(--color-gold); font-size: 1.1rem;">¥ <span id="totalAmount">0</span></span>
+            </div>
+            <button class="btn-submit-order" onclick="placeOrder()">🔔 PLACE ORDER NOW </button>
         </div>
     </div>
 </div>
 
 <script>
-    // 云端菜单初始数组
+    // 云端菜单初始数组（单价已完美打底）
     let defaultRecipes = [
-        { id: 1, name: "Amazon Canopy Berry Crepe | 雨林莓果千层", category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream.<br>手作野生浆果千层，蕴含亚马逊香草荚独有的丰盈乳香。" },
-        { id: 2, name: "Wood-Fired Rainforest Steak | 炙烤雨林沙朗", category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs.<br>原产地生态肉源，辅以林间现采迷迭香与原野密植草本的炭火慢熏。" },
-        { id: 3, name: "Wild Botanical Green Salad | 苍翠原生态沙拉", category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle.<br>饱含蕨类树影灵感的微生嫩苗，配有机牛油果及冷压雨林种籽油。 " },
-        { id: 4, name: "Iced Smoked Botanical Latte | 烟熏烟幕植物拿铁", category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk.<br>山核桃木屑冷熏的慢滴有机浓缩，交融本地专属燕麦植物乳。" }
+        { id: 1, name: "Amazon Canopy Berry Crepe | 雨林莓果千层", price: 128, category: "Bakery", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&h=400&q=80", notes: "Hand-layered crepes with organic wild forest berries, infused with Amazonian vanilla bean cream.<br>手作野生浆果千层，蕴含亚马逊香草荚独有的丰盈乳香。" },
+        { id: 2, name: "Wood-Fired Rainforest Steak | 炙烤雨林沙朗", price: 388, category: "Main Course", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=400&q=80", notes: "Sustainably sourced premium ribeye seared with freshly foraged wild rosemary and native herbs.<br>原产地生态肉源，辅以林间现采迷迭香与原野密植草本的炭火慢熏。" },
+        { id: 3, name: "Wild Botanical Green Salad | 苍翠原生态沙拉", price: 88, category: "Appetizers", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&h=400&q=80", notes: "Monstera-shadowed microgreens, organic avocado, and pressed rainforest seed crunch drizzle.<br>饱含蕨类树影灵感的微生嫩苗，配有机牛油果及冷压雨林种籽油。 " },
+        { id: 4, name: "Iced Smoked Botanical Latte | 烟熏烟幕植物拿铁", price: 58, category: "Botanical Cafe", img: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&h=400&q=80", notes: "Slow-dripped organic espresso cold-smoked with hickory wood chips and local plant milk.<br>山核桃木屑冷熏的慢滴有机浓缩，交融本地专属燕麦植物乳。" }
     ];
 
     let isEditingLocally = localStorage.getItem('my_recipes_dirty') === 'true';
@@ -951,12 +981,10 @@
         }
     }
 
-    // 固化 Base64 防沉淀引擎
     function solidifyImageMatrixThenSave(callback) {
         const previewImg = document.getElementById('previewImgElement');
         const sourceType = document.getElementById('imageSourceType').innerText;
         
-        // 关键漏洞修正：如果是历史保留的手动外链或已经完成压制的Base64，以及未配置AI生成的图，直接完整放行
         if(!previewImg.src || sourceType.includes("Manual External Link") || previewImg.src.startsWith('data:')) {
             callback(previewImg.src);
             return;
@@ -1003,7 +1031,10 @@
                 <div class="menu-item">
                     <img class="item-bg-img" src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/400/aca494/3c2005?text=Rainforest+Cuisine'">
                     <div class="item-overlay">
-                        <div class="item-name">${item.name}</div>
+                        <div class="item-name-row">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price-tag">¥${item.price || '—'}</div>
+                        </div>
                         <div class="item-details">
                             <div class="item-notes">${item.notes}</div>
                             <div class="order-action">
@@ -1047,14 +1078,13 @@
         document.getElementById('formModeTitle').innerHTML = `📝 MODIFY DISH: 【${item.name.split('|')[0]}】 <span class="zh-sub">修正资产详情</span>`;
         document.getElementById('editingRecipeId').value = item.id;
         document.getElementById('foodName').value = item.name;
+        document.getElementById('foodPrice').value = item.price || "";
         document.getElementById('foodCategory').value = item.category;
         document.getElementById('foodNotes').value = item.notes;
         
-        // 关键优化：打上外链或者已有标记，防止修改旧餐品直接存时由于未走AI流程被一致性固化锁卡死
         document.getElementById('foodImgLink').value = item.img.startsWith('data:') ? '' : item.img;
         previewExternalLink(item.img);
         
-        // 显式确立其在沙盒画布中的安全来源，避免死锁
         document.getElementById('imageSourceType').innerText = item.img.startsWith('data:') ? "Source: Solidified Base64 Matrix (Unified Sync)" : "Source: Manual External Link";
 
         document.getElementById('cancelEditBtn').style.display = 'inline-block';
@@ -1067,6 +1097,7 @@
 
         const idStr = document.getElementById('editingRecipeId').value;
         const name = document.getElementById('foodName').value;
+        const price = parseInt(document.getElementById('foodPrice').value) || 0;
         const category = document.getElementById('foodCategory').value;
         const notes = document.getElementById('foodNotes').value;
 
@@ -1079,12 +1110,12 @@
                 const targetId = parseInt(idStr);
                 recipes = recipes.map(r => {
                     if(r.id === targetId) {
-                        return { id: targetId, name, category, img: finalImg, notes };
+                        return { id: targetId, name, price, category, img: finalImg, notes };
                     }
                     return r;
                 });
             } else {
-                recipes.push({ id: Date.now(), name, category, img: finalImg, notes });
+                recipes.push({ id: Date.now(), name, price, category, img: finalImg, notes });
             }
 
             changesCount++;
@@ -1103,6 +1134,7 @@
         document.getElementById('formModeTitle').innerHTML = `🍳 CREATE / MODIFY DISH <span class="zh-sub">单品料理创作与修正</span>`;
         document.getElementById('editingRecipeId').value = "";
         document.getElementById('foodName').value = "";
+        document.getElementById('foodPrice').value = "";
         document.getElementById('foodNotes').value = "";
         document.getElementById('foodImgLink').value = "";
         document.getElementById('aiPreviewBox').style.display = 'none';
@@ -1124,7 +1156,7 @@
             const displayName = item.name.split('|')[0].trim();
             adminListContainer.insertAdjacentHTML('beforeend', `
                 <div class="admin-list-item ${isPending ? 'pending-delete' : ''}">
-                    <span><strong style="color:var(--color-moss);">[${item.category}]</strong> ${displayName}</span>
+                    <span><strong style="color:var(--color-moss);">[${item.category}]</strong> ${displayName} — ¥${item.price || 0}</span>
                     <div class="action-group">
                         <button class="modify-btn" onclick="startModifyRecipe(${item.id})" ${isPending ? 'disabled style="opacity:0.3;"' : ''}>Edit / 改</button>
                         <button class="delete-btn" onclick="togglePendingDelete(${item.id})">
@@ -1188,14 +1220,27 @@
     function openAdminPanel() {
         document.getElementById('adminSection').style.display = 'block';
         document.getElementById('quickExitBtn').style.display = 'inline-block';
+        
+        // 核心管理凭证安全存留舱
         document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
         document.getElementById('ghUser').value = localStorage.getItem('gh_user') || '';
         document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
+        
+        // 🌿 新增：EmailJS 本地隐藏缓存读取（绝不污染 HTML 源码）
+        document.getElementById('ejsPublicKey').value = localStorage.getItem('ejs_public_key') || '';
+        document.getElementById('ejsServiceId').value = localStorage.getItem('ejs_service_id') || '';
+        document.getElementById('ejsTemplateId').value = localStorage.getItem('ejs_template_id') || '';
+        
         renderAdminList();
         document.getElementById('adminSection').scrollIntoView({ behavior: 'smooth' });
     }
 
     function closeAdminDashboard() {
+        // 🌿 当点击退出时，瞬间打包固化密钥，驻留在当前终端缓存
+        localStorage.setItem('ejs_public_key', document.getElementById('ejsPublicKey').value.trim());
+        localStorage.setItem('ejs_service_id', document.getElementById('ejsServiceId').value.trim());
+        localStorage.setItem('ejs_template_id', document.getElementById('ejsTemplateId').value.trim());
+
         document.getElementById('adminSection').style.display = 'none';
         document.getElementById('quickExitBtn').style.display = 'none';
         document.getElementById('orderDesk').scrollIntoView({ behavior: 'smooth' });
@@ -1263,8 +1308,11 @@
         const item = recipes.find(r => r.id === id);
         if (!item) return;
         const shortName = item.name.split('|')[0].trim();
-        if (cart[id]) cart[id].count++;
-        else cart[id] = { name: shortName, count: 1 };
+        if (cart[id]) {
+            cart[id].count++;
+        } else {
+            cart[id] = { name: shortName, count: 1, price: item.price || 0 };
+        }
         updateCartUI();
     }
 
@@ -1278,14 +1326,18 @@
     function updateCartUI() {
         const container = document.getElementById('cartItemsContainer');
         const totalCountSpan = document.getElementById('totalCount');
+        const totalAmountSpan = document.getElementById('totalAmount');
         const floatingBadge = document.getElementById('floatingBadge');
         container.innerHTML = '';
+        
         let totalCount = 0;
+        let totalAmount = 0;
         const keys = Object.keys(cart);
         
         if (keys.length === 0) {
             container.innerHTML = `<p style="color:var(--color-moss); font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty.<br>桌台空闲，请挑选雨林艺术珍馐...</p>`;
             totalCountSpan.innerText = '0';
+            totalAmountSpan.innerText = '0';
             floatingBadge.innerText = '0';
             return;
         }
@@ -1293,19 +1345,102 @@
         keys.forEach(id => {
             const item = cart[id];
             totalCount += item.count;
+            totalAmount += item.count * item.price;
             container.insertAdjacentHTML('beforeend', `
-                <div class="cart-item">
-                    <span style="font-weight:500; max-width:180px; color:var(--color-lisbon);">${item.name}</span>
-                    <div class="cart-item-counter">
-                        <button class="btn-count" onclick="changeCount(${id}, -1)">-</button>
-                        <span style="min-width:15px; text-align:center; font-weight:600;">${item.count}</span>
-                        <button class="btn-count" onclick="changeCount(${id}, 1)">+</button>
+                <div class="cart-item" style="align-items: flex-start; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <span style="font-weight:500; max-width:220px; color:var(--color-lisbon);">${item.name}</span>
+                        <span style="color: var(--color-gold); font-size: 0.8rem;">¥${item.price * item.count}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                        <span style="font-size: 0.7rem; color: var(--color-moss);">Unit / 单价: ¥${item.price}</span>
+                        <div class="cart-item-counter">
+                            <button class="btn-count" onclick="changeCount(${id}, -1)">-</button>
+                            <span style="min-width:15px; text-align:center; font-weight:600;">${item.count}</span>
+                            <button class="btn-count" onclick="changeCount(${id}, 1)">+</button>
+                        </div>
                     </div>
                 </div>
             `);
         });
         totalCountSpan.innerText = totalCount;
+        totalAmountSpan.innerText = totalAmount;
         floatingBadge.innerText = totalCount;
+    }
+
+    /* 🚀 免暴露、免刷量的动态安全送单发信引擎 */
+    async function placeOrder() {
+        // 🌿 从当前浏览器沙盒存储区即时解密提取密钥，防止代码中被恶刷
+        const EMAILJS_PUBLIC_KEY = localStorage.getItem('ejs_public_key');
+        const EMAILJS_SERVICE_ID = localStorage.getItem('ejs_service_id');   
+        const EMAILJS_TEMPLATE_ID = localStorage.getItem('ejs_template_id'); 
+
+        const keys = Object.keys(cart);
+        if (keys.length === 0) {
+            alert("Your cart is empty! / 您的选品清单空空如也，无法送入后厨。");
+            return;
+        }
+
+        // 🛡️ 智能防漏机制：如果用户未在后台写凭证，自动切换到安全沙盒演示态
+        if (!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
+            let mockTotal = 0;
+            keys.forEach(id => { mockTotal += cart[id].count * cart[id].price; });
+            
+            alert(`🎉 沙盒模拟收单成功！\n\n本次品鉴预计总额 ¥${mockTotal}。\n\n🔒 【安全警示】：当前网页尚未在控制舱配置 EmailJS 敏感凭据，发信行为已安全阻断。请连按3次页面底部的 ♥︎ 进入全局密钥云端配置区，配置完并点击“退出(Exit)”后，即可激活飞速真实的邮件传单。`);
+            cart = {};
+            updateCartUI();
+            toggleCartDrawer(false);
+            return;
+        }
+
+        const submitBtn = document.querySelector('.btn-submit-order');
+        const originalText = submitBtn.innerText;
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Transmitting to Kitchen... / 正在送单...";
+
+        let orderTime = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+        
+        // 1. 整理包含单价、小计格式的高定资产清单文本
+        let orderDetailsText = "";
+        let totalItemsCount = 0;
+        let totalAmount = 0;
+        
+        keys.forEach(id => {
+            const item = cart[id];
+            let subTotal = item.price * item.count;
+            orderDetailsText += `🍽️ 【${item.name}】 × ${item.count} 份\n    (单价: ¥${item.price} | 小计: ¥${subTotal})\n\n`;
+            totalItemsCount += item.count;
+            totalAmount += subTotal;
+        });
+
+        // 2. 组装发送字段
+        const templateParams = {
+            order_time: orderTime,
+            order_details: orderDetailsText,
+            total_count: totalItemsCount,
+            total_amount: totalAmount
+        };
+
+        try {
+            // 🌿 动态点对点初始化，杜绝全局劫持
+            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+            
+            const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+
+            if (response.status === 200) {
+                alert(`🎉 Order placed successfully! / 料理已成功飞传后厨。\n\n主厨已接单，本次品鉴总额 ¥${totalAmount}，期待您的莅临。`);
+                cart = {};
+                updateCartUI();
+                toggleCartDrawer(false);
+            } else {
+                alert("后厨通信线路出现轻微波动，请重试。");
+            }
+        } catch (error) {
+            alert("点单投递失败，请点击 ♥︎ 检查管理配置内的三大凭证是否准确。报错代码: " + (error.text || error.message));
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = originalText;
+        }
     }
 
     function handleImageError() {
