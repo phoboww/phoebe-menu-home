@@ -107,15 +107,7 @@
 
 <script>
     // 基础菜品数据库
-    let defaultRecipes = [
-    {
-        "id": 2,
-        "name": "黑椒迷迭香牛排",
-        "category": "西餐",
-        "img": "https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=150",
-        "notes": "厚切眼肉，每面大火煎 2 分钟，出锅前淋上融化的黄油与迷迭香。"
-    }
-];
+    let defaultRecipes = [];
 
     let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
 
