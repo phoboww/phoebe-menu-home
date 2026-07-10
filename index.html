@@ -725,7 +725,7 @@
         <div class="hero-tag">Aesthetic Playful Flavors</div>
         <h1 class="hero-title">Where the wild forest meets <br><em>refined gastronomy</em></h1>
         <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen, an elite digital ordering platform redefining the art of bespoke gastronomy.<br><span style="font-size:0.9rem; opacity:0.7;">欢迎步入菲比私厨空间，重塑私享料理艺术的数字化餐台。</span></p>
-        <div class="click-anywhere-hint">[ Click anywhere to explore the menu ]</div>
+        <div class="click-anywhere-hint">[ Click anywhere to explore ]</div>
     </div>
 </section>
 
@@ -762,7 +762,6 @@
     <div id="adminSection">
         <div class="admin-header-box">
             <h3>🔑 GLOBAL CONFIGURATION <span class="zh-sub">全局密钥云端配置</span></h3>
-            <button class="exit-btn" onclick="closeAdminDashboard()">✕ Exit Dashboard / 退出</button>
         </div>
         
         <p style="color:var(--color-moss); font-size:0.8rem; margin:-15px 0 25px 0; font-style:italic;">⚠️ Warning: Configuration tokens are saved locally on this browser session. Do not manage on public terminals. / 敏感凭据仅留存于本地安全浏览器，请勿在公共终端登录。</p>
@@ -1624,7 +1623,7 @@
         const keys = Object.keys(cart);
         
         if (keys.length === 0) {
-            container.innerHTML = `<p style="color:var(--color-moss); font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty.<br>桌台空闲，请挑选雨林艺术珍馐...</p>`;
+            container.innerHTML = `<p style="color:var(--color-moss); font-style:italic; font-size:0.85rem; text-align:center; margin-top:40px;">Your table is empty.<br>桌台空闲，请挑选美味...</p>`;
             totalCountSpan.innerText = '0';
             totalAmountSpan.innerText = '0';
             floatingBadge.innerText = '0';
