@@ -40,7 +40,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 中文辅助样式优化：使其内敛不突兀 */
+        /* 中文辅助样式优化 */
         .zh-sub {
             display: block;
             font-size: 0.85rem;
@@ -533,7 +533,6 @@
         .btn-secondary:disabled { background: var(--color-clay); color: #666; cursor: not-allowed; }
         .btn-secondary:hover { opacity: 0.9; }
 
-        /* 新增：确认状态专属按钮样式 */
         .btn-confirm-artwork {
             background: #6e8467;
             color: #f4f1eb;
@@ -718,15 +717,15 @@
             </div>
         </div>
 
-        <!-- 优化后的预览机制沙盒 -->
+        <!-- 优化并修复 Bug 后的生成画布区 -->
         <div class="preview-container" id="aiPreviewBox" style="display:none;">
             <div class="preview-img-wrap">
                 <img class="preview-img" id="previewImgElement" src="" alt="Culinary Artwork" onerror="handleImageError()">
             </div>
             <div>
                 <p id="aiStatusText" style="margin:0 0 10px 0; font-family: var(--font-sans); font-size:0.85rem; color:var(--color-ebony);">✨ AI Chef Canvas Ready. / AI 画布就绪。</p>
-                <button class="btn-secondary" id="aiGenerateBtn" onclick="generateAiImage()">Summon AI Illustrator / 呼唤AI作画</button>
-                <button class="modify-btn" id="aiRegenerateBtn" onclick="generateAiImage()" style="display:none;">🔄 Repaint / 重新绘制</button>
+                <button class="btn-secondary" id="aiGenerateBtn" onclick="generateAiImage()">Generate with AI / 智能AI生成</button>
+                <button class="modify-btn" id="aiRegenerateBtn" onclick="generateAiImage()" style="display:none;">🔄 Regenerate / 重新绘制</button>
                 <button class="btn-confirm-artwork" id="aiConfirmBtn" onclick="confirmArtworkImage()" style="display:none;">✓ Confirm Image / 确认采用此图片</button>
             </div>
         </div>
@@ -783,7 +782,7 @@
     let cart = {};
     let pendingDeleteIds = [];
     let currentTempImageUrl = "";
-    let isArtworkConfirmed = false; // 控制图片确认锁
+    let isArtworkConfirmed = false; 
     let changesCount = 0;
     let currentImageInputMode = 'ai';
 
@@ -812,7 +811,7 @@
             document.getElementById('aiGenerateBtn').style.display = 'none';
             document.getElementById('aiRegenerateBtn').style.display = 'none';
             confirmBtn.style.display = 'none';
-            submitFormBtn.disabled = false; // 链接模式无需确认按钮锁
+            submitFormBtn.disabled = false; 
             document.getElementById('aiStatusText').innerText = '🖼️ Previewing External Link. / 正在预览外部链接图源。';
         } else {
             tabAi.classList.add('active');
@@ -898,7 +897,6 @@
     function addToCart(id) {
         const item = recipes.find(r => r.id === id);
         if (!item) return;
-        // 兼容含有双语分隔符的展示
         const shortName = item.name.split('|')[0].trim();
         if (cart[id]) cart[id].count++;
         else cart[id] = { name: shortName, count: 1 };
@@ -957,14 +955,19 @@
         toggleCartDrawer(false);
     }
 
-    // 💡 AI绘图与双色状态机核心控制
+    // ⚡ 已经完美修护的 AI 绘图引擎核心
     function generateAiImage() {
         if (currentImageInputMode !== 'ai') return;
         const name = document.getElementById('foodName').value;
         if(!name) { alert('Please insert a dish name first. / 请先填写料理名称以提供作画灵感。'); return; }
         
-        // 分割中英文提取出全英文核心 prompt 促使 AI 精准构图
-        const pureEnglishName = name.split('|')[0].trim();
+        // 🛠️【BUG FIX】: 通过分割符号 | 剔除掉输入的中文，只过滤提取出核心的纯英文名称提供给 AI API 接口解析
+        const pureEnglishName = name.split('|')[0].replace(/[\u4e00-\u9fa5]/g, '').trim();
+        
+        if(!pureEnglishName) {
+            alert('Please include English text in the name for AI generation. / 菜品名称中请至少包含部分英文，以便 AI 提取构图画面。');
+            return;
+        }
 
         const previewElement = document.getElementById('previewImgElement');
         const aiBox = document.getElementById('aiPreviewBox');
@@ -976,14 +979,13 @@
         generateBtn.disabled = true;
         regenerateBtn.disabled = true;
         
-        // 撤销确认锁定
         isArtworkConfirmed = false;
         confirmBtn.innerText = "✓ Confirm Image / 确认采用此图片";
         confirmBtn.classList.remove('locked');
         checkSubmitButtonState();
 
         previewElement.src = 'https://i.gifer.com/ZKZg.gif'; 
-        aiStatusText.innerText = '🌀 Summoning AI Chef Illustrator... / 绘图黑卡正在渲染中...';
+        aiStatusText.innerText = '🌀 Generating with AI... / 智能AI画幅正在极速渲染中...';
         aiBox.style.display = 'flex';
         
         const randomSeed = Math.floor(Math.random() * 100000);
@@ -993,7 +995,7 @@
         imgPreloader.onload = function() {
             previewElement.src = newImageUrl;
             currentTempImageUrl = newImageUrl;
-            aiStatusText.innerText = '✨ AI Chef Canvas Complete! Click confirm below to lock. / 画布铺设成功！请点击下方按钮确认锁定。';
+            aiStatusText.innerText = '✨ AI Canvas Complete! Click confirm below to lock. / 画布铺设成功！请点击下方按钮确认锁定。';
             generateBtn.style.display = 'none';
             regenerateBtn.style.display = 'inline-block';
             confirmBtn.style.display = 'inline-block';
@@ -1012,7 +1014,6 @@
         imgPreloader.src = newImageUrl;
     }
 
-    // 确认预览图通过核心阻断函数
     function confirmArtworkImage() {
         if(!currentTempImageUrl) return;
         isArtworkConfirmed = true;
@@ -1058,7 +1059,6 @@
             document.getElementById('aiPreviewBox').style.display = 'flex';
             document.getElementById('previewImgElement').src = item.img;
             
-            // 修改已有菜品时默认判定其图片有效
             isArtworkConfirmed = true;
             const confirmBtn = document.getElementById('aiConfirmBtn');
             confirmBtn.style.display = 'inline-block';
@@ -1209,7 +1209,6 @@
         }
     }
 
-    // 独立封装：关闭并折叠管理面板通道
     function closeAdminDashboard() {
         document.getElementById('adminSection').style.display = 'none';
         document.getElementById('quickExitBtn').style.display = 'none';
@@ -1270,7 +1269,6 @@
         }
     }
 
-    // 初始化流
     toggleImageMode('ai');
     renderMenu(recipes);
     updateCartUI();
