@@ -16,7 +16,7 @@
         }
         
         .container { 
-            max-width: 900px; 
+            max-width: 950px; 
             margin: 0 auto; 
             border: 1px solid #4D5C56; 
             padding: 40px; 
@@ -74,24 +74,32 @@
 
         /* 后台管理区 */
         #adminSection { grid-column: span 2; margin-top: 40px; padding: 30px; background: #2F3B36; border: 1px solid #4D5C56; display: none; border-radius: 4px; }
-        #adminSection h3 { color: #EFDB96; font-weight: 300; margin-top: 0; }
+        #adminSection h3 { color: #EFDB96; font-weight: 300; margin-top: 0; letter-spacing: 1px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #B7CDC2; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px; background: #3B4A43; border: 1px solid #4D5C56; color: #F7F6EE; box-sizing: border-box; border-radius: 4px; }
         .form-group input:focus, .form-group textarea:focus { border-color: #EFDB96; outline: none; }
         
-        .submit-btn { background: #EFDB96; color: #2F3B36; border: none; padding: 12px 28px; cursor: pointer; font-weight: bold; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px; }
+        /* AI 预览区域样式 */
+        .preview-container { display: flex; align-items: center; gap: 20px; margin: 15px 0; background: #3B4A43; padding: 15px; border-radius: 4px; border: 1px dashed #4D5C56; }
+        .preview-img { width: 120px; height: 120px; object-fit: cover; border-radius: 4px; border: 1px solid #EFDB96; background: #2F3B36; }
+        .btn-secondary { background: #4D5C56; color: #FFF; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 0.9rem; margin-right: 10px; }
+        .btn-secondary:hover { background: #5c6e66; }
+
+        .submit-btn { background: #EFDB96; color: #2F3B36; border: none; padding: 12px 28px; cursor: pointer; font-weight: bold; letter-spacing: 1px; transition: all 0.3s; border-radius: 4px; }
         .submit-btn:hover { background: #FFF; color: #2F3B36; }
         
-        /* 批量管理专用按钮 */
-        .batch-save-btn { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.05rem; border-radius: 4px; letter-spacing: 2px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .batch-save-btn:hover { background: #fff; }
-        .batch-save-btn:disabled { background: #4D5C56; color: #8c8273; cursor: not-allowed; box-shadow: none; }
+        /* 批量管理列表与按钮 */
+        .batch-save-btn { width: 100%; background: #EFDB96; color: #2F3B36; border: none; padding: 15px; cursor: pointer; font-weight: bold; font-size: 1.05rem; border-radius: 4px; letter-spacing: 2px; margin-top: 15px; }
+        .batch-save-btn:disabled { background: #4D5C56; color: #8c8273; cursor: not-allowed; }
 
-        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; margin-bottom: 6px; border-radius: 4px; transition: all 0.3s; }
-        .admin-list-item.pending-delete { border-color: #A64B4B; background: #4a3333; opacity: 0.6; } /* 标记为待删除状态 */
+        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; margin-bottom: 6px; border-radius: 4px; }
+        .admin-list-item.pending-delete { border-color: #A64B4B; background: #4a3333; opacity: 0.6; }
         
-        .delete-btn { background: none; color: #FF9E9E; border: 1px solid #A64B4B; padding: 4px 12px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
+        .action-group { display: flex; gap: 8px; }
+        .modify-btn { background: none; color: #EFDB96; border: 1px solid #EFDB96; padding: 4px 10px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
+        .modify-btn:hover { background: #EFDB96; color: #2F3B36; }
+        .delete-btn { background: none; color: #FF9E9E; border: 1px solid #A64B4B; padding: 4px 10px; cursor: pointer; border-radius: 4px; font-size: 0.85rem; }
         .delete-btn:hover { background: #A64B4B; color: #fff; }
         
         .admin-toggle { grid-column: span 2; text-align: center; margin-top: 40px; font-size: 0.75rem; color: #4D5C56; cursor: pointer; }
@@ -144,9 +152,14 @@
         <div class="form-group"><label>GitHub User:</label><input type="text" id="ghUser" placeholder="phoboww"></div>
         <div class="form-group"><label>Repository Name:</label><input type="text" id="ghRepo" placeholder="phoebe-menu-home"></div>
         
-        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 20px 0;">
-        <h3>🍳 添加新商品/菜品（✨AI 自动生图）</h3>
-        <div class="form-group"><label>品名:</label><input type="text" id="foodName" placeholder="如：法式草莓千层蛋糕"></div>
+        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 25px 0;">
+        
+        <!-- 动态标题：支持切换新增或修改 -->
+        <h3 id="formModeTitle">🍳 CREATE / MODIFY DISH</h3>
+        <!-- 隐藏域用来标记当前是在修改哪一个ID的菜，若为空代表在创建新菜 -->
+        <input type="hidden" id="editingRecipeId" value="">
+        
+        <div class="form-group"><label>品名 (AI 将根据这个名字为你现场画图):</label><input type="text" id="foodName" placeholder="如：法式草莓千层蛋糕"></div>
         <div class="form-group">
             <label>分类:</label>
             <select id="foodCategory">
@@ -157,40 +170,43 @@
             </select>
         </div>
         <div class="form-group"><label>菜品介绍/主厨笔记:</label><textarea id="foodNotes" rows="3" placeholder="介绍一下这道拿手绝活..."></textarea></div>
-        <button class="submit-btn" onclick="submitToGithub('add')">🚀 让 AI 绘图并立刻上架</button>
+        
+        <!-- ✨ 8.0 新增：AI 独立画布预览及重新生成模块 -->
+        <div class="preview-container" id="aiPreviewBox" style="display:none;">
+            <img class="preview-img" id="previewImgElement" src="" alt="AI 画布">
+            <div>
+                <p style="margin:0 0 10px 0; font-size:0.9rem; color:#EFDB96;">✨ AI 主厨作画完成！</p>
+                <button class="btn-secondary" onclick="generateAiImage()">🔄 不满意，重新画一张</button>
+            </div>
+        </div>
 
-        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 20px 0;">
-        <h3>🗑️ 菜单盘点与批量下架 (✨Batch 模式)</h3>
+        <div style="margin-top: 20px;">
+            <button class="btn-secondary" onclick="generateAiImage()">🎨 召唤 AI 绘制/刷新配图</button>
+            <button class="submit-btn" id="submitFormBtn" onclick="saveFormToRecipes()">🚀 确认并把当前数据存入本地</button>
+            <button class="btn-secondary" id="cancelEditBtn" onclick="resetForm()" style="display:none; background:#8c4f4f;">取消修改</button>
+        </div>
+
+        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 30px 0;">
+        <h3>🗑️ 菜单盘点、编辑与批量下架 (✨Batch 模式升级)</h3>
         <div id="adminRecipeList"></div>
-        <!-- 批量确认删除的终极按钮 -->
-        <button class="batch-save-btn" id="batchSaveBtn" onclick="saveBatchDelete()" disabled>💾 保存盘点并统一更新 (有0项变更)</button>
+        <button class="batch-save-btn" id="batchSaveBtn" onclick="pushToGithub()" disabled>💾 同步云端：保存当前所有修改与盘点 (0项变更)</button>
     </div>
 </div>
 
 <script>
-    // 基础演示菜单数据库
     let defaultRecipes = [
-    {
-        "id": 1783699243836,
-        "name": "拿铁",
-        "category": "中餐",
-        "img": "https://www.gafei.com/uploadfile/ueditor/image/202403/1709977684176cac.jpg",
-        "notes": ""
-    },
-    {
-        "id": 1783699940792,
-        "name": "法式草莓千层蛋糕",
-        "category": "烘焙",
-        "img": "https://image.pollinations.ai/p/%E6%B3%95%E5%BC%8F%E8%8D%89%E8%8E%93%E5%8D%83%E5%B1%82%E8%9B%8B%E7%B3%95,%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true",
-        "notes": ""
-    }
-];
+        { id: 1, name: "经典冰拿铁", category: "咖啡调配", img: "https://image.pollinations.ai/p/a%20gourmet%20iced%20latte%20with%20perfect%20layers%20of%20milk%20and%20espresso,%20high%20end%20restaurant%20photography?width=200&height=200&nologo=true", notes: "深烘豆 18g 提取 36g 浓缩，搭配 150ml 冰牛奶。冰爽香醇。" },
+        { id: 2, name: "黑椒迷迭香牛排", category: "西餐", img: "https://image.pollinations.ai/p/a%20luxurious%20medium%20rare%20ribeye%20steak%20with%20rosemary,%20fine%20dining%20plating?width=200&height=200&nologo=true", notes: "厚切眼肉，大火双面锁汁各 2 分钟，出锅前淋黄油静置。" }
+    ];
 
     let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
     let cart = {};
-    
-    // 🌟 新增：临时记录准备在本次批量删除中被干掉的 ID
     let pendingDeleteIds = [];
+    
+    // 用来存放当前正在预览的临时 AI 图片 URL
+    let currentTempImageUrl = "";
+    // 用来记录本地相较于云端的总变更计数（无论是添加、修改、还是删除）
+    let changesCount = 0;
 
     function renderMenu(data) {
         const container = document.getElementById('menuContainer');
@@ -211,6 +227,7 @@
         });
     }
 
+    // 🛒 购物车逻辑
     function addToCart(id) {
         const item = recipes.find(r => r.id === id);
         if (!item) return;
@@ -265,58 +282,143 @@
         updateCartUI();
     }
 
-    // 渲染管理后台列表
+    /* =======================================================
+       ✨ 8.0 新增的核心：AI 独立绘图、预览与不满意重新生成逻辑
+       ======================================================= */
+    function generateAiImage() {
+        const name = document.getElementById('foodName').value;
+        if(!name) { alert('请先填入菜品名称，AI 才能根据名字进行绘画哦！'); return; }
+        
+        // 加上随机数种子 (seed)，确保每次点击“重新画一张”时，图片会有所不同！
+        const randomSeed = Math.floor(Math.random() * 100000);
+        
+        // 生成专属 Pollinations AI 绘图链接
+        currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true&seed=${randomSeed}`;
+        
+        // 渲染到预览框中
+        document.getElementById('previewImgElement').src = currentTempImageUrl;
+        document.getElementById('aiPreviewBox').style.display = 'flex';
+    }
+
+    /* =======================================================
+       ✨ 8.0 新增的核心：修改 (Modify) 功能与表单提交分配
+       ======================================================= */
+    // 1. 当主厨点击“修改”按钮时，把数据吸入表单
+    function startModifyRecipe(id) {
+        const item = recipes.find(r => r.id === id);
+        if (!item) return;
+
+        // 切换表单为修改模式
+        document.getElementById('formModeTitle').innerText = `📝 MODIFY DISH: 【${item.name}】`;
+        document.getElementById('editingRecipeId').value = item.id;
+        document.getElementById('foodName').value = item.name;
+        document.getElementById('foodCategory').value = item.category;
+        document.getElementById('foodNotes').value = item.notes;
+        
+        // 加载它原有的图片作为 AI 预览框的内容
+        currentTempImageUrl = item.img;
+        document.getElementById('previewImgElement').src = item.img;
+        document.getElementById('aiPreviewBox').style.display = 'flex';
+
+        // 显示取消修改按钮
+        document.getElementById('cancelEditBtn').style.display = 'inline-block';
+        document.getElementById('submitFormBtn').innerText = '💾 临时保存本次修改';
+        
+        // 顺便帮主厨平滑滚动回表单区方便修改
+        document.getElementById('formModeTitle').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 2. 点击保存时，判断当前是“新增”还是“修改”，并把数据写入本地变量（此时不联网）
+    function saveFormToRecipes() {
+        const idStr = document.getElementById('editingRecipeId').value;
+        const name = document.getElementById('foodName').value;
+        const category = document.getElementById('foodCategory').value;
+        const notes = document.getElementById('foodNotes').value;
+
+        if(!name) { alert('请输入菜品/商品名称！'); return; }
+        
+        // 如果主厨没有触发过 AI 绘图预览，我们就自动生成一个图
+        if(!currentTempImageUrl) {
+            currentTempImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true`;
+        }
+
+        if(idStr) {
+            // 模式 A：修改现有菜品
+            const targetId = parseInt(idStr);
+            recipes = recipes.map(r => {
+                if(r.id === targetId) {
+                    return { id: targetId, name, category, img: currentTempImageUrl, notes };
+                }
+                return r;
+            });
+            alert(`【${name}】的细节修改已记入盘点单！`);
+        } else {
+            // 模式 B：创建全新菜品
+            recipes.push({ id: Date.now(), name, category, img: currentTempImageUrl, notes });
+            alert(`全新菜品【${name}】已成功加入盘点单！`);
+        }
+
+        changesCount++; // 触发了一次本地变更
+        resetForm();
+        localStorage.setItem('my_recipes', JSON.stringify(recipes));
+        
+        // 刷新列表
+        renderMenu(recipes);
+        renderAdminList();
+    }
+
+    // 3. 重置表单状态回到“创建模式”
+    function resetForm() {
+        document.getElementById('formModeTitle').innerText = `🍳 CREATE / MODIFY DISH`;
+        document.getElementById('editingRecipeId').value = "";
+        document.getElementById('foodName').value = "";
+        document.getElementById('foodNotes').value = "";
+        document.getElementById('aiPreviewBox').style.display = 'none';
+        document.getElementById('cancelEditBtn').style.display = 'none';
+        document.getElementById('submitFormBtn').innerText = '🚀 确认并把当前数据存入本地';
+        currentTempImageUrl = "";
+    }
+
+    // 后台管理面板列表渲染
     function renderAdminList() {
         const adminListContainer = document.getElementById('adminRecipeList');
         adminListContainer.innerHTML = '';
         
         recipes.forEach(item => {
-            // 检查这道菜是否已被标记为“准备删除”
             const isPending = pendingDeleteIds.includes(item.id);
             
             adminListContainer.insertAdjacentHTML('beforeend', `
-                <div class="admin-list-item ${isPending ? 'pending-delete' : ''}" id="admin-item-${item.id}">
+                <div class="admin-list-item ${isPending ? 'pending-delete' : ''}">
                     <span><strong style="color:#EFDB96;">[${item.category}]</strong> ${item.name}</span>
-                    <button class="delete-btn" onclick="togglePendingDelete(${item.id})">
-                        ${isPending ? '↩️ 撤销下架' : '❌ 下架'}
-                    </button>
+                    <div class="action-group">
+                        <!-- 修改按钮 -->
+                        <button class="modify-btn" onclick="startModifyRecipe(${item.id})" ${isPending ? 'disabled style="opacity:0.3;"' : ''}>📝 修改细节</button>
+                        <!-- 下架按钮 -->
+                        <button class="delete-btn" onclick="togglePendingDelete(${item.id})">
+                            ${isPending ? '↩️ 撤销下架' : '❌ 下架'}
+                        </button>
+                    </div>
                 </div>
             `);
         });
 
-        // 更新大保存按钮的状态
+        // 刷新同步云端大按钮的状态
         const saveBtn = document.getElementById('batchSaveBtn');
-        if (pendingDeleteIds.length > 0) {
+        const activeChanges = pendingDeleteIds.length + changesCount;
+        if (activeChanges > 0) {
             saveBtn.disabled = false;
-            saveBtn.innerText = `💾 保存盘点并统一更新 (有 ${pendingDeleteIds.length} 项变更)`;
+            saveBtn.innerText = `💾 同步云端：保存当前所有修改与盘点 (有 ${activeChanges} 项变更待同步)`;
         } else {
             saveBtn.disabled = true;
-            saveBtn.innerText = `💾 保存盘点并统一更新 (有 0 项变更)`;
+            saveBtn.innerText = `💾 同步云端：保存当前所有修改与盘点 (无变更)`;
         }
     }
 
-    // 🌟 核心改动：点击删除时，先不联网，只在本地打上“删除标记”
     function togglePendingDelete(id) {
         const index = pendingDeleteIds.indexOf(id);
-        if (index > -1) {
-            // 如果已经在删除队列里，说明主人想反悔，从队列里移出
-            pendingDeleteIds.splice(index, 1);
-        } else {
-            // 否则，加进待删除队列
-            pendingDeleteIds.push(id);
-        }
-        // 重新画一遍后台列表，红框和状态马上生效
+        if (index > -1) pendingDeleteIds.splice(index, 1);
+        else pendingDeleteIds.push(id);
         renderAdminList();
-    }
-
-    // 🌟 核心改动：点击最终的保存按钮，才一次性真删除，并联网
-    function saveBatchDelete() {
-        if (confirm(`确定要一次性下架这 ${pendingDeleteIds.length} 道菜吗？这将会触发云端同步。`)) {
-            // 真正从 recipes 数组里过滤掉所有被打上删除标记的菜
-            recipes = recipes.filter(r => !pendingDeleteIds.includes(r.id));
-            // 触发联网同步
-            submitToGithub('delete_batch');
-        }
     }
 
     function filterMenu(category) {
@@ -335,64 +437,62 @@
             document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
             document.getElementById('ghUser').value = localStorage.getItem('gh_user') || '';
             document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
-            pendingDeleteIds = []; // 每次点开后台重置删除队列
             renderAdminList();
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
     }
 
-    async function submitToGithub(actionType) {
+    // 🌟 终极打包一键发往 GitHub 的核心
+    async function pushToGithub() {
         const token = document.getElementById('ghToken').value;
         const user = document.getElementById('ghUser').value;
         const repo = document.getElementById('ghRepo').value;
 
         if(!token || !user || !repo) { alert('请完善全局配置。'); return; }
 
-        if (actionType === 'add') {
-            const name = document.getElementById('foodName').value;
-            const category = document.getElementById('foodCategory').value;
-            const notes = document.getElementById('foodNotes').value;
-            if(!name) { alert('请输入商品名称。'); return; }
-            
-            const aiImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(name)},%20gourmet%20cuisine,%20high%20end%20restaurant%20photography,%20exquisite%20plating?width=300&height=300&nologo=true`;
-            recipes.push({ id: Date.now(), name, category, img: aiImageUrl, notes });
-        }
-
-        localStorage.setItem('my_recipes', JSON.stringify(recipes));
-        localStorage.setItem('gh_token', token);
-        localStorage.setItem('gh_user', user);
-        localStorage.setItem('gh_repo', repo);
-
-        const url = `https://api.github.com/repos/${user}/${repo}/contents/index.html`;
-        
-        try {
-            const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-            const fileData = await res.json();
-            const sha = fileData.sha;
-            let oldCode = decodeURIComponent(escape(atob(fileData.content)));
-
-            const updatedRecipesCode = `let defaultRecipes = ${JSON.stringify(recipes, null, 4)};`;
-            let newCode = oldCode.replace(/let defaultRecipes = \[\s*[\s\S]*?\];/, updatedRecipesCode);
-
-            const putRes = await fetch(url, {
-                method: 'PUT',
-                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: actionType === 'add' ? `Chef inventory updated by AI` : `Chef processed batch deletion`,
-                    content: btoa(unescape(encodeURIComponent(newCode))),
-                    sha: sha
-                })
-            });
-
-            if(putRes.ok) {
-                alert('🎉 菜单盘点已全部成功发布上云！正在重新烹饪网页，请于一分钟后刷新查看最新状态。');
-                pendingDeleteIds = []; // 清空队列
-                location.reload();
-            } else {
-                alert('同步失败，请检查配置。');
+        if(confirm(`确认要把当前所有的添加、修改和批量下架的数据，一次性全网同步吗？`)) {
+            // 执行真正的批量删除过滤
+            if(pendingDeleteIds.length > 0) {
+                recipes = recipes.filter(r => !pendingDeleteIds.includes(r.id));
             }
-        } catch (e) {
-            alert('发生错误: ' + e.message);
+
+            localStorage.setItem('my_recipes', JSON.stringify(recipes));
+            localStorage.setItem('gh_token', token);
+            localStorage.setItem('gh_user', user);
+            localStorage.setItem('gh_repo', repo);
+
+            const url = `https://api.github.com/repos/${user}/${repo}/contents/index.html`;
+            
+            try {
+                const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+                const fileData = await res.json();
+                const sha = fileData.sha;
+                let oldCode = decodeURIComponent(escape(atob(fileData.content)));
+
+                const updatedRecipesCode = `let defaultRecipes = ${JSON.stringify(recipes, null, 4)};`;
+                let newCode = oldCode.replace(/let defaultRecipes = \[\s*[\s\S]*?\];/, updatedRecipesCode);
+
+                const putRes = await fetch(url, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: `Chef updated system inventory`,
+                        content: btoa(unescape(encodeURIComponent(newCode))),
+                        sha: sha
+                    })
+                });
+
+                if(putRes.ok) {
+                    alert('🎉 全盘数据已成功发布上云！正在重新烹饪网页，请于一分钟后刷新查看最新点单台。');
+                    pendingDeleteIds = [];
+                    changesCount = 0;
+                    location.reload();
+                } else {
+                    alert('同步失败，请检查配置。');
+                }
+            } catch (e) {
+                alert('发生错误: ' + e.message);
+            }
         }
     }
 
