@@ -12,15 +12,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+TC:wght@200;300;400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* 🎨 全新东方禅意大地色盘 */
+        /* 🎨 东方禅意大地色盘 */
         :root {
-            --color-sisal: #d3cbba;       /* 亚麻暖白（大面积宣纸留白基底） */
+            --color-sisal: #d3cbba;       /* 亚麻暖白（宣纸留白基底） */
             --color-domino: #8e775e;      /* 暖咖茶汤色（次要互动、激活态） */
             --color-lisbon: #423921;      /* 古建枯木棕（文字、框架、细线） */
             --color-ebony: #3c2005;       /* 浓郁檀木黑（核心重音、下单、气泡） */
             --color-napa: #aca494;        /* 浅灰陶土色（卡片边框、非激活态） */
             
-            /* 💡 升级为 Wabi-Sabi 专用衬线字体系统 */
             --font-serif: 'Cormorant Garamond', 'Noto Serif TC', 'Georgia', 'SimSun', serif;
             --font-sans: 'Cormorant Garamond', 'Noto Serif TC', -apple-system, sans-serif;
         }
@@ -35,67 +34,74 @@
             font-family: var(--font-sans); 
             margin: 0; 
             padding: 0;
-            letter-spacing: 1px; /* 增加全局字距，制造呼吸感 */
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ==================== 🌳 全局可点击的雨林禅意首屏 ==================== */
+        /* ==================== 🌳 全局可点击的雨林视频首屏 (Hero Video) ==================== */
         .hero-section {
             position: relative;
             width: 100%;
             height: 100vh;
             display: flex;
-            flex-direction: row; /* 改为横向排列，便于容纳竖排文本 */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
             overflow: hidden;
             box-sizing: border-box;
-            padding: 0 40px;
+            padding: 0 20px;
             cursor: pointer; 
         }
 
-        .hero-bg {
+        .hero-video-container {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(60, 32, 5, 0.35) 0%, rgba(211, 203, 186, 1) 100%), 
-                        url('https://ix-marketing.imgix.net/interior.mp4') no-repeat center center;
-            background-size: cover;
             z-index: -1;
+            /* 檀木黑 (#3c2005) 渐变叠加，确保视频上方的文字清晰可读 */
+            background: linear-gradient(to bottom, rgba(60, 32, 5, 0.4) 0%, rgba(211, 203, 186, 1) 100%);
+        }
+
+        .hero-video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+            z-index: -2;
             transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .hero-section:hover .hero-bg {
-            transform: scale(1.03);
+        .hero-section:hover video {
+            transform: scale(1.04);
         }
 
-        /* ✨ Wabi-Sabi 核心改造：全屏独白改为极为震撼的东方“竖排版” */
+        /* 恢复旧版经典横排版 */
         .hero-content {
-            display: flex;
-            flex-direction: row-reverse; /* 中式传统的自右向左阅读顺序 */
-            align-items: flex-start;
-            writing-mode: vertical-rl;  /* 开启竖排模式 */
-            text-orientation: mixed;
-            max-height: 70vh;
-            gap: 30px;
+            max-width: 900px;
+            pointer-events: none; 
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hero-section:hover .hero-content {
+            transform: translateY(-5px);
         }
 
         .hero-tag {
             font-family: var(--font-serif);
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
             color: var(--color-ebony);
-            font-weight: 400;
-            margin: 0;
+            font-weight: 500;
+            margin-bottom: 25px;
         }
 
         .hero-title {
             font-family: var(--font-serif);
-            font-size: 3.8rem; /* 竖排不宜过大，追求清瘦挺拔 */
+            font-size: 4.2rem; 
             font-weight: 300;
-            line-height: 1.4;
-            margin: 0;
-            letter-spacing: 4px; /* 宽字距，如毛笔落字 */
+            line-height: 1.2;
+            margin: 0 0 25px 0;
             color: var(--color-ebony);
         }
 
@@ -108,28 +114,22 @@
         .hero-subtitle {
             font-family: var(--font-serif);
             font-size: 1.2rem;
-            line-height: 2;
+            line-height: 1.8;
             color: var(--color-lisbon);
-            margin: 0;
+            margin: 0 auto 40px auto;
+            max-width: 650px;
             font-weight: 300;
-            letter-spacing: 2px;
             opacity: 0.85;
-            max-height: 60vh;
         }
 
         .click-anywhere-hint {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
             font-family: var(--font-serif);
             font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 6px;
+            letter-spacing: 5px;
             color: var(--color-domino);
             font-weight: 400;
             animation: pulse 2.5s infinite ease-in-out;
-            writing-mode: horizontal-tb; /* 提示词保持横排 */
         }
 
         @keyframes pulse {
@@ -141,7 +141,7 @@
         .main-wrapper {
             max-width: 1200px; 
             margin: 0 auto; 
-            padding: 140px 20px; /* 极大的留白高度 */
+            padding: 120px 20px; 
             perspective: 1200px; 
         }
 
@@ -153,7 +153,7 @@
             padding-bottom: 35px; 
             margin-bottom: 60px; 
         }
-        header h2 { font-family: var(--font-serif); font-size: 2.5rem; margin: 0 0 12px 0; letter-spacing: 4px; color: var(--color-ebony); font-weight: 300; }
+        header h2 { font-family: var(--font-serif); font-size: 2.4rem; margin: 0 0 12px 0; color: var(--color-ebony); font-weight: 300; }
         header p { color: var(--color-domino); margin: 0; font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; }
         
         .nav-tabs { display: flex; justify-content: flex-start; flex-wrap: wrap; gap: 40px; margin-bottom: 60px; border-bottom: 1px solid var(--color-napa); padding-bottom: 15px; }
@@ -170,7 +170,7 @@
         .menu-item { 
             position: relative;
             height: 380px; 
-            border-radius: 2px; /* 极致克制的微小圆角 */
+            border-radius: 2px; 
             overflow: hidden;
             background-color: var(--color-napa);
             border: 1px solid var(--color-napa);
@@ -215,7 +215,6 @@
             margin-bottom: 0px;
             font-weight: 300;
             line-height: 1.4;
-            letter-spacing: 2px;
             transition: transform 0.4s ease;
             transform: translateY(45px); 
         }
@@ -391,7 +390,7 @@
         .btn-secondary { font-family: var(--font-serif); background: var(--color-domino); color: var(--color-sisal); border: none; padding: 11px 24px; cursor: pointer; border-radius: 0px; font-weight: 400; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-right: 10px; }
         .btn-secondary:disabled { background: var(--color-napa); cursor: not-allowed; opacity: 0.8; }
 
-        .submit-btn { font-family: var(--font-serif); background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 12px 36px; cursor: pointer; font-weight: 400; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 0px; }
+        .submit-btn { font-family: var(--font-serif); background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 12px 32px; cursor: pointer; font-weight: 400; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 0px; }
         
         .batch-save-btn { font-family: var(--font-serif); width: 100%; background: var(--color-ebony); color: var(--color-sisal); border: none; padding: 16px; cursor: pointer; font-weight: 400; font-size: 0.95rem; border-radius: 0px; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px; }
         .batch-save-btn:disabled { background: var(--color-napa); color: #888; cursor: not-allowed; }
@@ -409,13 +408,18 @@
 </head>
 <body>
 
-<!-- 🌳 全屏可点击首屏（大面积意境留白与中式竖排版） -->
+<!-- 🌳 全屏可点击首屏（更新为你提供的高级感空间室内动态视频背景，恢复经典横排排版） -->
 <section class="hero-section" onclick="document.getElementById('orderDesk').scrollIntoView({behavior: 'smooth'});">
-    <div class="hero-bg"></div>
+    <div class="hero-video-container">
+        <!-- 自动播放、静音、无限循环、移动端防跳出播放 -->
+        <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&w=1600&q=80">
+            <source src="https://ix-marketing.imgix.net/interior.mp4" type="video/mp4">
+        </video>
+    </div>
     <div class="hero-content">
-        <div class="hero-tag">Aesthetic Playful Flavors</div>
+        <div class="hero-tag">Canopy To Table</div>
         <h1 class="hero-title">林间微风 · <em>物候润泽</em></h1>
-        <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen, an elite digital ordering platform redefining the art of bespoke gastronomy.</p>
+        <p class="hero-subtitle">Welcome to Phoebe's Private Kitchen. An eco-friendly digital ordering platform set deep in the heart of the sustainable rainforest.</p>
         <div class="click-anywhere-hint">[ Click anywhere to explore ]</div>
     </div>
 </section>
