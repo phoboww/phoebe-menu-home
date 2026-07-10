@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主厨的私房菜单 | My Secret Menu</title>
+    <style>
+        /* 保持之前的优雅餐厅样式 */
+        body { background-color: #fbf9f3; color: #222; font-family: 'PingFang SC', sans-serif; margin: 0; padding: 40px 20px; }
+        .container { max-width: 800px; margin: 0 auto; border: 1px solid #d3c2a0; padding: 40px; box-shadow: 0 4px 25px rgba(0,0,0,0.03); background: #fff; }
+        header { text-align: center; border-bottom: 2px double #d3c2a0; padding-bottom: 20px; margin-bottom: 30px; }
+        header h1 { font-size: 2.3rem; margin: 0 0 10px 0; letter-spacing: 3px; }
+        
+        /* 导航与列表 */
+        .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
+        .tab-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: #777; padding: 6px 16px; border-radius: 20px; }
+        .tab-btn.active, .tab-btn:hover { color: #fff; background-color: #8c7653; }
+        .menu-section { display: grid; gap: 25px; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 10px; border-radius: 6px; }
+        .menu-item:hover { background-color: #fcf9f2; }
+        .item-info { flex-grow: 1; padding-right: 20px; }
+        .item-name { font-size: 1.2rem; font-weight: bold; }
+        .item-img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
+        .item-dots { flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px; align-self: flex-end; }
+
+        /* 隐藏的后台管理区域 */
+        #adminSection { margin-top: 50px; padding-top: 30px; border-top: 1px dashed #d3c2a0; display: none; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .submit-btn { background: #8c7653; color: #fff; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+        
+        /* 简易开关 */
+        .admin-toggle { text-align: center; margin-top: 40px; font-size: 0.8rem; color: #ccc; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>THE PRIVATE MENU</h1>
+        <p>— 主厨的私房菜谱 —</p>
+    </header>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="filterMenu('all')">全部</button>
+        <button class="tab-btn" onclick="filterMenu('中餐')">中餐</button>
+        <button class="tab-btn" onclick="filterMenu('西餐')">西餐</button>
+        <button class="tab-btn" onclick="filterMenu('烘焙')">烘焙</button>
+        <button class="tab-btn" onclick="filterMenu('咖啡调配')">咖啡调配</button>
+    </div>
+
+    <div class="menu-section" id="menuContainer"></div>
+
+    <div class="admin-toggle" onclick="handleAdminClick()">开启主厨录入后台</div>
+
+    <div id="adminSection">
+        <h3>🍳 添加新菜品（直接同步 GitHub）</h3>
+        <div class="form-group">
+            <label>GitHub Token (只需填一次):</label>
+            <input type="password" id="ghToken" placeholder="输入你的 GitHub Fine-grained Token">
+        </div>
+        <div class="form-group">
+            <label>GitHub 用户名:</label>
+            <input type="text" id="ghUser" placeholder="例如: myusername">
+        </div>
+        <div class="form-group">
+            <label>仓库名称:</label>
+            <input type="text" id="ghRepo" placeholder="例如: my-menu">
+        </div>
+        <hr>
+        <div class="form-group">
+            <label>菜品名称:</label>
+            <input type="text" id="foodName" placeholder="如：经典冰拿铁">
+        </div>
+        <div class="form-group">
+            <label>分类:</label>
+            <select id="foodCategory">
+                <option value="中餐">中餐</option>
+                <option value="西餐">西餐</option>
+                <option value="烘焙">烘焙</option>
+                <option value="咖啡调配">咖啡调配</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>图片网址 (Image URL):</label>
+            <input type="text" id="foodImg" placeholder="可以直接贴网上的图片链接，或填 placeholder 图">
+        </div>
+        <div class="form-group">
+            <label>主厨笔记 / 描述:</label>
+            <textarea id="foodNotes" rows="3" placeholder="写下你的成功秘诀..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitToGithub()">🚀 保存并发布到网站</button>
+    </div>
+</div>
+
+<script>
+    // 默认内置的几个菜，如果本地有存，就用本地最新的
+    let defaultRecipes = [
+        { id: 1, name: "经典冰拿铁", category: "咖啡调配", img: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=150", notes: "深烘豆 18g 提取 36g 浓缩，搭配 150ml 冰牛奶。" },
+        { id: 2, name: "黑椒迷迭香牛排", category: "西餐", img: "https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=150", notes: "厚切眼肉，每面大火煎 2 分钟，出锅前淋上融化的黄油与迷迭香。" }
+    ];
+
+    // 网页加载时，尝试从 GitHub 文件读取数据，这里为了绝对简便，先使用浏览器的 localStorage
+    // 真正的线上全自动改文件需要配合读取 GitHub API。为了让你直接拿去就能用，我们用一个最巧的办法：
+    // 在本代码内直接更新自己的 index.html！
+    
+    let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
+
+    function renderMenu(data) {
+        const container = document.getElementById('menuContainer');
+        container.innerHTML = '';
+        data.forEach(item => {
+            container.insertAdjacentHTML('beforeend', `
+                <div class="menu-item">
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div style="font-size:0.9rem; color:#666; margin-top:5px;">${item.notes}</div>
+                    </div>
+                    <div class="item-dots"></div>
+                    <img class="item-img" src="${item.img || 'https://via.placeholder.com/150'}" alt="${item.name}">
+                </div>
+            `);
+        });
+    }
+
+    function filterMenu(category) {
+        if (category === 'all') renderMenu(recipes);
+        else renderMenu(recipes.filter(r => r.category === category));
+    }
+
+    // 暗号：连续点击底部文字 3 次打开后台
+    let clickCount = 0;
+    function handleAdminClick() {
+        clickCount++;
+        if(clickCount >= 3) {
+            document.getElementById('adminSection').style.display = 'block';
+            // 顺便帮主人把之前填过的信息读出来
+            document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
+            document.getElementById('ghUser').value = localStorage.getItem('gh_user') || '';
+            document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
+        }
+    }
+
+    // 🌟 最核心功能：直接把你在网页上填的数据，通过 API 塞进你的 GitHub 仓库
+    async function submitToGithub() {
+        const token = document.getElementById('ghToken').value;
+        const user = document.getElementById('ghUser').value;
+        const repo = document.getElementById('ghRepo').value;
+        
+        const name = document.getElementById('foodName').value;
+        const category = document.getElementById('foodCategory').value;
+        const img = document.getElementById('foodImg').value || "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=150";
+        const notes = document.getElementById('foodNotes').value;
+
+        if(!token || !user || !repo || !name) {
+            alert('请把钥匙(Token)和菜品名字填完整哦！');
+            return;
+        }
+
+        // 1. 记在本地
+        const newRecipe = { id: Date.now(), name, category, img, notes };
+        recipes.push(newRecipe);
+        localStorage.setItem('my_recipes', JSON.stringify(recipes));
+        localStorage.setItem('gh_token', token);
+        localStorage.setItem('gh_user', user);
+        localStorage.setItem('gh_repo', repo);
+
+        // 2. 核心黑科技：直接读取当前网页在 GitHub 上的最新源代码
+        const url = `https://api.github.com/repos/${user}/${repo}/contents/index.html`;
+        
+        try {
+            // 获取当前文件状态和 sha 码（GitHub 修改文件必须带上 sha 码证明是最新版）
+            const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+            const fileData = await res.json();
+            const sha = fileData.sha;
+            // 把旧代码解密出来
+            let oldCode = decodeURIComponent(escape(atob(fileData.content)));
+
+            // 用正则把我上面定义的 defaultRecipes 替换成包含新菜的全新数组
+            const updatedRecipesCode = `let defaultRecipes = ${JSON.stringify(recipes, null, 4)};`;
+            let newCode = oldCode.replace(/let defaultRecipes = \[\s*[\s\S]*?\];/, updatedRecipesCode);
+
+            // 把新代码加密并发送回 GitHub
+            const putRes = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: `主厨添加了新菜品: ${name}`,
+                    content: btoa(unescape(encodeURIComponent(newCode))),
+                    sha: sha
+                })
+            });
+
+            if(putRes.ok) {
+                alert('🎉 上传成功！GitHub 正在重新出炉网页，大概 1 分钟后刷新网站就能看到！');
+                location.reload();
+            } else {
+                const err = await putRes.json();
+                alert('上传失败，请检查 Token 权限或仓库名是否正确：' + err.message);
+            }
+        } catch (e) {
+            alert('发生错误：' + e.message);
+        }
+    }
+
+    renderMenu(recipes);
+</script>
+</body>
+</html>
