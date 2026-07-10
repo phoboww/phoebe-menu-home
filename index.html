@@ -3,115 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>主厨的私房菜单 | My Secret Menu</title>
+    <title>Phoebe's Secret Menu | 菲比的私房主厨菜单</title>
     <style>
-        /* 保持之前的优雅餐厅样式 */
-        body { background-color: #fbf9f3; color: #222; font-family: 'PingFang SC', sans-serif; margin: 0; padding: 40px 20px; }
-        .container { max-width: 800px; margin: 0 auto; border: 1px solid #d3c2a0; padding: 40px; box-shadow: 0 4px 25px rgba(0,0,0,0.03); background: #fff; }
-        header { text-align: center; border-bottom: 2px double #d3c2a0; padding-bottom: 20px; margin-bottom: 30px; }
-        header h1 { font-size: 2.3rem; margin: 0 0 10px 0; letter-spacing: 3px; }
+        /* 1. 注入你给的专属莫兰迪高级色盘 */
+        body { 
+            background-color: #2F3B36; /* 精调深墨绿衬底 (#84A295的深色延伸，衬托高级感) */
+            color: #F7F6EE; /* 珍珠白正文 */
+            font-family: 'Times New Roman', 'Georgia', 'PingFang SC', sans-serif; 
+            margin: 0; 
+            padding: 60px 20px;
+            letter-spacing: 1px;
+        }
         
-        /* 导航与列表 */
-        .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
-        .tab-btn { background: none; border: none; font-size: 1rem; cursor: pointer; color: #777; padding: 6px 16px; border-radius: 20px; }
-        .tab-btn.active, .tab-btn:hover { color: #fff; background-color: #8c7653; }
-        .menu-section { display: grid; gap: 25px; }
-        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 6px; }
-        .menu-item:hover { background-color: #fcf9f2; }
-        .item-info { flex-grow: 1; padding-right: 20px; }
-        .item-name { font-size: 1.2rem; font-weight: bold; }
-        .item-img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
-        .item-dots { flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px; align-self: flex-end; }
+        .container { 
+            max-width: 850px; 
+            margin: 0 auto; 
+            border: 1px solid #4D5C56; 
+            padding: 50px 40px; 
+            background: #3B4A43; /* 对应 #84A295 与 #B7CDC2 之间的中和灰绿 */
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            border-radius: 4px;
+        }
 
-        /* 后台管理区域 */
-        #adminSection { margin-top: 50px; padding-top: 30px; border-top: 1px dashed #d3c2a0; display: none; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        .submit-btn { background: #8c7653; color: #fff; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        /* 2. 餐厅门面 Header */
+        header { 
+            text-align: center; 
+            border-bottom: 1px solid #4D5C56; 
+            padding-bottom: 35px; 
+            margin-bottom: 40px; 
+        }
+        header h1 { 
+            font-size: 2.6rem; 
+            margin: 0 0 12px 0; 
+            letter-spacing: 5px; 
+            color: #EFDB96; /* 核心高亮：你指定的古铜金 */
+            font-weight: 300;
+        }
+        header p { 
+            font-style: italic; 
+            color: #B7CDC2; /* 浅青灰副标题 */
+            margin: 0;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+        }
         
-        /* 2.0 新增：后台菜品管理列表样式 */
-        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #fdfcf9; border: 1px solid #eee; margin-bottom: 5px; border-radius: 4px; }
-        .delete-btn { background: #d9534f; color: white; border: none; padding: 4px 10px; cursor: pointer; border-radius: 3px; font-size: 0.85rem; }
-        .delete-btn:hover { background: #c9302c; }
-        .admin-toggle { text-align: center; margin-top: 40px; font-size: 0.8rem; color: #ccc; cursor: pointer; }
+        /* 3. 专属分类导航 */
+        .nav-tabs { 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap;
+            gap: 25px; 
+            margin-bottom: 50px; 
+            border-bottom: 1px solid #4D5C56;
+            padding-bottom: 15px;
+        }
+        .tab-btn { 
+            background: none; 
+            border: none; 
+            font-size: 0.95rem; 
+            cursor: pointer; 
+            color: #EAE6DA; /* 亚麻灰未激活状态 */
+            padding: 8px 4px; 
+            transition: all 0.4s ease;
+            letter-spacing: 2px;
+        }
+        .tab-btn.active, .tab-btn:hover { 
+            color: #EFDB96; /* 激活时切换成古铜金 */
+            border-bottom: 1px solid #EFDB96;
+        }
+
+        /* 4. 菜单板块 */
+        .menu-section { 
+            display: grid; 
+            gap: 40px; 
+        }
+        .menu-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 0; 
+            border-bottom: 1px dashed #4D5C56;
+            transition: all 0.3s ease;
+        }
+        .menu-item:hover {
+            border-bottom: 1px dashed #EFDB96;
+        }
+        .item-info { 
+            flex-grow: 1; 
+            padding-right: 30px; 
+        }
+        .item-name { 
+            font-size: 1.3rem; 
+            font-weight: 400; 
+            color: #F7F6EE;
+            margin-bottom: 8px;
+        }
+        .item-notes {
+            font-size: 0.9rem; 
+            color: #B7CDC2; /* 优雅的笔记颜色 */
+            line-height: 1.6;
+            font-style: italic;
+        }
+        .item-img { 
+            width: 85px; 
+            height: 85px; 
+            object-fit: cover; 
+            border-radius: 4px; 
+            border: 1px solid #4D5C56; 
+            transition: all 0.3s ease;
+        }
+        .menu-item:hover .item-img {
+            border-color: #EFDB96;
+            transform: scale(1.02);
+        }
+        .item-dots { 
+            flex-grow: 1; 
+            border-bottom: 1px dotted #4D5C56; 
+            margin: 0 15px; 
+            align-self: flex-end; 
+            margin-bottom: 8px;
+        }
+
+        /* 5. 后台管理区配色同步 */
+        #adminSection { 
+            margin-top: 60px; 
+            padding: 35px; 
+            background: #2F3B36; 
+            border: 1px solid #4D5C56; 
+            display: none; 
+            border-radius: 4px;
+        }
+        #adminSection h3 { color: #EFDB96; font-weight: 300; margin-top: 0; letter-spacing: 2px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: #B7CDC2; text-transform: uppercase; }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; color: #F7F6EE; box-sizing: border-box; border-radius: 4px;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: #EFDB96; outline: none; }
+        
+        .submit-btn { 
+            background: #EFDB96; color: #2F3B36; border: none; padding: 12px 28px; cursor: pointer; font-weight: bold; letter-spacing: 2px; transition: all 0.3s; border-radius: 4px;
+        }
+        .submit-btn:hover { background: #FFF; color: #2F3B36; }
+        
+        /* 后台盘点列表 */
+        .admin-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #3B4A43; border: 1px solid #4D5C56; margin-bottom: 8px; border-radius: 4px; }
+        .delete-btn { background: none; color: #FF9E9E; border: 1px solid #A64B4B; padding: 4px 12px; cursor: pointer; transition: all 0.3s; border-radius: 4px; }
+        .delete-btn:hover { background: #A64B4B; color: #fff; }
+        .admin-toggle { text-align: center; margin-top: 60px; font-size: 0.75rem; color: #4D5C56; cursor: pointer; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>THE PRIVATE MENU</h1>
-        <p>— 主厨的私房菜谱 —</p>
+        <h1>PHOEBE'S SECRET MENU</h1>
+        <p>— THE ART OF PRIVATE CUISINE —</p>
     </header>
 
     <div class="nav-tabs">
-        <button class="tab-btn active" onclick="filterMenu('all')">全部</button>
-        <button class="tab-btn" onclick="filterMenu('中餐')">中餐</button>
-        <button class="tab-btn" onclick="filterMenu('西餐')">西餐</button>
-        <button class="tab-btn" onclick="filterMenu('烘焙')">烘焙</button>
-        <button class="tab-btn" onclick="filterMenu('咖啡调配')">咖啡调配</button>
+        <button class="tab-btn active" onclick="filterMenu('all')">ALL</button>
+        <button class="tab-btn" onclick="filterMenu('中餐')">CHINESE</button>
+        <button class="tab-btn" onclick="filterMenu('西餐')">WESTERN</button>
+        <button class="tab-btn" onclick="filterMenu('烘焙')">BAKERY</button>
+        <button class="tab-btn" onclick="filterMenu('咖啡调配')">BAR & CAFE</button>
     </div>
 
+    <!-- 菜单主板 -->
     <div class="menu-section" id="menuContainer"></div>
 
-    <div class="admin-toggle" onclick="handleAdminClick()">开启主厨录入后台</div>
+    <!-- 开启暗黑主厨看板 -->
+    <div class="admin-toggle" onclick="handleAdminClick()">ENTER CHEF DASHBOARD</div>
 
+    <!-- 录入管理区 -->
     <div id="adminSection">
-        <h3>🔑 主厨核心配置</h3>
+        <h3>🔑 GLOBAL CONFIGURATION</h3>
         <div class="form-group">
             <label>GitHub Token:</label>
-            <input type="password" id="ghToken" placeholder="输入你的 GitHub Fine-grained Token">
+            <input type="password" id="ghToken" placeholder="github_pat_...">
         </div>
         <div class="form-group">
-            <label>GitHub 用户名:</label>
-            <input type="text" id="ghUser" placeholder="例如: phoboww">
+            <label>GitHub User:</label>
+            <input type="text" id="ghUser" placeholder="phoboww">
         </div>
         <div class="form-group">
-            <label>仓库名称:</label>
-            <input type="text" id="ghRepo" placeholder="例如: phoebe-menu-home">
+            <label>Repository Name:</label>
+            <input type="text" id="ghRepo" placeholder="phoebe-menu-home">
         </div>
         
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
+        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 30px 0;">
         
-        <h3>🍳 添加新菜品</h3>
+        <h3>🍳 CREATE NEW DISH</h3>
         <div class="form-group">
-            <label>菜品名称:</label>
-            <input type="text" id="foodName" placeholder="如：经典冰拿铁">
+            <label>Dish Name (菜品名称):</label>
+            <input type="text" id="foodName" placeholder="E.g., 经典冰拿铁">
         </div>
         <div class="form-group">
-            <label>分类:</label>
+            <label>Category (分类):</label>
             <select id="foodCategory">
-                <option value="中餐">中餐</option>
-                <option value="西餐">西餐</option>
-                <option value="烘焙">烘焙</option>
-                <option value="咖啡调配">咖啡调配</option>
+                <option value="中餐">中餐 / CHINESE</option>
+                <option value="西餐">西餐 / WESTERN</option>
+                <option value="烘焙">烘焙 / BAKERY</option>
+                <option value="咖啡调配">咖啡调配 / BAR & CAFE</option>
             </select>
         </div>
         <div class="form-group">
-            <label>图片网址 (Image URL):</label>
-            <input type="text" id="foodImg" placeholder="贴上图片直链">
+            <label>Image Link (图片网址):</label>
+            <input type="text" id="foodImg" placeholder="Image URL">
         </div>
         <div class="form-group">
-            <label>主厨笔记 / 描述:</label>
-            <textarea id="foodNotes" rows="3" placeholder="写下你的成功秘诀..."></textarea>
+            <label>Chef's Notes (主厨描述与心得):</label>
+            <textarea id="foodNotes" rows="4" placeholder="Share your secret key to success..."></textarea>
         </div>
-        <button class="submit-btn" onclick="submitToGithub('add')">🚀 保存并发布到网站</button>
+        <button class="submit-btn" onclick="submitToGithub('add')">🚀 PUBLISH TO MENU</button>
 
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
+        <hr style="border:0; border-top: 1px solid #4D5C56; margin: 30px 0;">
 
-        <h3>🗑️ 菜单盘点与删减 (2.0)</h3>
+        <h3>🗑️ INVENTORY & DELETION</h3>
         <div id="adminRecipeList"></div>
     </div>
 </div>
 
 <script>
-    // 基础菜品数据库
-    let defaultRecipes = [];
+    // 基础演示菜单数据
+    let defaultRecipes = [
+        { id: 1, name: "经典冰拿铁", category: "咖啡调配", img: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=150", notes: "深烘豆 18g 提取 36g 浓缩，搭配 150ml 冰牛奶。分层完美，甜感适中。" },
+        { id: 2, name: "黑椒迷迭香牛排", category: "西餐", img: "https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=150", notes: "厚切眼肉，大火双面锁汁各 2 分钟，出锅前黄油与迷迭香温柔浇淋，静置 5 分钟方可切块。" }
+    ];
 
     let recipes = JSON.parse(localStorage.getItem('my_recipes')) || defaultRecipes;
 
-    // 前端展示渲染
     function renderMenu(data) {
         const container = document.getElementById('menuContainer');
         container.innerHTML = '';
@@ -120,35 +241,37 @@
                 <div class="menu-item">
                     <div class="item-info">
                         <div class="item-name">${item.name}</div>
-                        <div style="font-size:0.9rem; color:#666; margin-top:5px;">${item.notes}</div>
+                        <div class="item-notes">“ ${item.notes} ”</div>
                     </div>
                     <div class="item-dots"></div>
-                    <img class="item-img" src="${item.img || 'https://via.placeholder.com/150'}" alt="${item.name}">
+                    <img class="item-img" src="${item.img || 'https://via.placeholder.com/150/2F3B36/EFDB96?text=Phoebe+Menu'}" alt="${item.name}">
                 </div>
             `);
         });
     }
 
-    // 后台列表渲染（带删除按钮）
     function renderAdminList() {
         const adminListContainer = document.getElementById('adminRecipeList');
         adminListContainer.innerHTML = '';
         recipes.forEach(item => {
             adminListContainer.insertAdjacentHTML('beforeend', `
                 <div class="admin-list-item">
-                    <span><strong>[${item.category}]</strong> ${item.name}</span>
-                    <button class="delete-btn" onclick="deleteRecipe(${item.id}, '${item.name}')">❌ 删除</button>
+                    <span><strong style="color:#EFDB96;">[${item.category}]</strong> ${item.name}</span>
+                    <button class="delete-btn" onclick="deleteRecipe(${item.id}, '${item.name}')">❌ DISCARD</button>
                 </div>
             `);
         });
     }
 
     function filterMenu(category) {
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
         if (category === 'all') renderMenu(recipes);
         else renderMenu(recipes.filter(r => r.category === category));
     }
 
-    // 点击 3 下开后台
     let clickCount = 0;
     function handleAdminClick() {
         clickCount++;
@@ -157,43 +280,38 @@
             document.getElementById('ghToken').value = localStorage.getItem('gh_token') || '';
             document.getElementById('ghUser').value = localStorage.getItem('gh_user') || '';
             document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || '';
-            renderAdminList(); // 展开后台时顺便把管理列表画出来
+            renderAdminList();
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
     }
 
-    // 点击删除触发的逻辑
     function deleteRecipe(id, name) {
-        if(confirm(`确定要把【${name}】从菜单中划掉吗？此操作会自动更新网站。`)) {
-            // 过滤掉被删的菜
+        if(confirm(`确定要把【${name}】从菜单中撤出吗？此操作将同步修改云端。`)) {
             recipes = recipes.filter(r => r.id !== id);
-            // 拿着更新后的最新数组去推给 GitHub
             submitToGithub('delete');
         }
     }
 
-    // 🌟 统一的 GitHub 数据同步核心（支持新增和删除）
     async function submitToGithub(actionType) {
         const token = document.getElementById('ghToken').value;
         const user = document.getElementById('ghUser').value;
         const repo = document.getElementById('ghRepo').value;
 
         if(!token || !user || !repo) {
-            alert('请先填好顶部的 GitHub 配置（Token、用户名、仓库名）！');
+            alert('请完善全局配置。');
             return;
         }
 
-        // 如果是新增操作，提取表单值并塞进数组
         if (actionType === 'add') {
             const name = document.getElementById('foodName').value;
             const category = document.getElementById('foodCategory').value;
-            const img = document.getElementById('foodImg').value || "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=150";
+            const img = document.getElementById('foodImg').value;
             const notes = document.getElementById('foodNotes').value;
-            if(!name) { alert('菜品名称不能为空哦！'); return; }
+            if(!name) { alert('请输入菜品名称。'); return; }
             
             recipes.push({ id: Date.now(), name, category, img, notes });
         }
 
-        // 先存一下浏览器本地防止丢失
         localStorage.setItem('my_recipes', JSON.stringify(recipes));
         localStorage.setItem('gh_token', token);
         localStorage.setItem('gh_user', user);
@@ -202,36 +320,33 @@
         const url = `https://api.github.com/repos/${user}/${repo}/contents/index.html`;
         
         try {
-            // 获取当前最新代码文件的 sha
             const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
             const fileData = await res.json();
             const sha = fileData.sha;
             let oldCode = decodeURIComponent(escape(atob(fileData.content)));
 
-            // 生成要替换进去的新代码段
             const updatedRecipesCode = `let defaultRecipes = ${JSON.stringify(recipes, null, 4)};`;
             let newCode = oldCode.replace(/let defaultRecipes = \[\s*[\s\S]*?\];/, updatedRecipesCode);
 
-            // 推回 GitHub 
             const putRes = await fetch(url, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: actionType === 'add' ? `主厨添加了新菜品` : `主厨删除了菜品`,
+                    message: actionType === 'add' ? `Chef added ${foodName.value}` : `Chef removed a dish`,
                     content: btoa(unescape(encodeURIComponent(newCode))),
                     sha: sha
                 })
             });
 
             if(putRes.ok) {
-                alert('🎉 操作成功！GitHub 正在同步，大概 1 分钟后刷新网站即可看到最新菜单！');
+                alert('🎉 菜单已同步上云！正在重新烹饪网页，请于一分钟后刷新查看。');
                 location.reload();
             } else {
                 const err = await putRes.json();
-                alert('同步失败，请检查配置：' + err.message);
+                alert('发布失败: ' + err.message);
             }
         } catch (e) {
-            alert('发生未知错误：' + e.message);
+            alert('发生错误: ' + e.message);
         }
     }
 
